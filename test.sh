@@ -61,35 +61,35 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     #######
     # RPM #
     #######
-    vagrant ssh rpm -- sudo rpm --install /vagrant/output/kafka-${SCALA_VERSION}-*.noarch.rpm
+    vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-kafka-${SCALA_VERSION}-*.noarch.rpm
     vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-common-*.rpm
-    vagrant ssh rpm -- sudo rpm --install /vagrant/output/rest-utils-*.rpm
-    vagrant ssh rpm -- sudo rpm --install /vagrant/output/kafka-rest-*.rpm
+    vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-rest-utils-*.rpm
+    vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-kafka-rest-*.rpm
 
     test_zk rpm
     test_kafka rpm
     test_rest rpm
 
-    vagrant ssh rpm -- sudo rpm --erase kafka-rest
-    vagrant ssh rpm -- sudo rpm --erase rest-utils
+    vagrant ssh rpm -- sudo rpm --erase confluent-kafka-rest
+    vagrant ssh rpm -- sudo rpm --erase confluent-rest-utils
     vagrant ssh rpm -- sudo rpm --erase confluent-common
-    vagrant ssh rpm -- sudo rpm --erase kafka-${SCALA_VERSION}
+    vagrant ssh rpm -- sudo rpm --erase confluent-kafka-${SCALA_VERSION}
 
 
     #######
     # DEB #
     #######
-    vagrant ssh deb -- sudo dpkg --install /vagrant/output/kafka-${SCALA_VERSION}*_all.deb
+    vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-kafka-${SCALA_VERSION}*_all.deb
     vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-common*_all.deb
-    vagrant ssh deb -- sudo dpkg --install /vagrant/output/rest-utils*_all.deb
-    vagrant ssh deb -- sudo dpkg --install /vagrant/output/kafka-rest*_all.deb
+    vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-rest-utils*_all.deb
+    vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-kafka-rest*_all.deb
 
     test_zk deb
     test_kafka deb
     test_rest deb
 
-    vagrant ssh deb -- sudo dpkg --remove kafka-rest
-    vagrant ssh deb -- sudo dpkg --remove rest-utils
+    vagrant ssh deb -- sudo dpkg --remove confluent-kafka-rest
+    vagrant ssh deb -- sudo dpkg --remove confluent-rest-utils
     vagrant ssh deb -- sudo dpkg --remove confluent-common
-    vagrant ssh deb -- sudo dpkg --remove kafka-${SCALA_VERSION}
+    vagrant ssh deb -- sudo dpkg --remove confluent-kafka-${SCALA_VERSION}
 done

@@ -21,4 +21,4 @@ popd
 
 # Debian packaging dumps packages one level up. We try to save all the build
 # output, including orig tarballs
-cp rest-utils_*.build rest-utils_*.changes rest-utils_*.tar.gz rest-utils_*.dsc  rest-utils_*.deb /vagrant/output/
+cp confluent-rest-utils_*.build confluent-rest-utils_*.changes confluent-rest-utils_*.tar.gz confluent-rest-utils_*.dsc  confluent-rest-utils_*.deb /vagrant/output/

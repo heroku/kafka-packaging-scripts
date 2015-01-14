@@ -29,4 +29,4 @@ done
 
 # Debian packaging dumps packages one level up. We try to save all the build
 # output, including orig tarballs
-cp kafka_*.build kafka_*.changes kafka_*.tar.gz kafka_*.dsc kafka-*.deb /vagrant/output/
+cp confluent-kafka_*.build confluent-kafka_*.changes confluent-kafka_*.tar.gz confluent-kafka_*.dsc confluent-kafka-*.deb /vagrant/output/

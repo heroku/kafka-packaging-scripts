@@ -21,4 +21,4 @@ popd
 
 # Debian packaging dumps packages one level up. We try to save all the build
 # output, including orig tarballs
-cp kafka-rest_*.build kafka-rest_*.changes kafka-rest_*.tar.gz kafka-rest_*.dsc  kafka-rest_*.deb /vagrant/output/
+cp confluent-kafka-rest_*.build confluent-kafka-rest_*.changes confluent-kafka-rest_*.tar.gz confluent-kafka-rest_*.dsc  confluent-kafka-rest_*.deb /vagrant/output/
