@@ -15,5 +15,6 @@ cd rest-utils
 
 git checkout -b rpm-$VERSION origin/rpm
 git merge $BRANCH
+make distclean
 make rpm
 cp *.rpm /vagrant/output/

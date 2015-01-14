@@ -11,7 +11,7 @@ cd /tmp/confluent
 
 for SCALA_VERSION in $SCALA_VERSIONS; do
     # We redo this for every version since Debian package building requires a
-    # completely clean source directory
+    # completely clean source directory and a different control file to be checked in
     rm -rf /tmp/confluent/kafka-packaging
     git clone /vagrant/repos/kafka-packaging.git
     pushd kafka-packaging

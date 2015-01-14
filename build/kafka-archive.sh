@@ -16,6 +16,7 @@ git fetch --tags /vagrant/repos/kafka.git
 git checkout -b archive-$VERSION origin/archive
 git merge $VERSION
 for SCALA_VERSION in $SCALA_VERSIONS; do
+    SCALA_VERSION=$SCALA_VERSION make distclean
     SCALA_VERSION=$SCALA_VERSION make archive
 done
 cp *.zip *.tar.gz /vagrant/output/

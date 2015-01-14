@@ -15,5 +15,6 @@ cd kafka-rest
 
 git checkout -b archive-$VERSION origin/archive
 git merge $BRANCH
+make distclean
 make archive
 cp *.zip *.tar.gz /vagrant/output/
