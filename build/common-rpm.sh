@@ -14,7 +14,10 @@ git clone /vagrant/repos/common.git
 cd common
 
 git checkout -b rpm-$VERSION origin/rpm
-git merge $BRANCH
+git merge --no-edit $BRANCH
 make distclean
 make rpm
+if [ "x$SIGN" == "xyes" ]; then
+    rpm --resign *.rpm || rpm --resign *.rpm || rpm --resign *.rpm
+fi
 cp *.rpm /vagrant/output/

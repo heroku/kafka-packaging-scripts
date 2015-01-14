@@ -11,7 +11,7 @@ sudo apt-get update -y
 sudo apt-get upgrade -y
 
 sudo apt-get install -y make curl git zip unzip patch java7-jdk maven \
-    git-buildpackage javahelper
+    git-buildpackage javahelper gnupg
 
 
 # These should not be leaking out anywhere with the build output so the values

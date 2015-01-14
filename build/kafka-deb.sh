@@ -21,12 +21,17 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     cat debian/control.in | sed "s@##SCALAVERSION##@${SCALA_VERSION}@g" > debian/control
     git add debian/control
     git commit -m "Add control file."
-    git merge $VERSION
+    git merge --no-edit -m "rpm-$VERSION" $VERSION
 
     git-buildpackage -us -uc --git-debian-branch=debian-$VERSION --git-upstream-tag=$VERSION --git-verbose
     popd
 done
 
 # Debian packaging dumps packages one level up. We try to save all the build
-# output, including orig tarballs
+# output, including orig tarballs. Signing requires sudo --login because we're
+# actually executing this script with sudo to get root permissions, but it
+# retains the env vars from the vagrant ssh user.
+if [ "x$SIGN" == "xyes" ]; then
+    sudo --login debsign `readlink -f confluent-kafka_*.changes`
+fi
 cp confluent-kafka_*.build confluent-kafka_*.changes confluent-kafka_*.tar.gz confluent-kafka_*.dsc confluent-kafka-*.deb /vagrant/output/

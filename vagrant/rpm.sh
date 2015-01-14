@@ -9,7 +9,7 @@ set -x
 
 yum -y update
 
-yum -y install git java-1.7.0-openjdk-devel maven rpm-build
+yum -y install git java-1.7.0-openjdk-devel maven rpm-build gnupg rpm-sign
 
 
 # These should not be leaking out anywhere with the build output so the values

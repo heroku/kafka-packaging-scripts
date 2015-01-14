@@ -14,6 +14,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     rpm.vm.provision "shell", path: "vagrant/rpm.sh"
   end
 
+  config.vm.synced_folder "~/.gnupg", "/root/.gnupg", owner: "root", group: "root"
+
   config.vm.provider "virtualbox" do |vb|
     vb.customize ["modifyvm", :id, "--memory", "2048"]
   end
