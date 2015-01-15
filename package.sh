@@ -51,31 +51,15 @@ vagrant ssh deb -- cp /vagrant/build/kafka-deb.sh /tmp/kafka-deb.sh
 vagrant ssh deb -- -t sudo VERSION=$KAFKA_VERSION "SCALA_VERSIONS=\"$SCALA_VERSIONS\"" SIGN=$SIGN /tmp/kafka-deb.sh
 
 
-## CONFLUENT-COMMON ##
-vagrant ssh rpm -- cp /vagrant/build/common-archive.sh /tmp/common-archive.sh
-vagrant ssh rpm -- sudo VERSION=$CONFLUENT_VERSION BRANCH=$BRANCH /tmp/common-archive.sh
-vagrant ssh rpm -- cp /vagrant/build/common-rpm.sh /tmp/common-rpm.sh
-vagrant ssh rpm -- -t sudo VERSION=$CONFLUENT_VERSION BRANCH=$BRANCH SIGN=$SIGN /tmp/common-rpm.sh
-vagrant ssh deb -- cp /vagrant/build/common-deb.sh /tmp/common-deb.sh
-vagrant ssh deb -- -t sudo VERSION=$CONFLUENT_VERSION BRANCH=$BRANCH SIGN=$SIGN /tmp/common-deb.sh
-
-
-## REST-UTILS ###
-vagrant ssh rpm -- cp /vagrant/build/rest-utils-archive.sh /tmp/rest-utils-archive.sh
-vagrant ssh rpm -- sudo VERSION=$CONFLUENT_VERSION BRANCH=$BRANCH /tmp/rest-utils-archive.sh
-vagrant ssh rpm -- cp /vagrant/build/rest-utils-rpm.sh /tmp/rest-utils-rpm.sh
-vagrant ssh rpm -- -t sudo VERSION=$CONFLUENT_VERSION BRANCH=$BRANCH SIGN=$SIGN /tmp/rest-utils-rpm.sh
-vagrant ssh deb -- cp /vagrant/build/rest-utils-deb.sh /tmp/rest-utils-deb.sh
-vagrant ssh deb -- -t sudo VERSION=$CONFLUENT_VERSION BRANCH=$BRANCH SIGN=$SIGN /tmp/rest-utils-deb.sh
-
-
-## KAFKA-REST ###
-vagrant ssh rpm -- cp /vagrant/build/kafka-rest-archive.sh /tmp/kafka-rest-archive.sh
-vagrant ssh rpm -- sudo VERSION=$CONFLUENT_VERSION BRANCH=$BRANCH /tmp/kafka-rest-archive.sh
-vagrant ssh rpm -- cp /vagrant/build/kafka-rest-rpm.sh /tmp/kafka-rest-rpm.sh
-vagrant ssh rpm -- -t sudo VERSION=$CONFLUENT_VERSION BRANCH=$BRANCH SIGN=$SIGN /tmp/kafka-rest-rpm.sh
-vagrant ssh deb -- cp /vagrant/build/kafka-rest-deb.sh /tmp/kafka-rest-deb.sh
-vagrant ssh deb -- -t sudo VERSION=$CONFLUENT_VERSION BRANCH=$BRANCH SIGN=$SIGN /tmp/kafka-rest-deb.sh
+## CONFLUENT PACKAGES ##
+for PACKAGE in $PACKAGES; do
+    vagrant ssh rpm -- cp "/vagrant/build/${PACKAGE}-archive.sh" "/tmp/${PACKAGE}-archive.sh"
+    vagrant ssh rpm -- sudo VERSION=$CONFLUENT_VERSION BRANCH=$BRANCH "/tmp/${PACKAGE}-archive.sh"
+    vagrant ssh rpm -- cp "/vagrant/build/${PACKAGE}-rpm.sh" "/tmp/${PACKAGE}-rpm.sh"
+    vagrant ssh rpm -- -t sudo VERSION=$CONFLUENT_VERSION BRANCH=$BRANCH SIGN=$SIGN "/tmp/${PACKAGE}-rpm.sh"
+    vagrant ssh deb -- cp "/vagrant/build/${PACKAGE}-deb.sh" "/tmp/${PACKAGE}-deb.sh"
+    vagrant ssh deb -- -t sudo VERSION=$CONFLUENT_VERSION BRANCH=$BRANCH SIGN=$SIGN "/tmp/${PACKAGE}-deb.sh"
+done
 
 
 ## COMPILED PACKAGES ##
