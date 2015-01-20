@@ -78,3 +78,130 @@ Usage
     # be careful to do everything in temporary space in the VM so your source
     # tree doesn't get polluted with build by-products.
     $ vagrant destroy
+
+Adding New Packages
+-------------------
+
+The process of creating new packages is split between the original source
+repository (for our software; use a secondary `X-packaging` repository for
+third-party software) and this repository.
+
+Assuming Java-only code (i.e. no Scala versioning, no JNI to native code),
+generally you need to generate 3 packages:
+
+1. tar.gz/zip
+2. Debian
+3. RPM
+
+However, it's usually easiest to generate the tar.gz/zip in a reasonable layout
+and then reuse that when generating the deb/rpm packages. Our packaging already
+does this, so you can use it as a template.
+
+Here's how we've generated our packages so far:
+
+1. In the Maven project for the file, include some packaging scripts. See any of
+   the repositories (e.g. `kafka-rest`) for an example.
+   * Usually `maven-assembly-plugin` is flexible enough to do this.
+   * Layout should follow a standard Unix-y approach: most importantly, having
+     bin/ makes it clear how the user can get started running things. Normally
+     jars go under /usr/share/java/<project>. Config files installed by the
+     system normally go under /etc, there's no obvious place for them in
+     tar/zip packages so we'll just use this same layout.
+   * Include more than just the JARs -- licenses, READMEs, and wrapper bin
+     scripts, should be included as well.
+   * You'll need to be able to exclude dependencies that are packaged separately,
+     and `maven-assembly-plugin` provides some support for this. For an
+     example, see how `kafka-rest` filters out the `rest-utils` and it's
+     transitive dependencies in `src/package.xml`.
+   * While you're at it, you might as well provide some other helpful packaging
+     targets, e.g. an uber-jar and an in-tree development layout that matches the
+     installed layout and allows simplified `bin/` scripts that work in both
+     environments. There are examples of these in `kafka-rest`.
+2. Use one of the existing packages to bootstrap your packaging by pulling in
+   the `archive`, `deb`, and `rpm` branches.
+   * Make sure you pick a package with similar structure to yours
+     (e.g. library vs. application, similar module layout since that can
+     occasionally affect packaging). Then bootstrapping from the other repo is
+     easy:
+
+          cd myproject.git
+          git remote add other /path/to/other.git
+          git fetch other
+          git checkout -b archive other/archive
+          git checkout -b rpm other/rpm
+          git checkout -b debian other/debian
+          git remote remove other
+   * If you are packaging a third party library, you may need to work in a
+     separate repository. The process doesn't really differ much here -- you
+     just add a step in the packaging script that pulls in the external code by
+     merging it into your source tree. The only example we have of this so far
+     is Kafka (see the `kafka-packaging` repository, but beware that those
+     scripts are also different since they need to support multiple versions of
+     Scala.
+3. Customize these branches for your package.
+   * 99% of the time you'll just need to customize package names and metadata.
+   * Start with the `archive` branch since it is simplest and doesn't require
+     any platform-specific knowledge. It's just a Makefile and helper script
+     to get the files into the target layout.
+   * For deb/rpm, make sure you rebase/cherry-pick against the updated
+     `archive` branch, then update new files/sections of files (in particular
+     the Makefile, spec files for RPM and the a few files under debian/ for
+     debian. You'll need to work in VMs to get the build
+     running. Unfortunately these are difficult to include in the repositories
+     because of restrictions on what files can be included in the source tree
+     when doing packaging. I suggest using Vagrant to pull up the VMs (a simple
+     default Vagrantfile for the right OS should just work), then use the
+     scripts under `build/` in this repository to understand the required
+     sequence of commands. You'll want the Vagrantfile ***outside*** of your
+     source tree. One easy way to do this is to use a Vagrantfile with two VMs
+     (deb and rpm) one level higher than your checkout of the repository, so
+     the repository is then (by default) available at /vagrant/<yourrepo> and
+     Vagrant's files don't get in the way.
+   * While developing, you'll use a separate branch to do the packaging. For
+     example, we might do
+
+          git checkout -b archive-0.1 archive
+
+     to start `archive` packaging for `v0.1`. Then we merge in the code:
+
+          git merge v0.1
+
+     assuming `v0.1` is a tagged release. So each of these branches just
+     maintains an *overlay* for packaging. Once we generate the package, we
+     don't need the branch anymore and we can delete it.
+   * We should rarely need patches for our own software, but even for our own
+     the `debian` branches contain patches to add files that we don't want in
+     the main repo, but that make the project friendlier to Debian
+     packaging. This sometimes makes iterating a bit of a pain because some
+     platforms, like Debian, require a completely clean source tree. You'll
+     just have to get used to cleaning out extraneous files and using `git
+     reset`.
+4. Once you've got the packaging working for all platforms, make sure your
+   branches are all pushed back to the central repo.
+5. Add the package to this repository, which just drives packaging of all the
+   individual packages and ties them all together.
+   * If you have any extra system-level dependencies required during build
+     (this is rare!), add them to the Vagrant bootstrapping scripts in
+     `vagrant/`.
+   * Add scripts for running the individual builds to `build/`. You probably
+     just want to copy the scripts for the same package you used as a base for
+     your `archive`, `rpm`, and `deb` branches and do some renaming as a
+     start. Often this is all that's necessary, but we maintain separate scripts
+     for separate packages to allow for easy customization where needed.
+   * If necessary, add any version variables you need to `versions.sh`.
+   * Add the package to the `package.sh` script. Key steps include: making sure
+     your repo is in the `REPO` list to be cloned/updated; make sure it is
+     included in the `PACKAGES` list (except for packages that can't just have
+     their build scripts executed in the standard way); make sure any special
+     concerns for compiling your package into the complete platform tar/zip
+     files are addressed in the final sections of the script.
+   * Add at least one simple test of your package to `test.sh`. You'll need to
+     add install/uninstall lines for each platform, and then write a simple
+     test to make sure your package works. These are not intended to test real
+     functionality, just verify that the way you've packaged things up will allow
+     them to work. For example, `kafka-rest` is tested without any other
+     services running, so it can't do anything useful, but we are able to very
+     that it started up without just quitting immediately.
+   * Add the package to the `installers/install.sh` script, which is used when
+     users download the full platform in deb or rpm format.
+   * Test, fix up any issues, and commit.
