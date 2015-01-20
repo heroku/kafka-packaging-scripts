@@ -63,11 +63,14 @@ done
 
 
 ## COMPILED PACKAGES ##
-OUTPUT=`pwd`/output
+BASEDIR=`pwd`
+OUTPUT="${BASEDIR}/output"
+
 rm -rf /tmp/confluent-packaging
 mkdir -p /tmp/confluent-packaging
 pushd /tmp/confluent-packaging
 
+# zip/tar.gz
 for SCALA_VERSION in $SCALA_VERSIONS; do
     mkdir "confluent-${CONFLUENT_VERSION}"
     pushd "confluent-${CONFLUENT_VERSION}"
@@ -75,10 +78,31 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     for PACKAGE in $PACKAGES; do
         tar -xz --strip-components 1 -f "${OUTPUT}/confluent-${PACKAGE}-${CONFLUENT_VERSION}.tar.gz"
     done
+    cp ${BASEDIR}/installers/README.archive .
     popd
     tar -czf "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.tar.gz" "confluent-${CONFLUENT_VERSION}"
     zip -r "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.zip" "confluent-${CONFLUENT_VERSION}"
     rm -rf "confluent-${CONFLUENT_VERSION}"
+done
+
+# deb/rpm
+for SCALA_VERSION in $SCALA_VERSIONS; do
+    for PKG_TYPE in "deb" "rpm"; do
+        mkdir "confluent-${CONFLUENT_VERSION}"
+        pushd "confluent-${CONFLUENT_VERSION}"
+        # Getting the actual filenames is a pain because of the version number
+        # mangling. We just use globs to find them instead, but this means you
+        # *MUST* work with a clean output/ directory
+        eval "cp ${OUTPUT}/confluent-kafka-${SCALA_VERSION}*.${PKG_TYPE} ."
+        for PACKAGE in $PACKAGES; do
+            eval "cp ${OUTPUT}/confluent-${PACKAGE}*.${PKG_TYPE} ."
+        done
+        cp ${BASEDIR}/installers/install.sh .
+        cp ${BASEDIR}/installers/README .
+        popd
+        tar -czf "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}-${PKG_TYPE}.tar.gz" "confluent-${CONFLUENT_VERSION}"
+        rm -rf "confluent-${CONFLUENT_VERSION}"
+    done
 done
 
 popd
