@@ -7,11 +7,17 @@ set -x
 # build process so we don't have to run it every time we want to build. This
 # should really only handle system updates and system-level build dependencies.
 
-sudo apt-get update -y
+apt-get -y update
+apt-get install -y software-properties-common python-software-properties
+add-apt-repository -y ppa:webupd8team/java
+apt-get -y update
 sudo apt-get upgrade -y
 
-sudo apt-get install -y make curl git zip unzip patch java7-jdk maven \
-    git-buildpackage javahelper gnupg
+/bin/echo debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+
+sudo apt-get install -y make curl git zip unzip patch \
+    oracle-java6-installer oracle-java6-set-default maven \
+    git-buildpackage javahelper
 
 
 # These should not be leaking out anywhere with the build output so the values

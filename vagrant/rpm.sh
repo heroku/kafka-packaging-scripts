@@ -9,8 +9,30 @@ set -x
 
 yum -y update
 
-yum -y install git java-1.7.0-openjdk-devel maven rpm-build gnupg rpm-sign
+JDK_VERSION="jdk1.6.0_45"
+JDK_SHORT_VERSION="6u45"
 
+curl -s -o "/tmp/jdk-${JDK_SHORT_VERSION}-linux-x64-rpm.bin" "https://s3.amazonaws.com/ewencp-confluent/jdk-6u45-linux-x64-rpm.bin"
+sh "/tmp/jdk-${JDK_SHORT_VERSION}-linux-x64-rpm.bin"
+
+yum -y install git rpm-build
+
+alternatives --install /usr/bin/java java "/usr/java/${JDK_VERSION}/jre/bin/java" 1000000
+alternatives --install /usr/bin/javaws javaws "/usr/java/${JDK_VERSION}/jre/bin/javaws" 1000000
+alternatives --install /usr/bin/javac javac "/usr/java/${JDK_VERSION}/bin/javac" 1000000
+alternatives --set java "/usr/java/${JDK_VERSION}/jre/bin/java"
+alternatives --set javaws "/usr/java/${JDK_VERSION}/jre/bin/javaws"
+alternatives --set javac "/usr/java/${JDK_VERSION}/bin/javac"
+
+# We need to install maven manually because the Fedora packages are generated
+# targeting Java 7.
+MAVEN_VERSION="3.2.5"
+MAVEN_MAJOR_VERSION="3"
+pushd /tmp
+curl -s -o maven.tar.gz "http://apache.cs.utah.edu/maven/maven-${MAVEN_MAJOR_VERSION}/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz"
+tar -zxvf maven.tar.gz
+ln -s /tmp/apache-maven-${MAVEN_VERSION}/bin/mvn /usr/bin/mvn
+popd
 
 # These should not be leaking out anywhere with the build output so the values
 # don't matter, but we need to specify them or git commands will fail. These are
