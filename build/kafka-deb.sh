@@ -9,23 +9,23 @@ set -x
 mkdir -p /tmp/confluent
 cd /tmp/confluent
 
-for SCALA_VERSION in $SCALA_VERSIONS; do
-    # We redo this for every version since Debian package building requires a
-    # completely clean source directory and a different control file to be checked in
-    rm -rf /tmp/confluent/kafka-packaging
-    git clone /vagrant/repos/kafka-packaging.git
-    pushd kafka-packaging
-    git fetch --tags /vagrant/repos/kafka.git
+# Debian requires that we generate all the binary packages from one source
+# package and Kafka needs one package per Scala version, so this build script
+# looks a bit different than others. The control file specifies the versions of
+# packages we will generate so we need to generate one including the versions we
+# need.
 
-    git checkout -b debian-$VERSION origin/debian
-    cat debian/control.in | sed "s@##SCALAVERSION##@${SCALA_VERSION}@g" > debian/control
-    git add debian/control
-    git commit -m "Add control file."
-    git merge --no-edit -m "rpm-$VERSION" $VERSION
+rm -rf /tmp/confluent/kafka-packaging
+git clone /vagrant/repos/kafka-packaging.git
+pushd kafka-packaging
+git fetch --tags /vagrant/repos/kafka.git
 
-    git-buildpackage -us -uc --git-debian-branch=debian-$VERSION --git-upstream-tag=$VERSION --git-verbose
-    popd
-done
+git checkout -b debian-$VERSION origin/debian
+make -f debian/Makefile debian-control
+git merge --no-edit -m "deb-$VERSION" $VERSION
+
+git-buildpackage -us -uc --git-debian-branch=debian-$VERSION --git-upstream-tag=$VERSION --git-verbose
+popd
 
 # Debian packaging dumps packages one level up. We try to save all the build
 # output, including orig tarballs. Signing requires sudo --login because we're
