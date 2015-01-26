@@ -25,6 +25,9 @@ Usage
     uid                  Ewen Cheslack-Postava <ewen@confluent.io>
     ssb   4096R/08EA97A4 2015-01-14
     # This will be installed in the VMs automatically.
+    #
+    # You'll also need AWS CLI and Aptly for deploying artifacts
+    $ brew install awscli aptly
 
     # Create VMs for the scripts to work with. You'll get 'rpm' and 'deb'
     # VMs. We just reuse the 'rpm' one for generating generic archives since
@@ -73,6 +76,39 @@ Usage
     $ ./test.sh
     # If something went wrong with the tests, it'll print out a big, obvious
     # error message.
+
+    # Now we need to actually deploy the resulting archives. We need to do this
+    # in a number of formats: archives, rpm, deb, and deploy jars into a Maven
+    # repository. We'll store all our repositories in S3, so we'll start by
+    # configuring S3 credentials. Make a copy of the template and fill in your
+    # credentials and bucket info:
+    $ cp aws.sh.template aws.sh
+    $ emacs aws.sh
+    # Note that this file is ignored by git so you won't accidentally check it
+    # in. Note that if you're setting up your own S3 bucket for testing, this
+    # script assumes that there is an ACL policy on the bucket that makes
+    # everything readable anonymously. You can add a prefix if you don't want to
+    # install to the root of the bucket -- just make sure it includes the
+    # leading /.
+    #
+    # Now we can run the deploy script.
+    # ##########################################################################
+    # WARNING: Not only will you be pushing artifacts to a public server, you
+    # can break things if you do this wrong. You *MUST* be working with a full
+    # copy of the existing data for some of these operations to work
+    # correctly. For example, if you don't have all the old RPMs, the index you
+    # generate will omit a bunch of files. Since you'll want to do a staging
+    # release before any final releases, you really need to be careful about
+    # being in sync with the existing repository for final releases.
+    # ##########################################################################
+    # Note that you'll be prompted multiple times for your GPG key password
+    # since some package index files are signed.
+    $ ./deploy.sh
+    # Note that the REVISION specified in versions.sh is important
+    # here. Packages go into repositories organized by CONFLUENT_VERSION. If we
+    # need to release any updates to packages, the REVISION needs to be bumped
+    # up so the packages go into the same repositories but are treated as
+    # updates to the existing packages.
 
     # Finally, clean up the VMs. Except for the build output, the scripts should
     # be careful to do everything in temporary space in the VM so your source

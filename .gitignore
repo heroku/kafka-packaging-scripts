@@ -1,1 +1,5 @@
 .vagrant
+aws.sh
+_deployed
+.aptly
+aptly.conf

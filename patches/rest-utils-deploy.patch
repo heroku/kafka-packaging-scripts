@@ -1,0 +1,32 @@
+diff --git a/pom.xml b/pom.xml
+index 173d535..e4c52e7 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -47,5 +47,26 @@
+                 </configuration>
+             </plugin>
+         </plugins>
++
++        <extensions>
++            <extension>
++                <groupId>org.springframework.build</groupId>
++                <artifactId>aws-maven</artifactId>
++                <version>5.0.0.RELEASE</version>
++            </extension>
++        </extensions>
+     </build>
++
++    <distributionManagement>
++        <repository>
++            <id>aws-release</id>
++            <name>AWS Release Repository</name>
++            <url>${confluent.release.repo}</url>
++        </repository>
++        <snapshotRepository>
++            <id>aws-snapshot</id>
++            <name>AWS Snapshot Repository</name>
++            <url>${confluent.snapshot.repo}</url>
++        </snapshotRepository>
++    </distributionManagement>
+ </project>
+\ No newline at end of file

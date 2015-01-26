@@ -1,0 +1,32 @@
+diff --git a/build.gradle b/build.gradle
+index 1cbab29..49f03a1 100644
+--- a/build.gradle
++++ b/build.gradle
+@@ -49,6 +49,14 @@ subprojects {
+ 
+   licenseTest.onlyIf { isVerificationRequired(project) }
+ 
++  configurations {
++    deployerJars
++  }
++
++  dependencies {
++    deployerJars "org.springframework.build:aws-maven:5.0.0.RELEASE"
++  }
++
+   uploadArchives {
+     repositories {
+       signing {
+@@ -58,9 +66,9 @@ subprojects {
+               // To test locally, replace mavenUrl in ~/.gradle/gradle.properties to file://localhost/tmp/myRepo/
+               mavenDeployer {
+                   beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+-                  repository(url: "${mavenUrl}") {
+-                      authentication(userName: "${mavenUsername}", password: "${mavenPassword}")
+-                  }
++                  configuration = configurations.deployerJars
++                  repository(url: "REPOSITORY")
++                  snapshotRepository(url: "SNAPSHOT_REPOSITORY")
+                   afterEvaluate {
+                       pom.artifactId = "${archivesBaseName}"
+                       pom.project {
