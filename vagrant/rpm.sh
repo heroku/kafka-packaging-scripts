@@ -15,7 +15,7 @@ JDK_SHORT_VERSION="6u45"
 curl -s -o "/tmp/jdk-${JDK_SHORT_VERSION}-linux-x64-rpm.bin" "https://s3.amazonaws.com/ewencp-confluent/jdk-6u45-linux-x64-rpm.bin"
 sh "/tmp/jdk-${JDK_SHORT_VERSION}-linux-x64-rpm.bin"
 
-yum -y install git rpm-build createrepo
+yum -y install git rpm-build rpm-sign createrepo
 
 alternatives --install /usr/bin/java java "/usr/java/${JDK_VERSION}/jre/bin/java" 1000000
 alternatives --install /usr/bin/javaws javaws "/usr/java/${JDK_VERSION}/jre/bin/javaws" 1000000
