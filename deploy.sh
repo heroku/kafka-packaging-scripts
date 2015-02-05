@@ -9,7 +9,7 @@ set -x
 BASEDIR=`pwd`
 OUTPUT="${BASEDIR}/output"
 DEPLOYED="${BASEDIR}/_deployed"
-PACKAGES="common rest-utils kafka-rest"
+PACKAGES="common rest-utils schema-registry kafka-rest camus"
 
 # Note that all files are organized first by packaging system, then by
 # release. Organizing by packaging system at the top level will make it easier

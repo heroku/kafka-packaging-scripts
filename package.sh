@@ -7,10 +7,16 @@ set -x
 # All the packages except for Kafka, without the confluent prefix. Kafka needs
 # special handling because we support multiple Scala versions. These all need to
 # have the same version number currently.
-PACKAGES="common rest-utils kafka-rest"
+PACKAGES="common rest-utils schema-registry kafka-rest camus"
 
 pushd repos
-for REPO in "http://git-wip-us.apache.org/repos/asf/kafka.git" "git@github.com:confluentinc/kafka-packaging.git" "git@github.com:confluentinc/common.git" "git@github.com:confluentinc/rest-utils.git" "git@github.com:confluentinc/kafka-rest.git"; do
+for REPO in "http://git-wip-us.apache.org/repos/asf/kafka.git" \
+    "git@github.com:confluentinc/kafka-packaging.git" \
+    "git@github.com:confluentinc/common.git" \
+    "git@github.com:confluentinc/rest-utils.git" \
+    "git@github.com:confluentinc/schema-registry.git" \
+    "git@github.com:confluentinc/kafka-rest.git" \
+    "git@github.com:confluentinc/camus.git"; do
     REPO_DIR=`basename $REPO`
     if [ ! -e $REPO_DIR ]; then
         # Using mirror makes sure we get copies of all the branches. It also
@@ -53,12 +59,18 @@ vagrant ssh deb -- -t sudo VERSION=$KAFKA_VERSION "SCALA_VERSIONS=\"$SCALA_VERSI
 
 ## CONFLUENT PACKAGES ##
 for PACKAGE in $PACKAGES; do
+    PACKAGE_BRANCH_VAR="${PACKAGE//-/_}_BRANCH"
+    PACKAGE_BRANCH="${!PACKAGE_BRANCH_VAR}"
+    if [ -z "$PACKAGE_BRANCH" ]; then
+        PACKAGE_BRANCH="$BRANCH"
+    fi
+
     vagrant ssh rpm -- cp "/vagrant/build/${PACKAGE}-archive.sh" "/tmp/${PACKAGE}-archive.sh"
-    vagrant ssh rpm -- sudo VERSION=$CONFLUENT_VERSION BRANCH=$BRANCH "/tmp/${PACKAGE}-archive.sh"
+    vagrant ssh rpm -- sudo VERSION=$CONFLUENT_VERSION BRANCH=$PACKAGE_BRANCH "/tmp/${PACKAGE}-archive.sh"
     vagrant ssh rpm -- cp "/vagrant/build/${PACKAGE}-rpm.sh" "/tmp/${PACKAGE}-rpm.sh"
-    vagrant ssh rpm -- -t sudo VERSION=$CONFLUENT_VERSION BRANCH=$BRANCH SIGN=$SIGN "/tmp/${PACKAGE}-rpm.sh"
+    vagrant ssh rpm -- -t sudo VERSION=$CONFLUENT_VERSION BRANCH=$PACKAGE_BRANCH SIGN=$SIGN "/tmp/${PACKAGE}-rpm.sh"
     vagrant ssh deb -- cp "/vagrant/build/${PACKAGE}-deb.sh" "/tmp/${PACKAGE}-deb.sh"
-    vagrant ssh deb -- -t sudo VERSION=$CONFLUENT_VERSION BRANCH=$BRANCH SIGN=$SIGN "/tmp/${PACKAGE}-deb.sh"
+    vagrant ssh deb -- -t sudo VERSION=$CONFLUENT_VERSION BRANCH=$PACKAGE_BRANCH SIGN=$SIGN "/tmp/${PACKAGE}-deb.sh"
 done
 
 

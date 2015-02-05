@@ -15,9 +15,13 @@ sudo apt-get upgrade -y
 
 /bin/echo debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
 
+# Most of these are obvious requirements. jarwrapper is for test.sh because the
+# camus Debian package build is automatically determining it has a dependency on
+# jarwrapper and test.sh uses dpkg instead of apt so it doesn't resolve
+# dependencies automatically.
 sudo apt-get install -y make curl git zip unzip patch \
     oracle-java6-installer oracle-java6-set-default maven \
-    git-buildpackage javahelper
+    git-buildpackage javahelper jarwrapper
 
 
 # These should not be leaking out anywhere with the build output so the values
