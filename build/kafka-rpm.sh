@@ -18,12 +18,12 @@ git merge --no-edit -m "rpm-$VERSION" $VERSION
 for SCALA_VERSION in $SCALA_VERSIONS; do
     SCALA_VERSION=$SCALA_VERSION make distclean
     SCALA_VERSION=$SCALA_VERSION make rpm
+    rm README.rpm
+    if [ "x$SIGN" == "xyes" ]; then
+        for RPM in *.rpm; do
+            rpm --resign $RPM || rpm --resign $RPM || rpm --resign $RPM
+        done
+    fi
+    cp *.rpm /vagrant/output/
 done
-rm README.rpm
-if [ "x$SIGN" == "xyes" ]; then
-    for RPM in *.rpm; do
-        rpm --resign $RPM || rpm --resign $RPM || rpm --resign $RPM
-    done
-fi
-cp *.rpm /vagrant/output/
 rm -rf /tmp/confluent
