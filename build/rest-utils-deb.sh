@@ -27,3 +27,4 @@ if [ "x$SIGN" == "xyes" ]; then
     sudo --login debsign `readlink -f confluent-rest-utils_*.changes`
 fi
 cp confluent-rest-utils_*.build confluent-rest-utils_*.changes confluent-rest-utils_*.tar.gz confluent-rest-utils_*.dsc  confluent-rest-utils_*.deb /vagrant/output/
+rm -rf /tmp/confluent

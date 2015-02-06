@@ -18,3 +18,4 @@ git merge $BRANCH
 make distclean
 make archive
 cp *.zip *.tar.gz /vagrant/output/
+rm -rf /tmp/confluent

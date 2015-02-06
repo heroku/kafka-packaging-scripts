@@ -27,3 +27,4 @@ if [ "x$SIGN" == "xyes" ]; then
     sudo --login debsign `readlink -f confluent-kafka-rest_*.changes`
 fi
 cp confluent-kafka-rest_*.build confluent-kafka-rest_*.changes confluent-kafka-rest_*.tar.gz confluent-kafka-rest_*.dsc  confluent-kafka-rest_*.deb /vagrant/output/
+rm -rf /tmp/confluent

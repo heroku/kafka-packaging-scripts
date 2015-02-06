@@ -21,3 +21,4 @@ if [ "x$SIGN" == "xyes" ]; then
     rpm --resign *.rpm || rpm --resign *.rpm || rpm --resign *.rpm
 fi
 cp *.rpm /vagrant/output/
+rm -rf /tmp/confluent

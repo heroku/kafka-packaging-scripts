@@ -27,3 +27,4 @@ if [ "x$SIGN" == "xyes" ]; then
     sudo --login debsign `readlink -f confluent-schema-registry_*.changes`
 fi
 cp confluent-schema-registry_*.build confluent-schema-registry_*.changes confluent-schema-registry_*.tar.gz confluent-schema-registry_*.dsc  confluent-schema-registry_*.deb /vagrant/output/
+rm -rf /tmp/confluent

@@ -26,3 +26,4 @@ if [ "x$SIGN" == "xyes" ]; then
     done
 fi
 cp *.rpm /vagrant/output/
+rm -rf /tmp/confluent

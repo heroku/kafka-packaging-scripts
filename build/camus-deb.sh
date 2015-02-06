@@ -27,3 +27,4 @@ if [ "x$SIGN" == "xyes" ]; then
     sudo --login debsign `readlink -f confluent-camus_*.changes`
 fi
 cp confluent-camus_*.build confluent-camus_*.changes confluent-camus_*.tar.gz confluent-camus_*.dsc  confluent-camus_*.deb /vagrant/output/
+rm -rf /tmp/confluent
