@@ -8,3 +8,4 @@ camus_BRANCH="origin/confluent-master"
 SIGN="yes"
 SIGN_KEY=""
 REVISION="1"
+REGION="us-west-2" # S3 region, this is the default for Confluent's account

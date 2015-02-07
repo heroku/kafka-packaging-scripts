@@ -71,7 +71,7 @@ aws s3 sync --recursive "${DEPLOYED}/" "s3://${BUCKET}${BUCKET_PREFIX}/"
 # Because aptly manages an S3-based repository better than we would
 # manage the uploads we just let it do everything.
 
-sed -e "s%PWD%${BASEDIR}%" -e "s%BUCKET%${BUCKET}%" -e "s%PREFIX%${BUCKET_PREFIX}%" -e "s%VERSION%${CONFLUENT_VERSION}%" aptly.conf.template > aptly.conf
+sed -e "s%PWD%${BASEDIR}%" -e "s%BUCKET%${BUCKET}%" -e "s%PREFIX%${BUCKET_PREFIX}%" -e "s%VERSION%${CONFLUENT_VERSION}%" -e "s%REGION%${REGION}%" aptly.conf.template > aptly.conf
 REPO="confluent-${CONFLUENT_VERSION}"
 APTLY_OPTS="-config=aptly.conf"
 APTLY_REPO_OPTS="-distribution=stable -component=main -architectures=all"

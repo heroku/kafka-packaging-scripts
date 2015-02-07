@@ -14,7 +14,7 @@
   "ppaCodename": "",
   "S3PublishEndpoints":{
       "BUCKET":{
-         "region":"us-east-1",
+         "region":"REGION",
          "bucket":"BUCKET",
          "acl":"public-read",
          "prefix": "PREFIX/deb/VERSION"
