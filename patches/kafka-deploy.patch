@@ -1,8 +1,19 @@
 diff --git a/build.gradle b/build.gradle
-index 1cbab29..49f03a1 100644
+index 1cbab29..dbc65b8 100644
 --- a/build.gradle
 +++ b/build.gradle
-@@ -49,6 +49,14 @@ subprojects {
+@@ -23,6 +23,10 @@ buildscript {
+ def slf4jlog4j='org.slf4j:slf4j-log4j12:1.7.6'
+ 
+ allprojects {
++  apply plugin: 'java'
++  sourceCompatibility = 1.6
++  targetCompatibility = 1.6
++
+   apply plugin: 'idea'
+   repositories {
+     mavenCentral()
+@@ -49,6 +53,14 @@ subprojects {
  
    licenseTest.onlyIf { isVerificationRequired(project) }
  
@@ -17,7 +28,7 @@ index 1cbab29..49f03a1 100644
    uploadArchives {
      repositories {
        signing {
-@@ -58,9 +66,9 @@ subprojects {
+@@ -58,9 +70,9 @@ subprojects {
                // To test locally, replace mavenUrl in ~/.gradle/gradle.properties to file://localhost/tmp/myRepo/
                mavenDeployer {
                    beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
