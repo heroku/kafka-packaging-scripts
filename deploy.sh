@@ -136,10 +136,16 @@ if [ -z "$BRANCH" ]; then
     BRANCH="$CONFLUENT_VERSION"
 fi
 for PACKAGE in $PACKAGES; do
+    PACKAGE_BRANCH_VAR="${PACKAGE//-/_}_BRANCH"
+    PACKAGE_BRANCH="${!PACKAGE_BRANCH_VAR}"
+    if [ -z "$PACKAGE_BRANCH" ]; then
+        PACKAGE_BRANCH="$BRANCH"
+    fi
+
     mkdir -p /tmp/confluent
     git clone $BASEDIR/repos/$PACKAGE /tmp/confluent/$PACKAGE
     pushd /tmp/confluent/$PACKAGE
-    git checkout -b deploy $BRANCH
+    git checkout -b deploy $PACKAGE_BRANCH
     patch -p1 < ${BASEDIR}/patches/${PACKAGE}-deploy.patch
     mvn "-Dconfluent.release.repo=s3://${BUCKET}${BUCKET_PREFIX}/maven" "-Dconfluent.snapshot.repo=s3://${BUCKET}${BUCKET_PREFIX}/maven" clean deploy
     popd
