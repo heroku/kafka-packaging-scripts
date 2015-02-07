@@ -28,15 +28,16 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
         "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}-deb.tar.gz" \
         "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}-rpm.tar.gz" \
         "${DEPLOYED}/archive/${CONFLUENT_VERSION}/"
-
-    # Generate signatures for verification
-    pushd ${DEPLOYED}/archive/${CONFLUENT_VERSION}
-    for file in ./*; do
-        sha1sum $file > ${file}.sha1.txt
-        sha256sum $file > ${file}.sha256.txt
-    done
-    popd
 done
+# Generate signatures for verification
+pushd ${DEPLOYED}/archive/${CONFLUENT_VERSION}
+FILES=`ls ./*`
+for file in $FILES; do
+    sha1sum $file > ${file}.sha1.txt
+    sha256sum $file > ${file}.sha256.txt
+done
+popd
+
 
 #######
 # RPM #
