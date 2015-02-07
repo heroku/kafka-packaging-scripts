@@ -90,7 +90,13 @@ Usage
     # everything readable anonymously. You can add a prefix if you don't want to
     # install to the root of the bucket -- just make sure it includes the
     # leading /.
-    #
+
+    # Next, make sure you are now switched to JDK 7. During deployment, we
+    # re-build to generate the Maven output, but we use the S3 Maven Wagon to
+    # deploy, which requires JRE7. Where necessary, small patches are applied to
+    # ensure the output targets the correct Java 6 compatible version.
+    $ export JAVA_HOME=/path/to/jdk7
+
     # Now we can run the deploy script.
     # ##########################################################################
     # WARNING: Not only will you be pushing artifacts to a public server, you

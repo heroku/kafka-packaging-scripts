@@ -11,6 +11,15 @@ OUTPUT="${BASEDIR}/output"
 DEPLOYED="${BASEDIR}/_deployed"
 PACKAGES="common rest-utils schema-registry kafka-rest camus"
 
+# Detect jdk version
+jdk=`javac -version 2>&1 | cut -d ' ' -f 2`
+ver=`echo $jdk | cut -d '.' -f 2`
+if (( $ver < 7 )); then
+    echo "Found jdk version $jdk"
+    echo "Despite the fact that we support Java 1.6+, you need to run this deploy script with JDK 1.7+. This is required because the Maven S3 Wagon requires 1.7+. It's safe at this point because the specs in the projects target 1.6 and other testing validates our builds against earlier version."
+    exit 1
+fi
+
 # Note that all files are organized first by packaging system, then by
 # release. Organizing by packaging system at the top level will make it easier
 # to move things around if we ever decide to change how we distribute
