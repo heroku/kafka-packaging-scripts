@@ -4,7 +4,7 @@ set -x
 set -e
 
 KAFKA_FILE=`ls confluent-kafka-*${EXT} | grep -P 'confluent-kafka-\d.*'`
-PACKAGES="common rest-utils kafka-rest"
+PACKAGES="common rest-utils schema-registry kafka-rest camus"
 DEB=`ls *.deb || true`
 if [ -n "$DEB" ]; then
     KAFKA_PACKAGE=`echo $KAFKA_FILE | awk -F _ '{ print $1}'`
