@@ -18,13 +18,14 @@ cd /tmp/confluent
 rm -rf /tmp/confluent/kafka-packaging
 git clone /vagrant/repos/kafka-packaging.git
 pushd kafka-packaging
-git fetch --tags /vagrant/repos/kafka.git
+git remote add upstream /vagrant/repos/kafka.git
+git fetch --tags upstream
 
 git checkout -b debian-$VERSION origin/debian
 make -f debian/Makefile debian-control
-git merge --no-edit -m "deb-$VERSION" $VERSION
+git merge --no-edit -m "deb-$VERSION" upstream/$BRANCH
 
-git-buildpackage -us -uc --git-debian-branch=debian-$VERSION --git-upstream-tag=$VERSION --git-verbose
+git-buildpackage -us -uc --git-debian-branch=debian-$VERSION --git-upstream-tree=upstream/$BRANCH --git-verbose
 popd
 
 # Debian packaging dumps packages one level up. We try to save all the build

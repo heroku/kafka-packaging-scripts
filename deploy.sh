@@ -115,18 +115,23 @@ signing.password=$PASSWORD
 signing.secretKeyRingFile=${HOME}/.gnupg/secring.gpg
 EOF
 
-rm -rf /tmp/confluent/kafka
+rm -rf /tmp/confluent/kafka-packaging
 mkdir -p /tmp/confluent
-git clone $BASEDIR/repos/kafka.git /tmp/confluent/kafka
-pushd /tmp/confluent/kafka
-git checkout -b deploy $KAFKA_VERSION
+git clone $BASEDIR/repos/kafka-packaging.git /tmp/confluent/kafka-packaging
+pushd /tmp/confluent/kafka-packaging
+git remote add upstream $BASEDIR/repos/kafka.git
+git fetch --tags upstream
+
+git checkout -b "deploy-$KAFKA_VERSION" origin/archive
+git merge --no-edit -m "deploy-$KAFKA_VERSION" upstream/$KAFKA_BRANCH
+make apply-patches # Note that this should also include the confluent-specific version # patch
 patch -p1 < ${BASEDIR}/patches/kafka-deploy.patch
 sed -i '' -e "s%REPOSITORY%s3://${BUCKET}${BUCKET_PREFIX}/maven%" \
     -e "s%SNAPSHOT_REPOSITORY%s3://${BUCKET}${BUCKET_PREFIX}/maven%" build.gradle
 gradle --gradle-user-home /tmp/fakegradlehome
 ./gradlew --gradle-user-home /tmp/fakegradlehome uploadArchivesAll
 popd
-rm -rf /tmp/confluent/kafka
+rm -rf /tmp/confluent/kafka-packaging
 
 rm -rf /tmp/fakegradlehome
 
@@ -143,6 +148,7 @@ for PACKAGE in $PACKAGES; do
     fi
 
     mkdir -p /tmp/confluent
+    rm -rf /tmp/confluent/$PACKAGE
     git clone $BASEDIR/repos/$PACKAGE /tmp/confluent/$PACKAGE
     pushd /tmp/confluent/$PACKAGE
     git checkout -b deploy $PACKAGE_BRANCH

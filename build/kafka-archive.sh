@@ -11,10 +11,11 @@ cd /tmp/confluent
 rm -rf /tmp/confluent/kafka-packaging
 git clone /vagrant/repos/kafka-packaging.git
 cd kafka-packaging
-git fetch --tags /vagrant/repos/kafka.git
+git remote add upstream /vagrant/repos/kafka.git
+git fetch --tags upstream
 
 git checkout -b archive-$VERSION origin/archive
-git merge $VERSION
+git merge upstream/$BRANCH
 for SCALA_VERSION in $SCALA_VERSIONS; do
     SCALA_VERSION=$SCALA_VERSION make distclean
     SCALA_VERSION=$SCALA_VERSION make archive

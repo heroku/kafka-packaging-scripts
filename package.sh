@@ -10,7 +10,7 @@ set -x
 PACKAGES="common rest-utils schema-registry kafka-rest camus"
 
 pushd repos
-for REPO in "http://git-wip-us.apache.org/repos/asf/kafka.git" \
+for REPO in $KAFKA_REPO \
     "git@github.com:confluentinc/kafka-packaging.git" \
     "git@github.com:confluentinc/common.git" \
     "git@github.com:confluentinc/rest-utils.git" \
@@ -26,7 +26,7 @@ for REPO in "http://git-wip-us.apache.org/repos/asf/kafka.git" \
         git clone --mirror $REPO
     else
         pushd $REPO_DIR
-        git fetch
+        git fetch --tags
         popd
     fi
 done
@@ -50,12 +50,11 @@ fi
 
 ## KAFKA ##
 vagrant ssh rpm -- cp /vagrant/build/kafka-archive.sh /tmp/kafka-archive.sh
-vagrant ssh rpm -- sudo VERSION=$KAFKA_VERSION "SCALA_VERSIONS=\"$SCALA_VERSIONS\"" /tmp/kafka-archive.sh
+vagrant ssh rpm -- sudo VERSION=$KAFKA_VERSION BRANCH=$KAFKA_BRANCH "SCALA_VERSIONS=\"$SCALA_VERSIONS\"" /tmp/kafka-archive.sh
 vagrant ssh rpm -- cp /vagrant/build/kafka-rpm.sh /tmp/kafka-rpm.sh
-vagrant ssh rpm -- -t sudo VERSION=$KAFKA_VERSION "SCALA_VERSIONS=\"$SCALA_VERSIONS\"" SIGN=$SIGN /tmp/kafka-rpm.sh
+vagrant ssh rpm -- -t sudo VERSION=$KAFKA_VERSION BRANCH=$KAFKA_BRANCH "SCALA_VERSIONS=\"$SCALA_VERSIONS\"" SIGN=$SIGN /tmp/kafka-rpm.sh
 vagrant ssh deb -- cp /vagrant/build/kafka-deb.sh /tmp/kafka-deb.sh
-vagrant ssh deb -- -t sudo VERSION=$KAFKA_VERSION "SCALA_VERSIONS=\"$SCALA_VERSIONS\"" SIGN=$SIGN /tmp/kafka-deb.sh
-
+vagrant ssh deb -- -t sudo VERSION=$KAFKA_VERSION BRANCH=$KAFKA_BRANCH "SCALA_VERSIONS=\"$SCALA_VERSIONS\"" SIGN=$SIGN /tmp/kafka-deb.sh
 
 ## CONFLUENT PACKAGES ##
 for PACKAGE in $PACKAGES; do
