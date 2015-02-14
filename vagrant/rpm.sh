@@ -12,7 +12,7 @@ yum -y update
 JDK_VERSION="jdk1.6.0_45"
 JDK_SHORT_VERSION="6u45"
 
-curl -s -o "/tmp/jdk-${JDK_SHORT_VERSION}-linux-x64-rpm.bin" "https://s3.amazonaws.com/ewencp-confluent/jdk-6u45-linux-x64-rpm.bin"
+curl -s -o "/tmp/jdk-${JDK_SHORT_VERSION}-linux-x64-rpm.bin" "https://s3-us-west-2.amazonaws.com/confluent-packaging-tools/jdk-6u45-linux-x64-rpm.bin"
 sh "/tmp/jdk-${JDK_SHORT_VERSION}-linux-x64-rpm.bin"
 
 yum -y install git rpm-build rpm-sign createrepo
