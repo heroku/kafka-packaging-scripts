@@ -11,12 +11,12 @@ PACKAGES="common rest-utils schema-registry kafka-rest camus"
 
 pushd repos
 for REPO in $KAFKA_REPO \
-    "git@github.com:confluentinc/kafka-packaging.git" \
-    "git@github.com:confluentinc/common.git" \
-    "git@github.com:confluentinc/rest-utils.git" \
-    "git@github.com:confluentinc/schema-registry.git" \
-    "git@github.com:confluentinc/kafka-rest.git" \
-    "git@github.com:confluentinc/camus.git"; do
+    $KAFKA_PACKAGING_REPO \
+    $COMMON_REPO \
+    $REST_UTILS_REPO \
+    $SCHEMA_REGISTRY_REPO \
+    $KAFKA_REST_REPO \
+    $CAMUS_REPO; do
     REPO_DIR=`basename $REPO`
     if [ ! -e $REPO_DIR ]; then
         # Using mirror makes sure we get copies of all the branches. It also
