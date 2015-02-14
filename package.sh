@@ -50,11 +50,11 @@ fi
 
 ## KAFKA ##
 vagrant ssh rpm -- cp /vagrant/build/kafka-archive.sh /tmp/kafka-archive.sh
-vagrant ssh rpm -- sudo VERSION=$KAFKA_VERSION BRANCH=$KAFKA_BRANCH "SCALA_VERSIONS=\"$SCALA_VERSIONS\"" /tmp/kafka-archive.sh
+vagrant ssh rpm -- sudo VERSION=$KAFKA_VERSION REVISION=$REVISION BRANCH=$KAFKA_BRANCH "SCALA_VERSIONS=\"$SCALA_VERSIONS\"" /tmp/kafka-archive.sh
 vagrant ssh rpm -- cp /vagrant/build/kafka-rpm.sh /tmp/kafka-rpm.sh
-vagrant ssh rpm -- -t sudo VERSION=$KAFKA_VERSION BRANCH=$KAFKA_BRANCH "SCALA_VERSIONS=\"$SCALA_VERSIONS\"" SIGN=$SIGN /tmp/kafka-rpm.sh
+vagrant ssh rpm -- -t sudo VERSION=$KAFKA_VERSION REVISION=$REVISION BRANCH=$KAFKA_BRANCH "SCALA_VERSIONS=\"$SCALA_VERSIONS\"" SIGN=$SIGN /tmp/kafka-rpm.sh
 vagrant ssh deb -- cp /vagrant/build/kafka-deb.sh /tmp/kafka-deb.sh
-vagrant ssh deb -- -t sudo VERSION=$KAFKA_VERSION BRANCH=$KAFKA_BRANCH "SCALA_VERSIONS=\"$SCALA_VERSIONS\"" SIGN=$SIGN /tmp/kafka-deb.sh
+vagrant ssh deb -- -t sudo VERSION=$KAFKA_VERSION REVISION=$REVISION BRANCH=$KAFKA_BRANCH "SCALA_VERSIONS=\"$SCALA_VERSIONS\"" SIGN=$SIGN /tmp/kafka-deb.sh
 
 ## CONFLUENT PACKAGES ##
 for PACKAGE in $PACKAGES; do
@@ -65,11 +65,11 @@ for PACKAGE in $PACKAGES; do
     fi
 
     vagrant ssh rpm -- cp "/vagrant/build/${PACKAGE}-archive.sh" "/tmp/${PACKAGE}-archive.sh"
-    vagrant ssh rpm -- sudo VERSION=$CONFLUENT_VERSION BRANCH=$PACKAGE_BRANCH "/tmp/${PACKAGE}-archive.sh"
+    vagrant ssh rpm -- sudo VERSION=$CONFLUENT_VERSION REVISION=$REVISION BRANCH=$PACKAGE_BRANCH "/tmp/${PACKAGE}-archive.sh"
     vagrant ssh rpm -- cp "/vagrant/build/${PACKAGE}-rpm.sh" "/tmp/${PACKAGE}-rpm.sh"
-    vagrant ssh rpm -- -t sudo VERSION=$CONFLUENT_VERSION BRANCH=$PACKAGE_BRANCH SIGN=$SIGN "/tmp/${PACKAGE}-rpm.sh"
+    vagrant ssh rpm -- -t sudo VERSION=$CONFLUENT_VERSION REVISION=$REVISION BRANCH=$PACKAGE_BRANCH SIGN=$SIGN "/tmp/${PACKAGE}-rpm.sh"
     vagrant ssh deb -- cp "/vagrant/build/${PACKAGE}-deb.sh" "/tmp/${PACKAGE}-deb.sh"
-    vagrant ssh deb -- -t sudo VERSION=$CONFLUENT_VERSION BRANCH=$PACKAGE_BRANCH SIGN=$SIGN "/tmp/${PACKAGE}-deb.sh"
+    vagrant ssh deb -- -t sudo VERSION=$CONFLUENT_VERSION REVISION=$REVISION BRANCH=$PACKAGE_BRANCH SIGN=$SIGN "/tmp/${PACKAGE}-deb.sh"
 done
 
 
