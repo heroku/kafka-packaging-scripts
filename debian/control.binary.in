@@ -1,0 +1,12 @@
+Package: confluent-platform-##SCALAVERSION##
+Architecture: all
+Description: Confluent Platform
+ The Confluent Platform is a stream data platform that leverages the proven
+ capabilities of Apache Kafka to make all of your data available as realtime
+ streams. It enables you to easily organize large amounts of data into a
+ well-managed, unified data pipeline for your organization, which can be used for
+ a wide variety of operational and analytical purposes. With the Confluent
+ Platform, you can focus more time on deriving business value from your data, and
+ worry less about figuring out how to to move data around your organization.
+
+

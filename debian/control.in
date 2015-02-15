@@ -1,0 +1,7 @@
+Source: confluent-platform
+Section: misc
+Priority: optional
+Maintainer: Confluent Packaging <packages@confluent.io>
+Standards-Version: 3.9.3
+Homepage: http://confluent.io
+
