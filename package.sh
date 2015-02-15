@@ -73,6 +73,21 @@ for PACKAGE in $PACKAGES; do
 done
 
 
+## CONFLUENT PLATFORM PACKAGES ##
+# These are also specific to the Scala version so they can't use the standard
+# loop above. Note that we also don't have an archive version. Those are handled
+# in the compiled packages section below. This step is only used to generate
+# system-level dependency packages to make the entire platform easy to
+# install. Finally, note that the BRANCH env variable isn't set for these --
+# there is no point since they have one fixed branch that they build from (rpm
+# or debian, stored in this repository).
+vagrant ssh rpm -- cp /vagrant/build/platform-rpm.sh /tmp/platform-rpm.sh
+vagrant ssh rpm -- -t sudo VERSION=$CONFLUENT_VERSION REVISION=$REVISION "SCALA_VERSIONS=\"$SCALA_VERSIONS\"" KAFKA_VERSION=$KAFKA_VERSION SIGN=$SIGN /tmp/platform-rpm.sh
+vagrant ssh deb -- cp /vagrant/build/platform-deb.sh /tmp/platform-deb.sh
+vagrant ssh deb -- -t sudo VERSION=$CONFLUENT_VERSION REVISION=$REVISION "SCALA_VERSIONS=\"$SCALA_VERSIONS\""  KAFKA_VERSION=$KAFKA_VERSION SIGN=$SIGN /tmp/platform-deb.sh
+
+
+
 ## COMPILED PACKAGES ##
 BASEDIR=`pwd`
 OUTPUT="${BASEDIR}/output"
