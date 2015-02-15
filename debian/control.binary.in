@@ -1,5 +1,9 @@
 Package: confluent-platform-##SCALAVERSION##
 Architecture: all
+Depends: confluent-kafka-##SCALAVERSION## (>= ##KAFKAVERSION##),
+         confluent-schema-registry (>= ##VERSION##),
+         confluent-kafka-rest (>= ##VERSION##),
+         confluent-camus (>= ##VERSION##)
 Description: Confluent Platform
  The Confluent Platform is a stream data platform that leverages the proven
  capabilities of Apache Kafka to make all of your data available as realtime
