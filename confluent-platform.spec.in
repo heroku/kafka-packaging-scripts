@@ -1,0 +1,34 @@
+Summary: Confluent Platform
+Name: confluent-platform-##SCALAVERSION##
+Version: ##RPMVERSION##
+Release: ##RPMRELEASE##
+Group: Applications/Internet
+License: Apache (v2)
+URL: http://confluent.io
+BuildRoot: %{_tmppath}/%{name}-%{version}-root
+Vendor: Confluent, Inc.
+Packager: Confluent Packaging <packages@confluent.io>
+BuildArch: noarch
+
+Requires: confluent-kafka-##SCALAVERSION## >= ##KAFKARPMVERSION##
+Requires: confluent-schema-registry >= ##RPMVERSION##
+Requires: confluent-kafka-rest >= ##RPMVERSION##
+Requires: confluent-camus >= ##RPMVERSION##
+
+%description
+
+The Confluent Platform is a stream data platform that leverages the proven
+capabilities of Apache Kafka to make all of your data available as realtime
+streams. It enables you to easily organize large amounts of data into a
+well-managed, unified data pipeline for your organization, which can be used for
+a wide variety of operational and analytical purposes. With the Confluent
+Platform, you can focus more time on deriving business value from your data, and
+worry less about figuring out how to to move data around your organization.
+
+http://confluent.io
+
+%files
+
+%changelog
+* Sat Feb 14 2015 Confluent Packaging <packages@confluent.io>
+- Initial import
