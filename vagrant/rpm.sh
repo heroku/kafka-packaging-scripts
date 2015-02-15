@@ -27,9 +27,8 @@ alternatives --set javac "/usr/java/${JDK_VERSION}/bin/javac"
 # We need to install maven manually because the Fedora packages are generated
 # targeting Java 7.
 MAVEN_VERSION="3.2.5"
-MAVEN_MAJOR_VERSION="3"
 pushd /tmp
-curl -s -o maven.tar.gz "http://apache.cs.utah.edu/maven/maven-${MAVEN_MAJOR_VERSION}/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz"
+curl -s -o maven.tar.gz "https://s3-us-west-2.amazonaws.com/confluent-packaging-tools/apache-maven-${MAVEN_VERSION}-bin.tar.gz"
 tar -zxvf maven.tar.gz
 ln -s /tmp/apache-maven-${MAVEN_VERSION}/bin/mvn /usr/bin/mvn
 popd
