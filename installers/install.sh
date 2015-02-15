@@ -6,7 +6,7 @@ DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 KAFKA_FILE=`ls ${DIR}/confluent-kafka-* | grep -P 'confluent-kafka-\d.*'`
 PACKAGES="common rest-utils schema-registry kafka-rest camus"
-DEB=`ls ${DIR}/*.deb &> /dev/null || true`
+DEB=`ls ${DIR}/*.deb || true`
 
 if [ -n "$DEB" ]; then
     KAFKA_PACKAGE=`echo $KAFKA_FILE | xargs basename | awk -F _ '{ print $1}'`
