@@ -7,7 +7,7 @@ set -x
 # All the packages except for Kafka, without the confluent prefix. Kafka needs
 # special handling because we support multiple Scala versions. These all need to
 # have the same version number currently.
-PACKAGES="common rest-utils schema-registry kafka-rest camus"
+PACKAGES="common"
 
 pushd repos
 for REPO in $KAFKA_REPO \
