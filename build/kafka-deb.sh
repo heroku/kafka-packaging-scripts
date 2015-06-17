@@ -24,7 +24,7 @@ git fetch --tags upstream
 git checkout -b debian-$VERSION origin/debian
 make -f debian/Makefile debian-control
 # Update the release info
-export DEBEMAIL="Confluent Packaging <packages@confluent.io>"
+export DEBEMAIL="Maciek Sakrejda (Heroku) <maciek@heroku.com>"
 dch --newversion ${VERSION/-/\~}-${REVISION} "Release version $VERSION" --urgency low && dch --release --distribution unstable ""
 git commit -a -m "Tag Debian release."
 

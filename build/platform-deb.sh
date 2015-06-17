@@ -16,7 +16,7 @@ pushd kafka-platform
 git checkout -b debian-$VERSION origin/debian
 make -f debian/Makefile debian-control
 # Update the release info
-export DEBEMAIL="Confluent Packaging <packages@confluent.io>"
+export DEBEMAIL="Maciek Sakrejda (Heroku) <maciek@heroku.com>"
 rm debian/changelog # Clear out the empty placeholder
 dch --create --package confluent-platform --newversion ${VERSION/-/\~}-${REVISION} "Release version $VERSION" --urgency low && \
     dch --release --distribution unstable "" && cat debian/changelog
