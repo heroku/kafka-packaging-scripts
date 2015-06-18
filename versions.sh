@@ -2,7 +2,7 @@ CONFLUENT_VERSION=0.1-SNAPSHOT
 KAFKA_VERSION=0.8.2.0
 KAFKA_BRANCH=0.8.2
 KAFKA_REPO="http://git-wip-us.apache.org/repos/asf/kafka.git"
-SCALA_VERSIONS="2.9.1 2.9.2 2.10.4 2.11.5"
+SCALA_VERSIONS="2.10.4"
 
 KAFKA_PACKAGING_REPO="git@github.com:heroku/kafka-packaging.git"
 COMMON_REPO="git@github.com:confluentinc/common.git"
