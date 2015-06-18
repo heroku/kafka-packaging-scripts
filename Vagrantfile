@@ -9,11 +9,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     deb.vm.provision "shell", path: "vagrant/deb.sh"
   end
 
-  config.vm.define "rpm" do |rpm|
-    rpm.vm.box = "chef/fedora-20"
-    rpm.vm.provision "shell", path: "vagrant/rpm.sh"
-  end
-
   config.vm.synced_folder "~/.gnupg", "/root/.gnupg", owner: "root", group: "root"
 
   config.vm.provider "virtualbox" do |vb|
