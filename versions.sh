@@ -1,5 +1,5 @@
 CONFLUENT_VERSION=0.1-SNAPSHOT
-KAFKA_VERSION=0.8.2.0
+KAFKA_VERSION=0.8.2.1
 KAFKA_BRANCH=0.8.2
 KAFKA_REPO="http://git-wip-us.apache.org/repos/asf/kafka.git"
 SCALA_VERSIONS="2.10.4"
@@ -15,7 +15,7 @@ BRANCH="origin/master"
 # Branch overrides for specific projects. Use
 # project_name_using_underscores_BRANCH.
 camus_BRANCH="origin/confluent-master"
-SIGN="no"
-SIGN_KEY=""
+SIGN="yes"
+SIGN_KEY="Maciek Sakrejda (Heroku) <maciek@heroku.com>"
 REVISION="1"
 REGION="us-west-2" # S3 region, this is the default for Confluent's account
