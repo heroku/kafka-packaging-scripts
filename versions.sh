@@ -17,5 +17,5 @@ BRANCH="origin/master"
 camus_BRANCH="origin/confluent-master"
 SIGN="yes"
 SIGN_KEY="Maciek Sakrejda (Heroku) <maciek@heroku.com>"
-REVISION="1"
+REVISION="1heroku1"
 REGION="us-west-2" # S3 region, this is the default for Confluent's account
