@@ -144,23 +144,26 @@ does this, so you can use it as a template.
 Here's how we've generated our packages so far:
 
 1. In the Maven project for the file, include some packaging scripts. See any of
-   the repositories (e.g. `kafka-rest`) for an example.
+   the repositories (e.g. [kafka-rest](https://github.com/confluentinc/kafka-rest/))
+   for an example.
    * Usually `maven-assembly-plugin` is flexible enough to do this.
    * Layout should follow a standard Unix-y approach: most importantly, having
-     bin/ makes it clear how the user can get started running things. Normally
-     jars go under /usr/share/java/<project>. Config files installed by the
-     system normally go under /etc, there's no obvious place for them in
+     `bin/` makes it clear how the user can get started running things. Normally
+     jars go under `/usr/share/java/<project>`. Config files installed by the
+     system normally go under `/etc`, there's no obvious place for them in
      tar/zip packages so we'll just use this same layout.
    * Include more than just the JARs -- licenses, READMEs, and wrapper bin
      scripts, should be included as well.
    * You'll need to be able to exclude dependencies that are packaged separately,
      and `maven-assembly-plugin` provides some support for this. For an
-     example, see how `kafka-rest` filters out the `rest-utils` and it's
-     transitive dependencies in `src/package.xml`.
+     example, see how [kafka-rest](https://github.com/confluentinc/kafka-rest/)
+     filters out the `rest-utils` and it's transitive dependencies in
+     [src/assembly/package.xml](https://github.com/confluentinc/kafka-rest/blob/master/src/assembly/package.xml).
    * While you're at it, you might as well provide some other helpful packaging
      targets, e.g. an uber-jar and an in-tree development layout that matches the
      installed layout and allows simplified `bin/` scripts that work in both
-     environments. There are examples of these in `kafka-rest`.
+     environments. There are examples of these in
+     [kafka-rest](https://github.com/confluentinc/kafka-rest/).
 2. Use one of the existing packages to bootstrap your packaging by pulling in
    the `archive`, `deb`, and `rpm` branches.
    * Make sure you pick a package with similar structure to yours
@@ -243,9 +246,11 @@ Here's how we've generated our packages so far:
      add install/uninstall lines for each platform, and then write a simple
      test to make sure your package works. These are not intended to test real
      functionality, just verify that the way you've packaged things up will allow
-     them to work. For example, `kafka-rest` is tested without any other
-     services running, so it can't do anything useful, but we are able to very
-     that it started up without just quitting immediately.
+     them to work.
+     For example, [kafka-rest](https://github.com/confluentinc/kafka-rest/) is
+     tested without any other services running, so it can't do anything useful,
+     but we are able to very that it started up without just quitting
+     immediately.
    * Add the package to the `installers/install.sh` script, which is used when
      users download the full platform in deb or rpm format.
    * Test, fix up any issues, and commit.
