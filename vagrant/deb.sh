@@ -20,7 +20,7 @@ sudo apt-get upgrade -y
 # jarwrapper and test.sh uses dpkg instead of apt so it doesn't resolve
 # dependencies automatically.
 sudo apt-get install -y make curl git zip unzip patch \
-    oracle-java6-installer oracle-java6-set-default maven \
+    oracle-java7-installer oracle-java7-set-default maven \
     git-buildpackage javahelper jarwrapper
 
 
