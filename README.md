@@ -157,7 +157,7 @@ Here's how we've generated our packages so far:
    * You'll need to be able to exclude dependencies that are packaged separately,
      and `maven-assembly-plugin` provides some support for this. For an
      example, see how [kafka-rest](https://github.com/confluentinc/kafka-rest/)
-     filters out the `rest-utils` and it's transitive dependencies in
+     filters out the `rest-utils` and its transitive dependencies in
      [src/assembly/package.xml](https://github.com/confluentinc/kafka-rest/blob/master/src/assembly/package.xml).
    * While you're at it, you might as well provide some other helpful packaging
      targets, e.g. an uber-jar and an in-tree development layout that matches the
