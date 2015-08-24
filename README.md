@@ -239,12 +239,13 @@ Here's how we've generated our packages so far:
      for separate packages to allow for easy customization where needed.
    * If necessary, add any version variables you need to
      [versions.sh](versions.sh).
-   * Add the package to the `package.sh` script. Key steps include: making sure
-     your repo is in the `REPO` list to be cloned/updated; make sure it is
-     included in the `PACKAGES` list (except for packages that can't just have
-     their build scripts executed in the standard way); make sure any special
-     concerns for compiling your package into the complete platform tar/zip
-     files are addressed in the final sections of the script.
+   * Add the package to the [package.sh](package.sh) script. Key steps include:
+     1) make sure your repo is in the `REPO` list to be cloned/updated;
+     2) make sure it is included in the `PACKAGES` list (except for packages
+     that can't just have their build scripts executed in the standard way);
+     3) make sure any special concerns for compiling your package into the
+     complete platform tar/zip files are addressed in the final sections of the
+     script.
    * Add at least one simple test of your package to [test.sh](test.sh).
      You'll need to add install/uninstall lines for each platform, and then
      write a simple test to make sure your package works. These are not intended
