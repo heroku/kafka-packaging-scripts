@@ -6,8 +6,9 @@ Confluent's distribution. It:
 
 * Builds in clean VMs to ensure reproducible builds.
 * Handles dependencies, i.e. makes sure that kafka-rest's build process has
-  access to a compiled version of rest-utils, even if rest-utils isn't available
-  publicly (e.g. via Central).
+  access to a compiled version of
+  [rest-utils](https://github.com/confluentinc/rest-utils), even if rest-utils
+  isn't available publicly (e.g. via Central).
 * Ties together all the standalone tgz/zip archives into one large distribution.
 * Does a basic installation sanity check on the resulting packages.
 
@@ -157,7 +158,8 @@ Here's how we've generated our packages so far:
    * You'll need to be able to exclude dependencies that are packaged separately,
      and `maven-assembly-plugin` provides some support for this. For an
      example, see how [kafka-rest](https://github.com/confluentinc/kafka-rest/)
-     filters out the `rest-utils` and its transitive dependencies in
+     filters out the [rest-utils](https://github.com/confluentinc/rest-utils)
+     and its transitive dependencies in
      [src/assembly/package.xml](https://github.com/confluentinc/kafka-rest/blob/master/src/assembly/package.xml).
    * While you're at it, you might as well provide some other helpful packaging
      targets, e.g. an uber-jar and an in-tree development layout that matches the
@@ -192,13 +194,13 @@ Here's how we've generated our packages so far:
      to get the files into the target layout.
    * For deb/rpm, make sure you rebase/cherry-pick against the updated
      `archive` branch, then update new files/sections of files (in particular
-     the Makefile, spec files for RPM and the a few files under debian/ for
-     debian. You'll need to work in VMs to get the build
+     the Makefile, spec files for RPM and the a few files under `debian/` for
+     debian). You'll need to work in VMs to get the build
      running. Unfortunately these are difficult to include in the repositories
      because of restrictions on what files can be included in the source tree
      when doing packaging. I suggest using Vagrant to pull up the VMs (a simple
      default Vagrantfile for the right OS should just work), then use the
-     scripts under `build/` in this repository to understand the required
+     scripts under [build/](build/) in this repository to understand the required
      sequence of commands. You'll want the Vagrantfile ***outside*** of your
      source tree. One easy way to do this is to use a Vagrantfile with two VMs
      (deb and rpm) one level higher than your checkout of the repository, so
@@ -230,27 +232,29 @@ Here's how we've generated our packages so far:
    * If you have any extra system-level dependencies required during build
      (this is rare!), add them to the Vagrant bootstrapping scripts in
      `vagrant/`.
-   * Add scripts for running the individual builds to `build/`. You probably
-     just want to copy the scripts for the same package you used as a base for
-     your `archive`, `rpm`, and `deb` branches and do some renaming as a
+   * Add scripts for running the individual builds to [build/](build/). You
+     probably just want to copy the scripts for the same package you used as a
+     base for your `archive`, `rpm`, and `deb` branches and do some renaming as a
      start. Often this is all that's necessary, but we maintain separate scripts
      for separate packages to allow for easy customization where needed.
-   * If necessary, add any version variables you need to `versions.sh`.
+   * If necessary, add any version variables you need to
+     [versions.sh](versions.sh).
    * Add the package to the `package.sh` script. Key steps include: making sure
      your repo is in the `REPO` list to be cloned/updated; make sure it is
      included in the `PACKAGES` list (except for packages that can't just have
      their build scripts executed in the standard way); make sure any special
      concerns for compiling your package into the complete platform tar/zip
      files are addressed in the final sections of the script.
-   * Add at least one simple test of your package to `test.sh`. You'll need to
-     add install/uninstall lines for each platform, and then write a simple
-     test to make sure your package works. These are not intended to test real
-     functionality, just verify that the way you've packaged things up will allow
-     them to work.
+   * Add at least one simple test of your package to [test.sh](test.sh).
+     You'll need to add install/uninstall lines for each platform, and then
+     write a simple test to make sure your package works. These are not intended
+     to test real functionality, just verify that the way you've packaged things
+     up will allow them to work.
      For example, [kafka-rest](https://github.com/confluentinc/kafka-rest/) is
      tested without any other services running, so it can't do anything useful,
      but we are able to very that it started up without just quitting
      immediately.
-   * Add the package to the `installers/install.sh` script, which is used when
+   * Add the package to the
+     [installers/install.sh](installers/install.sh) script, which is used when
      users download the full platform in deb or rpm format.
    * Test, fix up any issues, and commit.
