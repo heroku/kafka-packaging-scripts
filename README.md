@@ -252,7 +252,7 @@ Here's how we've generated our packages so far:
      up will allow them to work.
      For example, [kafka-rest](https://github.com/confluentinc/kafka-rest/) is
      tested without any other services running, so it can't do anything useful,
-     but we are able to very that it started up without just quitting
+     but we are able to verify that it started up without just quitting
      immediately.
    * Add the package to the
      [installers/install.sh](installers/install.sh) script, which is used when
