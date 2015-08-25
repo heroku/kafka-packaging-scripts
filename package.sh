@@ -4,6 +4,23 @@ set -e
 set -x
 
 . versions.sh
+
+# Ensure that local clones also track any required upstream packaging branches.
+# If they don't then the subsequent git clones in the VM, which are cloned from
+# this local clone, will fail with errors such as:
+#
+#     fatal: Cannot update paths and switch to branch 'rpm-1.0' at the same time.
+#     Did you intend to checkout 'origin/rpm' which can not be resolved as commit?
+#
+# This is because after `git clone /vagrant/ kafka-platform` in the VM, the VM's
+# origin is pointing # to the local clone (not upstream's origin), and the local
+# clone may not yet track the upstream branches such as `origin/rpm`.
+for BRANCH in rpm debian confluent-platform; do
+  echo "Tracking remote branch '$BRANCH'"
+  git branch -d $BRANCH || true
+  git branch --track $BRANCH origin/$BRANCH
+done
+
 # All the packages except for Kafka, without the confluent prefix. Kafka needs
 # special handling because we support multiple Scala versions. These all need to
 # have the same version number currently.
