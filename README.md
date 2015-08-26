@@ -25,6 +25,7 @@ However the use of NFS has the following extra requirements:
 * Host:
     * The host (e.g. your laptop) must be running Mac OS X or Linux.  Windows lacks proper NFS support.
     * The host must have `nfsd` installed and running (default on Mac OS X).
+    * Recommended: Ensure that any local firewall software on your host is not interfering with NFS.
 * Guests aka VMs:
     * The guest must have NFS support installed (default for the Vagrant boxes we use for `deb` and `rpm`).
 
@@ -280,6 +281,18 @@ Here's how we've generated our packages so far:
 
 
 # Troubleshooting
+
+## Synced folders do not work, Vagrant hangs at "Mounting NFS shared folders..."
+
+Make sure you disable any firewalls on your computer or add an appropriate
+whitelist entry while packaging, otherwise you may run into problems working
+with NFS synced folders.
+
+For example, the `vagrant up` command may hang at the point when it tries to
+mount NFS shares when a firewall is enabled:
+
+    ==> rpm: Mounting NFS shared folders...
+
 
 ## Intermittent test failures (e.g. timeouts, time-based assertions)
 
