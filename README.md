@@ -28,6 +28,9 @@ However the use of NFS has the following extra requirements:
 * Guests aka VMs:
     * The guest must have NFS support installed (default for the Vagrant boxes we use for `deb` and `rpm`).
 
+You will also need to **provide your sudo password** when running commands such as `vagrant up` and
+`vagrant destroy` because Vagrant must be able to update `/etc/exports` on your host machine.
+
 
 # Usage
 
