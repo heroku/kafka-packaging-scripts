@@ -20,5 +20,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # We need 2GB+ memory because some build commands (e.g. for Kafka) run JVMs
     # with 1GB heap space each.
     vb.customize ["modifyvm", :id, "--memory", "3072"]
+    vb.customize ["modifyvm", :id, "--cpus", "2"]
   end
 end
