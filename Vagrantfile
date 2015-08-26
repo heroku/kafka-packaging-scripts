@@ -7,11 +7,25 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "deb" do |deb|
     deb.vm.box = "ubuntu/trusty64"
     deb.vm.provision "shell", path: "vagrant/deb.sh"
+    # NFS has better synced folder performance than Vagrant's default.
+    # - This requires Mac OS X or Linux on the host machine.
+    # - The host must have nfsd installed (default on Mac OS X).
+    # - The guest machine must have NFS support installed.
+    # http://docs.vagrantup.com/v2/synced-folders/nfs.html and
+    # http://auramo.github.io/2014/12/vagrant-performance-tuning/
+    deb.vm.synced_folder ".", "/vagrant",
+        :nfs => true,
+        :mount_options => ['nolock,vers=3,tcp,noatime,clientaddr=10.20.30.11']
+    deb.vm.network "private_network", ip: "10.20.30.11"
   end
 
   config.vm.define "rpm" do |rpm|
     rpm.vm.box = "chef/fedora-20"
     rpm.vm.provision "shell", path: "vagrant/rpm.sh"
+    rpm.vm.synced_folder ".", "/vagrant",
+        :nfs => true,
+        :mount_options => ['nolock,vers=3,tcp,noatime,clientaddr=10.20.30.12']
+    rpm.vm.network "private_network", ip: "10.20.30.12"
   end
 
   config.vm.synced_folder "~/.gnupg", "/root/.gnupg", owner: "root", group: "root"

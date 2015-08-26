@@ -1,5 +1,4 @@
-Confluent Packaging
--------------------
+# Confluent Packaging
 
 This repository contains scripts to build all the binary packages for
 Confluent's distribution. It:
@@ -12,9 +11,25 @@ Confluent's distribution. It:
 * Ties together all the standalone tgz/zip archives into one large distribution.
 * Does a basic installation sanity check on the resulting packages.
 
+# Prerequisites
 
-Usage
------
+## NFS for synced folders
+
+_If you're running on Mac OS X then you should be ready to go out of the box._
+
+Our [Vagrant setup](Vagrantfile) uses [NFS for synced folders](http://docs.vagrantup.com/v2/synced-folders/nfs.html)
+because [it is faster than Vagrant's default](http://auramo.github.io/2014/12/vagrant-performance-tuning/).
+
+However the use of NFS has the following extra requirements:
+
+* Host:
+    * The host (e.g. your laptop) must be running Mac OS X or Linux.  Windows lacks proper NFS support.
+    * The host must have `nfsd` installed and running (default on Mac OS X).
+* Guests aka VMs:
+    * The guest must have NFS support installed (default for the Vagrant boxes we use for `deb` and `rpm`).
+
+
+# Usage
 
 ```shell
 # One-time setup: make sure you've generated GPG keys that you'll sign
@@ -124,8 +139,8 @@ $ ./deploy.sh
 $ vagrant destroy
 ```
 
-Adding New Packages
--------------------
+
+# Adding New Packages
 
 The process of creating new packages is split between the original source
 repository (for our software; use a secondary `X-packaging` repository for
