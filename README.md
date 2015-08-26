@@ -277,3 +277,15 @@ Here's how we've generated our packages so far:
      [installers/install.sh](installers/install.sh) script, which is used when
      users download the full platform in deb or rpm format.
    * Test, fix up any issues, and commit.
+
+
+# Troubleshooting
+
+## Intermittent test failures (e.g. timeouts, time-based assertions)
+
+Some tests such as
+[ConsumerTimeoutTest](https://github.com/confluentinc/kafka-rest/blob/master/src/test/java/io/confluent/kafkarest/integration/ConsumerTimeoutTest.java)
+may experience intermittent failures.  Oftentimes this is caused by slow VM performance when running the test suite
+via Vagrant (you will notice that typically the same tests will work fine if you run it directly on your computer).
+Apart from tuning CPU, memory, and further Vagrant settings in [Vagrantfile](Vagrantfile), you may also want to
+disable any antivirus software and similar applications on your computer while packaging via [package.sh](package.sh).
