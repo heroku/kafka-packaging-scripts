@@ -14,6 +14,10 @@ CAMUS_REPO="git@github.com:confluentinc/camus.git"
 BRANCH="origin/master"
 # Branch overrides for specific projects. Use
 # project_name_using_underscores_BRANCH.
+#
+# Examples:
+# - camus_BRANCH="origin/confluent-master" # branch
+# - kafka_rest_BRANCH="v1.0" # tag
 camus_BRANCH="origin/confluent-master"
 SIGN="yes"
 SIGN_KEY=""
