@@ -17,7 +17,7 @@ This repository contains scripts to build all the binary packages of the Conflue
 
 _This section covers Mac OS X only._
 
-You must install the following software packages:
+You must install the following software packages on your host machine (e.g. your laptop):
 
 * [Vagrant](https://www.vagrantup.com/downloads.html) (1.7+ recommended)
 * [VirtualBox](https://www.virtualbox.org/wiki/Downloads) (5.x+ recommended)
