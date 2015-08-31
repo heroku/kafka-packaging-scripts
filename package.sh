@@ -81,12 +81,18 @@ for PACKAGE in $PACKAGES; do
         PACKAGE_BRANCH="$BRANCH"
     fi
 
+    PACKAGE_SKIP_TESTS_VAR="${PACKAGE//-/_}_SKIP_TESTS"
+    PACKAGE_SKIP_TESTS="${!PACKAGE_SKIP_TESTS_VAR}"
+    if [ -z "$PACKAGE_SKIP_TESTS" ]; then
+        PACKAGE_SKIP_TESTS="$SKIP_TESTS"
+    fi
+
     vagrant ssh rpm -- cp "/vagrant/build/${PACKAGE}-archive.sh" "/tmp/${PACKAGE}-archive.sh"
-    vagrant ssh rpm -- sudo VERSION=$CONFLUENT_VERSION REVISION=$REVISION BRANCH=$PACKAGE_BRANCH "/tmp/${PACKAGE}-archive.sh"
+    vagrant ssh rpm -- sudo VERSION=$CONFLUENT_VERSION REVISION=$REVISION BRANCH=$PACKAGE_BRANCH SKIP_TESTS=$PACKAGE_SKIP_TESTS "/tmp/${PACKAGE}-archive.sh"
     vagrant ssh rpm -- cp "/vagrant/build/${PACKAGE}-rpm.sh" "/tmp/${PACKAGE}-rpm.sh"
-    vagrant ssh rpm -- -t sudo VERSION=$CONFLUENT_VERSION REVISION=$REVISION BRANCH=$PACKAGE_BRANCH SIGN=$SIGN "/tmp/${PACKAGE}-rpm.sh"
+    vagrant ssh rpm -- -t sudo VERSION=$CONFLUENT_VERSION REVISION=$REVISION BRANCH=$PACKAGE_BRANCH SKIP_TESTS=$PACKAGE_SKIP_TESTS SIGN=$SIGN "/tmp/${PACKAGE}-rpm.sh"
     vagrant ssh deb -- cp "/vagrant/build/${PACKAGE}-deb.sh" "/tmp/${PACKAGE}-deb.sh"
-    vagrant ssh deb -- -t sudo VERSION=$CONFLUENT_VERSION REVISION=$REVISION BRANCH=$PACKAGE_BRANCH SIGN=$SIGN "/tmp/${PACKAGE}-deb.sh"
+    vagrant ssh deb -- -t sudo VERSION=$CONFLUENT_VERSION REVISION=$REVISION BRANCH=$PACKAGE_BRANCH SKIP_TESTS=$PACKAGE_SKIP_TESTS SIGN=$SIGN "/tmp/${PACKAGE}-deb.sh"
 done
 
 

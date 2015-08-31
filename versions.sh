@@ -23,3 +23,6 @@ SIGN="yes"
 SIGN_KEY=""
 REVISION="1"
 REGION="us-west-2" # S3 region, this is the default for Confluent's account
+
+SKIP_TESTS="no"
+camus_SKIP_TESTS="yes" # We do not run tests for Camus.
