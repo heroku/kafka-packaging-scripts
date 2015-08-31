@@ -30,7 +30,7 @@ git commit -a -m "Tag Debian release."
 
 git merge --no-edit -m "deb-$VERSION" upstream/$BRANCH
 
-git-buildpackage -us -uc --git-debian-branch=debian-$VERSION --git-upstream-tree=upstream/$BRANCH --git-verbose
+git-buildpackage -us -uc --git-debian-branch=debian-$VERSION --git-upstream-tree=upstream/$BRANCH --git-verbose --git-builder="debuild --set-envvar=APPLY_PATCHES=$APPLY_PATCHES --set-envvar=VERSION=$VERSION --set-envvar=DESTDIR=$DESTDIR --set-envvar=PREFIX=$PREFIX --set-envvar=SYSCONFDIR=$SYSCONFDIR --set-envvar=INCLUDE_WINDOWS_BIN=$INCLUDE_WINDOWS_BIN -i -I"
 popd
 
 # Debian packaging dumps packages one level up. We try to save all the build
