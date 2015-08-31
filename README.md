@@ -425,6 +425,6 @@ via Vagrant (you will notice that typically the same tests will work fine if you
 Apart from tuning CPU, memory, and further Vagrant settings in [Vagrantfile](Vagrantfile), you may also want to
 disable any antivirus software and similar applications on your computer while packaging via [package.sh](package.sh).
 
-You can also use the `SKIP_TESTS` configuration in [versions.sh](versions.sh) (see Usage section above) to disable
-the tests during the build process, either globally or per-project.  But only disable tests if you really know what
-you are doing!
+You can also use the `SKIP_TESTS` configuration in [versions.sh](versions.sh) (see section
+[Building, testing, and deploying packages](#deploy) above) to disable the tests during the build process, either
+globally or per-project.  But only disable tests if you really know what you are doing!
