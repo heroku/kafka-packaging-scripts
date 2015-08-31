@@ -241,9 +241,33 @@ The file `aws.sh` is ignored by git so you won't accidentally check it in and th
 credentials.
 
 > **When testing deploying to S3:**  If you're setting up your own S3 bucket for testing, this script assumes that
-> there is an ACL policy on the bucket that makes everything readable anonymously.  You can add a prefix by setting
-> `BUCKET_PREFIX` in `aws.sh` if you don't want to install to the root of the bucket -- just make sure it includes the
-> leading `/`.
+> there is an ACL policy on the bucket that makes everything readable anonymously:
+> ```
+> {
+>   "Version": "2008-10-17",
+>   "Id": "Everyone-Read-2015-02-17",
+>   "Statement": [
+>     {
+>       "Sid": "AddPerm",
+>       "Effect": "Allow",
+>       "Principal": "*",
+>       "Action": "s3:ListBucket",
+>       "Resource": "arn:aws:s3:::my-testing-bucket-confluent-packages"
+>     },
+>     {
+>       "Sid": "AddPerm",
+>       "Effect": "Allow",
+>       "Principal": "*",
+>       "Action": "s3:GetObject",
+>       "Resource": "arn:aws:s3:::my-testing-bucket-confluent-packages/*"
+>     }
+>   ]
+>  }
+> ```
+
+
+Optionally, you may add a prefix by setting `BUCKET_PREFIX` in `aws.sh` if you don't want to install to the root of
+the bucket -- just make sure it includes the leading `/` (no prefix is used by default).
 
 Next, make sure you are now switched to Java 7.
 
