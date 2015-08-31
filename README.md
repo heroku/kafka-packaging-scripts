@@ -123,8 +123,12 @@ Specify any required build and release settings in [versions.sh](versions.sh), w
 * `SCALA_VERSIONS`:  Space-separated list of Scala versions to use for Scala-dependent projects.  These should just be
   extracted from the Kafka build scripts.  Examples: `2.10.4`, `2.9.1 2.9.2 2.10.4 2.11.5`
 * `REVISION`:  Packages go into yum/apt/... repositories organized by `CONFLUENT_VERSION`.  If we need to release any
-  updates to packages, the `REVISION` needs to be bumped up so the packages go into the same repositories but are
-  treated as updates to the existing packages.
+  updates to packages *with the same version* (cf. `CONFLUENT_VERSION`), the `REVISION` needs to be bumped up so the
+  packages go into the same repositories but are treated as updates to the existing packages.  For instance,
+  this could be needed in case the initial package we built for kafka-rest v1.0 was broken, and we wanted to release
+  a fixed package (now at revision 2) that otherwise contained the same contents as the initial package.
+  See section *5.6.12 Version* in the
+  [Debian Policy Manual](https://www.debian.org/doc/debian-policy/ch-controlfields.html) for further details.
 * `BRANCH`:  For testing/debugging purposes, setting this will override the branch/tag we merge with for each
   (non-Kafka) project. For example, setting `BRANCH` to `origin/master` will build and test against the latest,
   untagged version of all the projects to get snapshot builds.  You can also provide project-specific overrides:
