@@ -190,13 +190,13 @@ $ vi aws.sh
 The file `aws.sh` is ignored by git so you won't accidentally check it in and thereby leak your confidential AWS
 credentials).
 
-> When testing deploying to S3:  If you're setting up your own S3 bucket for testing, this script assumes that there
-> is an ACL policy on the bucket that makes everything readable anonymously.  You can add a prefix if you don't want
-> to install to the root of the bucket -- just make sure it includes the leading `/`.
+> **When testing deploying to S3:**  If you're setting up your own S3 bucket for testing, this script assumes that
+> there is an ACL policy on the bucket that makes everything readable anonymously.  You can add a prefix if you don't
+> want to install to the root of the bucket -- just make sure it includes the leading `/`.
 
 Next, make sure you are now switched to Java 7.
 
-> Java 6 vs. Java 7:  Future releases of the Confuent Platform will target Java 7.  The Java 6 related instructions
+> **Java 6 vs. Java 7**:  Future releases of the Confuent Platform will target Java 7.  The Java 6 related instructions
 > in this README only apply to CP 1.x builds.
 
 During deployment, we re-build to generate the Maven output, but we use the S3 Maven Wagon to deploy, which requires
@@ -213,11 +213,11 @@ $ export JAVA_HOME=/path/to/jdk7
 
 Now we can run the deploy script.
 
-> **IMPORTANT WARNING**:  Not only will you be pushing artifacts to a public server, you can seriously break things if
-> you do this wrong. You *MUST* be working with a full copy of the existing data for some of these operations to work
-> correctly.  For example, if you don't have all the old RPMs, the index you generate will omit a bunch of files.
-> Since you'll want to do a staging release before any final releases, you really need to be careful about being in
-> sync with the existing repository for final releases.
+> **IMPORTANT WARNING REGARDING DEPLOYMENTS**:  Not only will you be pushing artifacts to a public server, you can
+> seriously break things if you do this wrong. You *MUST* be working with a full copy of the existing data for some
+> of these operations to work correctly.  For example, if you don't have all the old RPMs, the index you generate
+> will omit a bunch of files.  Since you'll want to do a staging release before any final releases, you really need
+> to be careful about being in sync with the existing repository for final releases.
 
 You will be prompted multiple times for your GPG key password since some package index files, which are generated
 during this deployment step, will need to be signed.
