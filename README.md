@@ -205,7 +205,7 @@ $ vi aws.sh
 ```
 
 The file `aws.sh` is ignored by git so you won't accidentally check it in and thereby leak your confidential AWS
-credentials).
+credentials.
 
 > **When testing deploying to S3:**  If you're setting up your own S3 bucket for testing, this script assumes that
 > there is an ACL policy on the bucket that makes everything readable anonymously.  You can add a prefix if you don't
