@@ -152,8 +152,9 @@ Specify any required build and release settings in [versions.sh](versions.sh), w
         camus_SKIP_TESTS="yes" # We do not run tests for Camus.
 
 * `SIGN`:  If `yes` (the default), sign packages with your GPG private key.  You'll probably want to turn this off
-  while testing since it is the only step that can't be automated -- you are required to manually enter your GPG key
-  password for every package, and GPG password prompts may timeout (thus cancelling/stopping the build process).
+  by setting it to `no` while testing since it is the only step that can't be automated -- you are required to manually
+  enter your GPG key password for every package, and GPG password prompts may timeout (thus cancelling/stopping the
+  build process).
 * `SIGN_KEY`:  The name (e.g. "Ewen Cheslack-Postava <ewen@confluent.io>") of the GPG key to sign with.  This currently
   *MUST* also be your default key (which will be the case if you have only one secret key) because of differences in
   how RPM and DEB signing work. If left empty, we'll try to fill it in automatically using `gpg --list-secret-keys`.
