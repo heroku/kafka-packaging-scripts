@@ -44,10 +44,12 @@ However the use of NFS has the following extra requirements:
     * The host must have `nfsd` installed and running (default on Mac OS X).
     * Recommended: Ensure that any local firewall software on your host is not interfering with NFS.
 * Guests aka VMs:
-    * The guest must have NFS support installed (default for the Vagrant boxes we use for `deb` and `rpm`).
+    * The guest must have NFS support installed (default for the `deb` and `rpm` Vagrant boxes we use).
 
-You will also need to **provide your sudo password** when running commands such as `vagrant up` and
-`vagrant destroy` because Vagrant must be able to update `/etc/exports` on your host machine.
+Vagrant will also prompt you for **your sudo password** when you run commands such as `vagrant up` and
+`vagrant destroy` because Vagrant must be able to update `/etc/exports` on your host machine.  (Your sudo password will
+be cached for a certain amount of time.)
+
 
 ## GPG setup (for signing Confluent release packages)
 
