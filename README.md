@@ -11,6 +11,19 @@ This repository contains scripts to build all the binary packages of the Conflue
 * Does a basic installation sanity check on the resulting packages.
 
 
+---
+
+Table of Contents
+
+* <a href="#prerequisites">Prerequisites</a>
+* <a href="#deploy">Building, testing, and deploying packages</a>
+* <a href="#add-new">Adding new packages</a>
+* <a href="#troubleshooting">Troubleshooting</a>
+
+---
+
+<a name="prerequisites"></a>
+
 # Prerequisites
 
 ## Software packages on host machine
@@ -70,6 +83,8 @@ ssb   4096R/08EA97A4 2015-01-14
 Your GPG setup on your host machine will automatically be installed in the VMs, too, thus making any GPG private
 key(s) -- notably the private key we use for signing Confluent release packages -- available to the build process.
 
+
+<a name="deploy"></a>
 
 # Building, testing, and deploying packages
 
@@ -247,7 +262,9 @@ $ vagrant destroy
 ```
 
 
-# Adding New Packages
+<a name="add-new"></a>
+
+# Adding new packages
 
 The process of creating new packages is split between the original source
 repository (for our software; use a secondary `X-packaging` repository for
@@ -382,6 +399,8 @@ Here's how we've generated our packages so far:
      users download the full platform in deb or rpm format.
    * Test, fix up any issues, and commit.
 
+
+<a name="troubleshooting"></a>
 
 # Troubleshooting
 
