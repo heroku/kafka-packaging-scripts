@@ -175,6 +175,32 @@ $ ./package.sh
 $ ls output/
 ```
 
+Example files for a build with `VERSION=1.0.1-SNAPSHOT`:
+
+```
+confluent-1.0.1-SNAPSHOT-2.10.4-deb.tar.gz
+confluent-1.0.1-SNAPSHOT-2.10.4-rpm.tar.gz
+confluent-1.0.1-SNAPSHOT-2.10.4.tar.gz
+confluent-1.0.1-SNAPSHOT-2.10.4.zip
+confluent-common-1.0.1-0.1.SNAPSHOT.noarch.rpm
+confluent-common-1.0.1-SNAPSHOT.tar.gz
+confluent-common-1.0.1-SNAPSHOT.zip
+confluent-common_1.0.1~SNAPSHOT-1.debian.tar.gz
+confluent-common_1.0.1~SNAPSHOT-1.dsc
+confluent-common_1.0.1~SNAPSHOT-1_all.deb
+confluent-common_1.0.1~SNAPSHOT-1_amd64.build
+confluent-common_1.0.1~SNAPSHOT-1_amd64.changes
+confluent-common_1.0.1~SNAPSHOT.orig.tar.gz
+confluent-kafka-0.8.2.1-2.10.4.tar.gz
+confluent-kafka-0.8.2.1-2.10.4.zip
+confluent-kafka-2.10.4-0.8.2.1-1.noarch.rpm
+confluent-kafka-2.10.4_0.8.2.1-1_all.deb
+confluent-kafka-rest-1.0.1-0.1.SNAPSHOT.noarch.rpm
+confluent-kafka-rest-1.0.1-SNAPSHOT.tar.gz
+confluent-kafka-rest-1.0.1-SNAPSHOT.zip
+[...]
+```
+
 Note that we don't support building single packages at the moment.  There's not much point since you need to build the
 dependencies as well so they'll be available during the mvn build process. If you're trying to get a new package added
 to [package.sh](package.sh) and need to iterate quickly, let the dependencies build once and then comment them out
