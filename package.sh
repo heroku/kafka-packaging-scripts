@@ -15,10 +15,10 @@ set -x
 # This is because after `git clone /vagrant/ kafka-platform` in the VM, the VM's
 # origin is pointing # to the local clone (not upstream's origin), and the local
 # clone may not yet track the upstream branches such as `origin/rpm`.
-for BRANCH in rpm debian confluent-platform; do
-  echo "Tracking remote branch '$BRANCH'"
-  git branch -d $BRANCH || true
-  git branch --track $BRANCH origin/$BRANCH
+for remote_branch in rpm debian confluent-platform; do
+  echo "Tracking remote branch '$remote_branch'"
+  git branch -d $remote_branch || true
+  git branch --track $remote_branch origin/$remote_branch
 done
 
 pushd repos
