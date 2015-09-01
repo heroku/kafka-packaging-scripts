@@ -35,11 +35,11 @@ You must install the following software packages on your host machine (e.g. your
 * [Vagrant](https://www.vagrantup.com/downloads.html) (1.7+ recommended)
 * [VirtualBox](https://www.virtualbox.org/wiki/Downloads) (5.x+ recommended)
 
-You'll also need AWS CLI and Aptly for deploying artifacts:
+You'll also need AWS CLI and Aptly (for deploying artifacts) and `bats`, `dpkg`, `rpm` (for package testing):
 
 ```shell
 # `brew` is provided by Homebrew (http://brew.sh/)
-$ brew install awscli aptly
+$ brew install awscli aptly bats dpkg rpm
 ```
 
 
