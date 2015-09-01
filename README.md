@@ -231,7 +231,7 @@ $ ./package_verify.sh
 The [test.sh](test.sh) script tries to install packages and run some key programs.
 
 ```shell
-# This script interacts with he build VMs.
+# This script interacts with the build VMs.
 $ ./test.sh
 ```
 
