@@ -19,7 +19,7 @@
 . settings.sh
 . versioning_helpers.sh
 
-# TODO: Verify exact version label in filenames via VERSION instead of broad regex matching.
+# TODO: Verify exact version label in filenames instead of broad regex matching.
 
 # Test settings
 CONFLUENT_PACKAGE_PREFIX="confluent"
