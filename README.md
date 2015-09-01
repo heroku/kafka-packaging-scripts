@@ -19,6 +19,7 @@ Table of Contents
 * <a href="#deploy">Building, testing, and deploying packages</a>
 * <a href="#add-new">Adding new packages</a>
 * <a href="#troubleshooting">Troubleshooting</a>
+* <a href="#references">References</a>
 
 ---
 
@@ -499,6 +500,8 @@ You can also use the `SKIP_TESTS` configuration in [settings.sh](settings.sh) (s
 [Building, testing, and deploying packages](#deploy) above) to disable the tests during the build process, either
 globally or per-project.  But only disable tests if you really know what you are doing!
 
+
+<a name="references"></a>
 
 # References
 
