@@ -3,7 +3,13 @@
 set -e
 set -x
 
-. versions.sh
+MYSELF=`basename $0`
+MY_DIR=`echo $(cd $(dirname $0); pwd)`
+
+pushd `pwd`
+pushd $MY_DIR
+
+. $MY_DIR/versions.sh
 
 # Ensure that local clones also track any required upstream packaging branches.
 # If they don't then the subsequent git clones in the VM, which are cloned from
@@ -151,3 +157,5 @@ done
 
 popd
 rm -rf /tmp/confluent-packaging
+
+popd
