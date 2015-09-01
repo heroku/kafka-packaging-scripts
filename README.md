@@ -216,9 +216,21 @@ temporarily in [package.sh](package.sh).
 ## Step 4: Run the smoke tests
 
 We don't want to keep a complete test suite here, but it's good to have at least some baseline sanity checks that the
-packages we produce actually work. The test script tries to install packages and run some key programs.
+packages we produce actually work.
+
+The [package_verify.sh](package_verify.sh) script verifies whether the packages were correctly generated, i.e. it will
+verify, for example, whether the "Version" and "Release" metadata of an RPM package matches our naming policies, based
+on the configuration in [settings.sh](settings.sh).
 
 ```shell
+# This script runs exclusively on your host machine.
+$ ./package_verify.sh
+```
+
+The [test.sh](test.sh) script tries to install packages and run some key programs.
+
+```shell
+# This script interacts witht he build VMs.
 $ ./test.sh
 ```
 
