@@ -67,7 +67,7 @@ KAFKA_BRANCH="0.8.2"
 # BRANCH="origin/master" # for snapshots
 # BRANCH="origin/1.x" # for development/maintenance branches
 #
-BRANCH="origin/master"
+BRANCH="origin/1.x"
 
 # Branch overrides for specific projects.  Use project_name_using_underscores_BRANCH.
 #
@@ -76,11 +76,6 @@ BRANCH="origin/master"
 # camus_BRANCH="origin/confluent-master" # branch
 # kafka_rest_BRANCH="v1.0" # tag
 #
-camus_BRANCH="origin/1.x"
-common_BRANCH="origin/1.x"
-kafka_rest_BRANCH="origin/1.x"
-rest_utils_BRANCH="origin/1.x"
-schema_registry_BRANCH="origin/1.x"
 
 
 ###
