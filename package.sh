@@ -21,11 +21,6 @@ for BRANCH in rpm debian confluent-platform; do
   git branch --track $BRANCH origin/$BRANCH
 done
 
-# All the packages except for Kafka, without the confluent prefix. Kafka needs
-# special handling because we support multiple Scala versions. These all need to
-# have the same version number currently.
-PACKAGES="common rest-utils schema-registry kafka-rest camus"
-
 pushd repos
 for REPO in $KAFKA_REPO \
     $KAFKA_PACKAGING_REPO \
@@ -74,7 +69,7 @@ vagrant ssh deb -- cp /vagrant/build/kafka-deb.sh /tmp/kafka-deb.sh
 vagrant ssh deb -- -t sudo VERSION=$KAFKA_VERSION REVISION=$REVISION BRANCH=$KAFKA_BRANCH "SCALA_VERSIONS=\"$SCALA_VERSIONS\"" SIGN=$SIGN /tmp/kafka-deb.sh
 
 ## CONFLUENT PACKAGES ##
-for PACKAGE in $PACKAGES; do
+for PACKAGE in $CP_PACKAGES; do
     PACKAGE_BRANCH_VAR="${PACKAGE//-/_}_BRANCH"
     PACKAGE_BRANCH="${!PACKAGE_BRANCH_VAR}"
     if [ -z "$PACKAGE_BRANCH" ]; then
@@ -124,7 +119,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     mkdir "confluent-${CONFLUENT_VERSION}"
     pushd "confluent-${CONFLUENT_VERSION}"
     tar -xz --strip-components 1 -f "${OUTPUT}/confluent-kafka-${KAFKA_VERSION}-${SCALA_VERSION}.tar.gz"
-    for PACKAGE in $PACKAGES; do
+    for PACKAGE in $CP_PACKAGES; do
         tar -xz --strip-components 1 -f "${OUTPUT}/confluent-${PACKAGE}-${CONFLUENT_VERSION}.tar.gz"
     done
     cp ${BASEDIR}/installers/README.archive .
@@ -143,7 +138,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
         # mangling. We just use globs to find them instead, but this means you
         # *MUST* work with a clean output/ directory
         eval "cp ${OUTPUT}/confluent-kafka-${SCALA_VERSION}*.${PKG_TYPE} ."
-        for PACKAGE in $PACKAGES; do
+        for PACKAGE in $CP_PACKAGES; do
             eval "cp ${OUTPUT}/confluent-${PACKAGE}*.${PKG_TYPE} ."
         done
         cp ${BASEDIR}/installers/install.sh .
