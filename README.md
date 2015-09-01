@@ -498,3 +498,11 @@ disable any antivirus software and similar applications on your computer while p
 You can also use the `SKIP_TESTS` configuration in [settings.sh](settings.sh) (see section
 [Building, testing, and deploying packages](#deploy) above) to disable the tests during the build process, either
 globally or per-project.  But only disable tests if you really know what you are doing!
+
+
+# References
+
+* [Debian Policy Manual: Chapter 5 - Control files and their fields](https://www.debian.org/doc/debian-policy/ch-controlfields.html),
+  notably section _5.6.12 Version_.
+* [Fedora Packaging: Naming Guidelines](https://fedoraproject.org/wiki/Packaging:NamingGuidelines),
+  notably section _1.4 Package Versioning_.
