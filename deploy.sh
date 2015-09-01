@@ -3,7 +3,7 @@
 set -e
 set -x
 
-. versions.sh
+. settings.sh
 . aws.sh
 
 BASEDIR=`pwd`

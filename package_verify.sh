@@ -16,7 +16,7 @@
 # as well as `dpkg` and `rpm` installed.
 #
 
-. versions.sh
+. settings.sh
 . versioning_helpers.sh
 
 # TODO: Verify exact version label in filenames via VERSION instead of broad regex matching.

@@ -3,7 +3,7 @@
 set -e
 set -x
 
-. versions.sh
+. settings.sh
 
 on_exit() {
     LAST_RESULT=$?

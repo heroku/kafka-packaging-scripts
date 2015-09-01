@@ -113,9 +113,9 @@ $ vagrant up
 ```
 
 
-## Step 2: Configure the release process via `versions.sh`
+## Step 2: Configure the release process via `settings.sh`
 
-Specify any required build and release settings in [versions.sh](versions.sh), which is sourced into
+Specify any required build and release settings in [settings.sh](settings.sh), which is sourced into
 [package.sh](package.sh):
 
 * `CONFLUENT_VERSION`:  Version of Confluent's tools.  Examples: `1.0` (a release), `1.0.1-SNAPSHOT`.
@@ -170,7 +170,7 @@ make version updates in lock-step.
 ## Step 3: Run the packaging build
 
 Running the packaging takes care of all projects and package types, based on the configuration you specified in
-[versions.sh] (see previous section).  Assuming everything works, you'll find the generated packages in `output/`.
+[settings.sh] (see previous section).  Assuming everything works, you'll find the generated packages in `output/`.
 
 ```shell
 # For comparison, on a 2015 MacBook Pro 15" (2.5GHz Intel Core i7)
@@ -297,9 +297,9 @@ Now we can run the deploy script.
 You will be prompted multiple times for your GPG key password since some package index files, which are generated
 during this deployment step, will need to be signed.
 
-Note that the `REVISION` specified in versions.sh is important here.  Packages go into repositories organized by
-`CONFLUENT_VERSION`.  If we need to release any updates to packages, the `REVISION` needs to be bumped up so the
-packages go into the same repositories but are treated as updates to the existing packages.
+Note that the `REVISION` specified in [settings.sh](settings.sh) is important here.  Packages go into repositories
+organized by `CONFLUENT_VERSION`.  If we need to release any updates to packages, the `REVISION` needs to be bumped up
+so the packages go into the same repositories but are treated as updates to the existing packages.
 
 ```shell
 # Make sure you read the WARNING above before performing this step!
@@ -435,7 +435,7 @@ Here's how we've generated our packages so far:
      start. Often this is all that's necessary, but we maintain separate scripts
      for separate packages to allow for easy customization where needed.
    * If necessary, add any version variables you need to
-     [versions.sh](versions.sh).
+     [settings.sh](settings.sh).
    * Add the package to the [package.sh](package.sh) script. Key steps include:
      1) make sure your repo is in the `REPO` list to be cloned/updated;
      2) make sure it is included in the `PACKAGES` list (except for packages
@@ -483,6 +483,6 @@ via Vagrant (you will notice that typically the same tests will work fine if you
 Apart from tuning CPU, memory, and further Vagrant settings in [Vagrantfile](Vagrantfile), you may also want to
 disable any antivirus software and similar applications on your computer while packaging via [package.sh](package.sh).
 
-You can also use the `SKIP_TESTS` configuration in [versions.sh](versions.sh) (see section
+You can also use the `SKIP_TESTS` configuration in [settings.sh](settings.sh) (see section
 [Building, testing, and deploying packages](#deploy) above) to disable the tests during the build process, either
 globally or per-project.  But only disable tests if you really know what you are doing!

@@ -21,7 +21,7 @@ rpm_version() {
 # versions don't support non-numeric characters.
 #
 # Ultimately, for a non-final version like 0.8.2-beta, we want to end up with RPM_Version=0.8.2 RPM_Release=0.X.beta,
-# where X is the REVISION (cf. versions.sh) of 0.8.2-beta.  The prefix `0.` forces this to be considered earlier than
+# where X is the REVISION (cf. settings.sh) of 0.8.2-beta.  The prefix `0.` forces this to be considered earlier than
 # any 0.8.2 final releases since those will start with RPM_Version=0.8.2 RPM_Release=1.
 #
 # Usage
@@ -112,7 +112,7 @@ rpm_release_field() {
 
 
 # Generate the value of the Debian "Version" field, given the full version and
-# the desired revision (cf. REVISION in versions.sh), based on our naming policy
+# the desired revision (cf. REVISION in settings.sh), based on our naming policy
 # for Debian metadata.
 #
 # Usage

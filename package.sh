@@ -9,7 +9,7 @@ MY_DIR=`echo $(cd $(dirname $0); pwd)`
 pushd `pwd`
 pushd $MY_DIR
 
-. $MY_DIR/versions.sh
+. $MY_DIR/settings.sh
 
 if [ ! -d $OUTPUT_DIRECTORY ]; then
   git checkout $OUTPUT_DIRECTORY
