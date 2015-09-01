@@ -1,40 +1,54 @@
 ###
-### Versioning and packaging configuration
-### (see also configuration of branches below)
+### Kafka: versioning and packaging configuration
+###
+
+# Kafka has its own version and branch settings as it has a special requirements
+# in our build setup.  For example, we need to support multiple Scala versions.
+KAFKA_VERSION="0.8.2.1" # Will eventually be 0.8.2.2
+KAFKA_BRANCH="0.8.2"
+SCALA_VERSIONS="2.9.1 2.9.2 2.10.4 2.11.5"
+
+
+###
+### Confluent packages: versioning and packaging configuration
 ###
 CONFLUENT_VERSION="1.0.1-SNAPSHOT" # Examples: `1.0`, `1.0.1-SNAPSHOT`; must work with BRANCH settings below
 
-# Used for "Revision" information of deb packages and
-# "Release" information for rpm packages.
+# Used for "Revision" field of deb packages and "Release" field of rpm packages.
 #
-# REVISION is reset to `1` whenever we bump CONFLUENT_VERSION.
+# REVISION should be reset to `1` whenever we bump CONFLUENT_VERSION.
 REVISION="1"
 
-# All the packages except for Kafka, without the `confluent-` prefix. Kafka needs
-# special handling because we support multiple Scala versions. These all need to
-# have the same version number currently (cf. CONFLUENT_VERSION).
+# Space-separated list of all the packages except for Kafka, without the
+# `confluent-` prefix.  These all need to have the same version number
+# currently (cf. CONFLUENT_VERSION).
 #
 # The packages must be listed in the order of their dependencies.  For example,
 # rest-utils must be listed before kafka-rest as the latter depends on the former.
 CP_PACKAGES="common rest-utils schema-registry kafka-rest camus"
 
-KAFKA_VERSION="0.8.2.1" # Will eventually be 0.8.2.2
-SCALA_VERSIONS="2.9.1 2.9.2 2.10.4 2.11.5"
+# `BRANCH` is the global setting for build branches of Confluent packages incl. Camus.
+#
+# Be aware that projects may have different naming conventions for branches.
+# If needed, make use of project-specific overrides as described below.
+#
+# Note: Kafka has its own configuration setting `KAFKA_BRANCH`.
+#
+# Examples
+# --------
+# BRANCH="origin/master" # for snapshots
+# BRANCH="origin/1.x" # for development/maintenance branches
+#
+BRANCH="origin/1.x"
 
-SIGN="yes"
-SIGN_KEY=""
+# You may add branch overrides for specific projects, if needed.
+# Use project_name_using_underscores_BRANCH.
+#
+# Override examples:
+# ------------------
+# camus_BRANCH="origin/confluent-master" # branch
+# kafka_rest_BRANCH="v1.0" # tag
 
-
-###
-### AWS/S3 configuration
-###
-REGION="us-west-2" # S3 region, this is the default for Confluent's account
-
-
-###
-### Local directories used for packaging
-###
-OUTPUT_DIRECTORY="output" # stores generated packages
 
 ###
 ### Git repositories
@@ -49,33 +63,16 @@ SCHEMA_REGISTRY_REPO="git@github.com:confluentinc/schema-registry.git"
 
 
 ###
-### Branches from which the packages will be built
+### Package signing
 ###
+SIGN="yes"
+SIGN_KEY=""
 
-# Kafka has its own branch variable as it has a special role in our build setup.
-KAFKA_BRANCH="0.8.2"
 
-# Confluent packages
-#
-# `BRANCH` is the global setting for build branches of Confluent packages.
-#
-# Note that projects may have different naming conventions for branches.
-# If needed, make use of project-specific overrides as described below.
-#
-# Examples
-# --------
-# BRANCH="origin/master" # for snapshots
-# BRANCH="origin/1.x" # for development/maintenance branches
-#
-BRANCH="origin/1.x"
-
-# Branch overrides for specific projects.  Use project_name_using_underscores_BRANCH.
-#
-# Override examples:
-# ------------------
-# camus_BRANCH="origin/confluent-master" # branch
-# kafka_rest_BRANCH="v1.0" # tag
-#
+###
+### AWS/S3 configuration
+###
+REGION="us-west-2" # S3 region, this is the default for Confluent's account
 
 
 ###
@@ -85,10 +82,17 @@ BRANCH="origin/1.x"
 # Set SKIP_TESTS to "yes" to disable tests, to "no" to enable tests.
 SKIP_TESTS="no"
 
-# Overrides for specific projects.  Use project_name_using_underscores_SKIP_TESTS.
+# You may add overrides for specific projects, if needed.
+# Use project_name_using_underscores_SKIP_TESTS.
 #
 # Override examples:
 # ------------------
 # kafka_rest_SKIP_TESTS="yes"
 #
 camus_SKIP_TESTS="yes" # We do not run tests for Camus.
+
+
+###
+### Misc settings
+###
+OUTPUT_DIRECTORY="output" # stores generated packages
