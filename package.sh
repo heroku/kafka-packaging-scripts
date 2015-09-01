@@ -11,6 +11,10 @@ pushd $MY_DIR
 
 . $MY_DIR/versions.sh
 
+if [ ! -d $OUTPUT_DIRECTORY ]; then
+  git checkout $OUTPUT_DIRECTORY
+fi
+
 # Ensure that local clones also track any required upstream packaging branches.
 # If they don't then the subsequent git clones in the VM, which are cloned from
 # this local clone, will fail with errors such as:
