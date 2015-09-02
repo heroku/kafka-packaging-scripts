@@ -181,10 +181,10 @@ of the command and thus the GPG key listed below is just an example):
 # Your host machine, e.g. your laptop.
 $ gpg --list-secret-keys
 /Users/ewencp/.gnupg/secring.gpg
---------------------------------
-sec   4096R/BE7EFC73 2015-01-14
-uid                  Ewen Cheslack-Postava <ewen@confluent.io>
-ssb   4096R/08EA97A4 2015-01-14
+-------------------------------
+sec   4096R/41468433 2015-02-06
+uid                  Confluent Packaging <packages@confluent.io>
+ssb   4096R/F9F8725B 2015-02-06
 ```
 
 Your GPG setup on your host machine will automatically be installed in the VMs, too, thus making any GPG private
