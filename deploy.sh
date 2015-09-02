@@ -8,7 +8,7 @@ set -x
 
 BASEDIR=`pwd`
 OUTPUT="${BASEDIR}/${OUTPUT_DIRECTORY}"
-DEPLOYED="${BASEDIR}/${DEPLOY_DIRECTORY}"
+DEPLOYED="${BASEDIR}/${DEPLOYED_DIRECTORY}"
 
 # Detect jdk version
 jdk=`javac -version 2>&1 | cut -d ' ' -f 2`

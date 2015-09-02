@@ -96,4 +96,4 @@ camus_SKIP_TESTS="yes" # We do not run tests for Camus.
 ### Misc settings
 ###
 OUTPUT_DIRECTORY="output" # local directory; stores generated packages
-DEPLOY_DIRECTORY="_deployed" # local directory; contains directory tree for S3 deployment uploads
+DEPLOYED_DIRECTORY="_deployed" # local directory; contains directory tree for S3 deployment uploads
