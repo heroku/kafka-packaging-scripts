@@ -61,7 +61,8 @@ Once you have defined the scope of the CP release by configuring [settings.sh](s
 previous step, you can then build and deploy the CP release as described in much detail in section
 [Building, testing, and deploying packages](#deploy) below.
 
-At a high level, deploying a release means we will:
+At a high level, deploying a release means we will perform the following three steps via the scripts provided in this
+repository:
 
 1. Package the respective components (e.g. [kafka-rest](https://github.com/confluentinc/kafka-rest/),
    [schema-registry](https://github.com/confluentinc/schema-registry/) but also Kafka and
