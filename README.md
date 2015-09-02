@@ -90,7 +90,8 @@ means we will perform the following steps via the scripts provided in this repos
 
 While we will not describe the various release logistics here, we do want to point out that there is follow-up work
 that needs to be done once a CP version is technically deployed and "released" as described above.  Such follow-up
-work may include documentation, announcements, and blog posts, for instance.
+work may include CP documentation (cf. [docs.confluent.io](http://docs.confluent.io/)), announcements, and blog posts,
+for instance.
 
 
 ## Example workflow: deploying a patch/bug fix release
