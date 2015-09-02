@@ -348,7 +348,7 @@ The following snippet lists the key settings for deploying a final release.  In 
 for deploying of CP 1.0 Release, which is based on Apache Kafka 0.8.2.1.
 
 ```bash
-CONFLUENT_VERSION="1.0" # Note: For future releases we should also include the patch version ( `1.0` -> `1.0.0`)
+CONFLUENT_VERSION="1.0" # Note: Future CP releases should also include the patch version (`1.0` -> `1.0.0`)
 REVISION="1"
 BRANCH="v1.0" # <<< git tag of `v1.0` release
 
