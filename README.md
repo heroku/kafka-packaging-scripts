@@ -48,7 +48,8 @@ deployment.
 > **Version lock-step of CP projects**: For technical reasons the current implementation of the packaging scripts
 > requires that all CP projects make version updates in lock-step.  So as a consequence of releasing a newer version
 > of a CP project, we also need to release new versions of the remaining CP projects.  For further details see section
-> _Example workflow: deploying a patch/bug fix release_ below.
+> _Example workflow: deploying a patch/bug fix release_ below.  Removing this lock-step of versions is a desired future
+> improvement that we are already tracking.
 
 As an Apache open source project Apache Kafka is slightly different from CP projects because its release process is
 managed by the Kafka project.  This means, for example, that we might need to wait until the desired Kafka version is
