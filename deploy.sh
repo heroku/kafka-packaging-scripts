@@ -7,7 +7,7 @@ set -x
 . aws.sh
 
 BASEDIR=`pwd`
-OUTPUT="${BASEDIR}/output"
+OUTPUT="${BASEDIR}/${OUTPUT_DIRECTORY}"
 DEPLOYED="${BASEDIR}/_deployed"
 PACKAGES="common rest-utils schema-registry kafka-rest camus"
 
