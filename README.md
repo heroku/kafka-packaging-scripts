@@ -79,6 +79,40 @@ that needs to be done once a CP version is technically deployed and "released" a
 work includes announcements and blog posts, for instance.
 
 
+## Example workflow: deploying a patch/bug fix release
+
+Let's say we released CP 1.0, and a few days later we receive a bug report for
+[schema-registry](https://github.com/confluentinc/schema-registry/).  As a consequence we decide we want to release a
+patch version, CP 1.0.1, that only includes the bug fix for schema registry.  How would the release workflow look like?
+In short, we'd need to (1) release a 1.0.1 version of schema registry (this work is done in the upstream project);
+(2) for technical reasons, we need to release a 1.0.1 for all other CP projects, too (again, this work is done in the
+upstream projects); (3) we would then package and deploy the 1.0.1 release (this work is done via the packaging scripts
+in this repository).
+
+In more detail:
+
+* First we would fix the bug in schema registry 1.0.  Because this bug fix should be included in the CP 1.0.1 patch
+  release, we will create a new 1.0.1 release for schema registry that includes this bug fix.  "Creating a new release"
+  of schema registry implies that we would create a git release tag in the schema registry repository (and this git tag
+  is required for configuring our packaging scripts).
+* In the ideal world this upstream-related work in schema registry would be all we need.  However, at the moment
+  releasing a new version of a CP project unfortunately means that we must release new versions of _all_ CP projects
+  (common, rest-utils, schema-registry, kafka-rest, camus):  for technical reasons, the current implementation of the
+  packaging scripts requires that all CP projects make version updates in lock-step.
+  So as a consequence of releasing a newer version of (the now fixed) schema registry, we also need to release
+  new 1.0.1 versions of the remaining CP projects.  Thankfully this might be trivial task:  in case the other projects
+  (1) haven't changed or (2) they have changed but we would like to not release any such changes as part of the CP
+  1.0.1 patch release, we would simply create a new git release tag based on the old, previous release tag for each of
+  the remaining CP projects (plus further, project-specific release logistics like updating the changelogs).  Note that
+  all the work described in this bullet item would happen in the upstream CP projects. (Also note: Deploying these
+  "fake" releases can be done easily thanks to packaging automation but this version lock-step is still inconvenient
+  for us and possibly confusing for CP users; hence removing this lock-step of versions is a desired future improvement
+  that we are already tracking.)
+* Now that the new release 1.0.1 versions of the CP projects including schema registry are ready for deployment, we can
+  configure the packaging scripts in this repository accordingly (e.g. by modifying [settings.sh](settings.sh)), and
+  then perform the deployment of the CP 1.0.1 patch release.
+
+
 <a name="prerequisites"></a>
 
 # Prerequisites
@@ -222,8 +256,8 @@ Specify any required build and release settings in [settings.sh](settings.sh), w
   `$HOME/.gnupg/gpg.conf`, where you must replace `ABCD1234` with the id of the actual GPG private key.
   If `SIGN_KEY` is empty, we'll try to fill it in automatically using `gpg --list-secret-keys`.
 
-Note that we do not currently have per-project overrides for `VERSION`, so the assumption here is that all projects
-make version updates in lock-step.
+Note that we do not currently have per-project overrides for `CONFLUENT_VERSION`, so the assumption here is that all
+projects make version updates in lock-step.
 
 
 ## Step 3: Run the packaging build
