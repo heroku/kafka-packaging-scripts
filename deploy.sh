@@ -71,7 +71,7 @@ fi
 
 # Now we can actually run the upload process for all the files we've arranged
 # for archives and RPMs. Debian upload to S3 is managed separately.
-aws s3 sync --recursive "${DEPLOYED}/" "s3://${BUCKET}${BUCKET_PREFIX}/"
+aws s3 sync "${DEPLOYED}/" "s3://${BUCKET}${BUCKET_PREFIX}/"
 
 
 ##########
