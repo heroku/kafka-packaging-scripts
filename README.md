@@ -83,7 +83,8 @@ work includes announcements and blog posts, for instance.
 
 Let's say we released CP 1.0, and a few days later we receive a bug report for
 [schema-registry](https://github.com/confluentinc/schema-registry/).  As a consequence we decide to release a patch
-version, CP 1.0.1, that only includes the bug fix for schema registry.  How would the release workflow look like?
+version, CP 1.0.1, that only includes the bug fix for schema registry.  How would the end-to-end workflow for releasing
+CP 1.0.1 look like, i.e. including but not limited to the packaging scripts in this repository?
 
 In short, we'd need to (1) release a 1.0.1 version of schema registry (this work is done in the upstream project);
 (2) for technical reasons, we need to release a 1.0.1 for all other CP projects, too (again, this work is done in the
