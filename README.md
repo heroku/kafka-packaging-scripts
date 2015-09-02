@@ -33,7 +33,7 @@ This section describes the high level workflow of how to perform a CP release, w
 ("CP 1.0.0 Release"), a patch/bug fix release ("CP 1.0.1"), or a snapshot release ("CP 1.0.1-SNAPSHOT").
 
 
-## Step 1: Decide the scope of the CP release, make various CP components release-ready
+## Step 1: Decide the scope of the CP release, make CP components release-ready
 
 First you must decide which features, bugs, etc. should be part of the CP release (for simplicity we ignore the
 question which projects/components should be included in the first place).  This decision is technically
