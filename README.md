@@ -66,7 +66,8 @@ repository:
 
 1. Package the respective components (e.g. [kafka-rest](https://github.com/confluentinc/kafka-rest/),
    [schema-registry](https://github.com/confluentinc/schema-registry/) but also Kafka and
-   [Camus](https://github.com/confluentinc/camus)) in build VMs for our various target platforms (e.g. Debian).
+   [Camus](https://github.com/confluentinc/camus)) in build VMs for our various target platforms such as Debian.
+   This packaging is driven by the configuration in [settings.sh](settings.sh).
 2. Run smoke tests to verify the generated packages.
 3. Deploy the generated packages to yum/apt/maven/... repositories, which in our case are hosted on AWS/S3.
 
