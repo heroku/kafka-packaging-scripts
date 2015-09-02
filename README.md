@@ -61,7 +61,7 @@ Once you have defined the scope of the CP release by configuring [settings.sh](s
 previous step, you can then build and deploy the CP release as described in much detail in section
 [Building, testing, and deploying packages](#deploy) below.
 
-At a high level, deploying a release means we will perform the following three steps via the scripts provided in this
+At a high level, deploying a release means we will perform the following steps via the scripts provided in this
 repository:
 
 1. Package the respective components (e.g. [kafka-rest](https://github.com/confluentinc/kafka-rest/),
@@ -70,6 +70,13 @@ repository:
    This packaging is driven by the configuration in [settings.sh](settings.sh).
 2. Run smoke tests to verify the generated packages.
 3. Deploy the generated packages to yum/apt/maven/... repositories, which in our case are hosted on AWS/S3.
+
+
+## Step 3: Handle further release logistics
+
+While we will not describe the various release logistics here, we do want to point out that there is follow-up work
+that needs to be done once a CP version is technically deployed and "released" as described above.  Such follow-up
+work includes announcements and blog posts, for instance.
 
 
 <a name="prerequisites"></a>
