@@ -17,6 +17,7 @@ Table of Contents
 
 * <a href="#prerequisites">Prerequisites</a>
 * <a href="#deploy">Building, testing, and deploying packages</a>
+* <a href="#example-settings">Example settings</a>
 * <a href="#add-new">Adding new packages</a>
 * <a href="#troubleshooting">Troubleshooting</a>
 * <a href="#references">References</a>
@@ -162,7 +163,9 @@ Specify any required build and release settings in [settings.sh](settings.sh), w
   build process).
 * `SIGN_KEY`:  The name (e.g. "Ewen Cheslack-Postava <ewen@confluent.io>") of the GPG key to sign with.  This currently
   *MUST* also be your default key (which will be the case if you have only one secret key) because of differences in
-  how RPM and DEB signing work. If left empty, we'll try to fill it in automatically using `gpg --list-secret-keys`.
+  how RPM and DEB signing work.  You can configure a GPG default key by setting `default-key ABCD1234` in your
+  `$HOME/.gnupg/gpg.conf`, where you must replace `ABCD1234` with the id of the actual GPG private key.
+  If `SIGN_KEY` is empty, we'll try to fill it in automatically using `gpg --list-secret-keys`.
 
 Note that we do not currently have per-project overrides for `VERSION`, so the assumption here is that all projects
 make version updates in lock-step.
@@ -333,6 +336,60 @@ everything in temporary space in the VMs so your source tree doesn't get pollute
 # Terminate the VMs
 $ vagrant destroy
 ```
+
+
+<a name="example-settings"></a>
+
+# Example settings
+
+## Example settings for deploying a final release
+
+The following snippet lists the key settings for deploying a final release.  In this example, we show the settings used
+for deploying of CP 1.0 Release, which is based on Apache Kafka 0.8.2.1.
+
+```bash
+CONFLUENT_VERSION="1.0" # Note: For future releases we should also include the patch version ( `1.0` -> `1.0.0`)
+REVISION="1"
+BRANCH="v1.0" # <<< git tag of `v1.0` release
+
+# Apache Kafka
+KAFKA_VERSION="0.8.2.1"
+KAFKA_BRANCH="0.8.2"
+SCALA_VERSIONS="2.9.1 2.9.2 2.10.4 2.11.5"
+```
+
+Note how we use a git release tag (here: `v1.0`) as the `BRANCH` to build the CP packages from (i.e. we are not
+building from a maintenance or development branch like `origin/1.x`). `CONFLUENT_VERSION` is set to `1.0`, which
+indicates a final release (i.e. it is not a snapshot such as `1.0.0-SNAPSHOT` or a beta release).  Apache Kafka has its
+own, "special" settings -- one reason is that we must build Kafka against multiple versions of Scala.
+
+When you specify the settings above it is important that the various settings are compatible with each other.  For
+instance, the CP packages typically need a specific version of Apache Kafka;  to pick an obviously incorrect example,
+you don't want to build CP 1.0 Release based on the very outdated Kafka 0.7 version.
+
+
+## Example settings for deploying a snapshot
+
+The following snippet lists the key settings for deploying a snapshot release based on the latest code in a maintenance
+or development branch.  In this example, we deploy CP 1.0.1-SNAPSHOT, which is based on Apache Kafka 0.8.2.1 and the
+`origin/1.x` development branches of the various CP packages (e.g.
+[kafka-rest](https://github.com/confluentinc/kafka-rest/)).
+
+```bash
+CONFLUENT_VERSION="1.0.1-SNAPSHOT"
+REVISION="1"
+BRANCH="origin/1.x"
+
+# Apache Kafka
+KAFKA_VERSION="0.8.2.1"
+KAFKA_BRANCH="0.8.2"
+SCALA_VERSIONS="2.9.1 2.9.2 2.10.4 2.11.5"
+```
+
+When you specify the settings above it is important that the various settings are compatible with each other.  For
+instance, the CP packages typically need a specific version of Apache Kafka;  to pick an obviously incorrect example,
+you don't want to build CP 1.0.1-SNAPSHOT based on the very outdated Kafka 0.7 version.
+
 
 
 <a name="add-new"></a>
