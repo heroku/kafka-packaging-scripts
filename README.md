@@ -342,12 +342,16 @@ $ vagrant destroy
 
 # Example settings
 
+This section provides examples for configuring [settings.sh](settings.sh).
+
 ## Example settings for deploying a final release
 
 The following snippet lists the key settings for deploying a final release.  In this example, we show the settings that
 were actually used for deploying the CP 1.0 Release, which is based on Apache Kafka 0.8.2.1.
 
 ```bash
+### In settings.sh
+
 CONFLUENT_VERSION="1.0" # Note: Future CP releases should also include the patch version (`1.0` -> `1.0.0`)
 REVISION="1"
 BRANCH="v1.0" # <<< git tag of `v1.0` release
@@ -376,6 +380,8 @@ or development branch.  In this example, we deploy CP 1.0.1-SNAPSHOT, which is b
 [kafka-rest](https://github.com/confluentinc/kafka-rest/)).
 
 ```bash
+### In settings.sh
+
 CONFLUENT_VERSION="1.0.1-SNAPSHOT"
 REVISION="1"
 BRANCH="origin/1.x"
@@ -404,6 +410,8 @@ In this case you will keep the original release settings as-is but increase the 
 At the example of the CP 1.0 settings above, here are the settings to deploy a new revision of the same release:
 
 ```bash
+### In settings.sh
+
 CONFLUENT_VERSION="1.0"
 REVISION="2"   # < Only the revision was changed from 1 to 2
 BRANCH="v1.0"
