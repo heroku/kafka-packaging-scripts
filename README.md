@@ -344,8 +344,8 @@ $ vagrant destroy
 
 ## Example settings for deploying a final release
 
-The following snippet lists the key settings for deploying a final release.  In this example, we show the settings used
-for deploying of CP 1.0 Release, which is based on Apache Kafka 0.8.2.1.
+The following snippet lists the key settings for deploying a final release.  In this example, we show the settings that
+were actually used for deploying the CP 1.0 Release, which is based on Apache Kafka 0.8.2.1.
 
 ```bash
 CONFLUENT_VERSION="1.0" # Note: Future CP releases should also include the patch version (`1.0` -> `1.0.0`)
