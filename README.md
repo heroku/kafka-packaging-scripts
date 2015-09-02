@@ -15,6 +15,7 @@ This repository contains scripts to build all the binary packages of the Conflue
 
 Table of Contents
 
+* <a href="#workflow">Deployment workflow</a>
 * <a href="#prerequisites">Prerequisites</a>
 * <a href="#deploy">Building, testing, and deploying packages</a>
 * <a href="#example-settings">Example settings</a>
@@ -23,6 +24,41 @@ Table of Contents
 * <a href="#references">References</a>
 
 ---
+
+<a name="workflow">Deployment workflow</a>
+
+# Deployment workflow
+
+This section describes the high level workflow of how to perform a CP release, whether this is a final release,
+a snapshot release, or a patch/bug fix release.
+
+## Step 1: Decide the scope of the CP release
+
+First you must decide which features, bugs, etc. should be part of the CP release.  This decision is technically
+captured as a _git tag_ in the various CP projects (e.g. `v1.2.3` would label the 1.2.3 release of a project), where
+such git tags are normally created for final releases as well alpha/beta/rc releases.  Snapshot releases are often
+different:  here, you would typically refer to a _git branch_ instead of a git tag.
+
+This kind of git tagging is done in the upstream projects themselves, and then the corresponding git information is
+configured appropriately in the [settings.sh](settings.sh) file of this repository for the actual packaging and
+deployment.
+
+As an Apache open source project Apache Kafka is slightly different from CP projects because its release process is
+managed by the Kafka project.  This means, for example, that we might need to wait until the desired Kafka version is
+officially released prior to our own packaging and deployment of said version (unless, for instance, we want to build
+and deploy a version of Kafka based on our fork).  But apart from this difference Kafka is handled just like the CP
+projects described above:  you must decide which Kafka version you'd like to use (expressed as a Kafka version number
+such as `0.8.2.1`) as the base for a CP release, and then configure [settings.sh](settings.sh) in this project
+accordingly.  Of course it is important that you pick a Kafka version that is actually compatible with the versions of
+the CP projects that you include in the CP release.
+
+
+## Step 2: Perform the CP release
+
+Once you have defined the scope of the CP release by configuring [settings.sh](settings.sh) as described in the
+previous step, you can then build and deploy the CP release as described in much detail in section
+[Building, testing, and deploying packages](#deploy) below.
+
 
 <a name="prerequisites"></a>
 
