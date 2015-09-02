@@ -9,7 +9,6 @@ set -x
 BASEDIR=`pwd`
 OUTPUT="${BASEDIR}/${OUTPUT_DIRECTORY}"
 DEPLOYED="${BASEDIR}/${DEPLOY_DIRECTORY}"
-PACKAGES="common rest-utils schema-registry kafka-rest camus"
 
 # Detect jdk version
 jdk=`javac -version 2>&1 | cut -d ' ' -f 2`
@@ -140,7 +139,7 @@ rm -rf /tmp/fakegradlehome
 if [ -z "$BRANCH" ]; then
     BRANCH="$CONFLUENT_VERSION"
 fi
-for PACKAGE in $PACKAGES; do
+for PACKAGE in $CP_PACKAGES; do
     PACKAGE_BRANCH_VAR="${PACKAGE//-/_}_BRANCH"
     PACKAGE_BRANCH="${!PACKAGE_BRANCH_VAR}"
     if [ -z "$PACKAGE_BRANCH" ]; then
