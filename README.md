@@ -29,8 +29,9 @@ Table of Contents
 
 # Deployment workflow
 
-This section describes the high level workflow of how to perform a CP release, whether this is a final release,
-a snapshot release, or a patch/bug fix release.
+This section describes the high level workflow of how to perform a CP release, whether this is a final release
+("CP 1.0.0 Release"), a patch/bug fix release ("CP 1.0.1"), or a snapshot release ("CP 1.0.1-SNAPSHOT").
+
 
 ## Step 1: Decide the scope of the CP release
 
