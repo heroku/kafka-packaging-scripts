@@ -399,7 +399,7 @@ deploying a new CP release, you will **overwrite any existing packages etc. in S
 >       "Resource": "arn:aws:s3:::my-testing-bucket-confluent-packages/*"
 >     }
 >   ]
->  }
+> }
 > ```
 
 
