@@ -5,10 +5,12 @@ set -x
 
 . settings.sh
 . aws.sh
+. versioning_helpers.sh
 
 BASEDIR=`pwd`
 OUTPUT="${BASEDIR}/${OUTPUT_DIRECTORY}"
 DEPLOYED="${BASEDIR}/${DEPLOYED_DIRECTORY}"
+REPO_RELEASE_SUBDIR=`rpm_version_major_minor $CONFLUENT_VERSION`
 
 # Detect jdk version
 jdk=`javac -version 2>&1 | cut -d ' ' -f 2`
@@ -32,16 +34,16 @@ rm -rf "${DEPLOYED}"
 # Archives #
 ############
 # for direct user download, including packaged up deb/rpm
-mkdir -p "${DEPLOYED}/archive/${CONFLUENT_VERSION}/"
+mkdir -p "${DEPLOYED}/archive/${REPO_RELEASE_SUBDIR}/"
 for SCALA_VERSION in $SCALA_VERSIONS; do
     cp "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.tar.gz" \
         "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.zip" \
         "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}-deb.tar.gz" \
         "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}-rpm.tar.gz" \
-        "${DEPLOYED}/archive/${CONFLUENT_VERSION}/"
+        "${DEPLOYED}/archive/${REPO_RELEASE_SUBDIR}/"
 done
 # Generate signatures for verification
-pushd ${DEPLOYED}/archive/${CONFLUENT_VERSION}
+pushd ${DEPLOYED}/archive/${REPO_RELEASE_SUBDIR}
 FILES=`ls ./*`
 for file in $FILES; do
     shasum -a 1 $file > ${file}.sha1.txt
@@ -53,22 +55,22 @@ popd
 #######
 # RPM #
 #######
-mkdir -p "${DEPLOYED}/rpm/${CONFLUENT_VERSION}/"
-eval cp "${OUTPUT}/*.rpm" "${DEPLOYED}/rpm/${CONFLUENT_VERSION}/"
-rm -f "${DEPLOYED}/rpm/${CONFLUENT_VERSION}/README.rpm"
+mkdir -p "${DEPLOYED}/rpm/${REPO_RELEASE_SUBDIR}/"
+eval cp "${OUTPUT}/*.rpm" "${DEPLOYED}/rpm/${REPO_RELEASE_SUBDIR}/"
+rm -f "${DEPLOYED}/rpm/${REPO_RELEASE_SUBDIR}/README.rpm"
 
 # These get copied into place, then we generate/update the index files
-vagrant ssh rpm -- createrepo --update "/vagrant/_deployed/rpm/${CONFLUENT_VERSION}/"
+vagrant ssh rpm -- createrepo --update "/vagrant/_deployed/rpm/${REPO_RELEASE_SUBDIR}/"
 
 # GPG keys -- we want to provide 1 per signed repository so that they are
 # associated with that repository instead of a single global key. We should only
 # have one, but this is useful if the key is ever compromised. Note that we
 # generate one for the deb repo even though we're not uploading the rest of it
 # via this path.
-mkdir -p "${DEPLOYED}/deb/${CONFLUENT_VERSION}/"
+mkdir -p "${DEPLOYED}/deb/${REPO_RELEASE_SUBDIR}/"
 if [ "$SIGN" == "yes" ]; then
-    gpg --export --armor --output "${DEPLOYED}/rpm/${CONFLUENT_VERSION}/archive.key" $SIGN_KEY
-    gpg --export --armor --output "${DEPLOYED}/deb/${CONFLUENT_VERSION}/archive.key" $SIGN_KEY
+    gpg --export --armor --output "${DEPLOYED}/rpm/${REPO_RELEASE_SUBDIR}/archive.key" $SIGN_KEY
+    gpg --export --armor --output "${DEPLOYED}/deb/${REPO_RELEASE_SUBDIR}/archive.key" $SIGN_KEY
 fi
 
 # Now we can actually run the upload process for all the files we've arranged
@@ -82,13 +84,14 @@ aws s3 sync "${DEPLOYED}/" "s3://${BUCKET}${BUCKET_PREFIX}/"
 # Because aptly manages an S3-based repository better than we would
 # manage the uploads we just let it do everything.
 
-sed -e "s%PWD%${BASEDIR}%" -e "s%BUCKET%${BUCKET}%" -e "s%PREFIX%${BUCKET_PREFIX}%" -e "s%VERSION%${CONFLUENT_VERSION}%" -e "s%REGION%${REGION}%" aptly.conf.template > aptly.conf
-REPO="confluent-${CONFLUENT_VERSION}"
+sed -e "s%PWD%${BASEDIR}%" -e "s%BUCKET%${BUCKET}%" -e "s%PREFIX%${BUCKET_PREFIX}%" -e "s%VERSION%${REPO_RELEASE_SUBDIR}%" -e "s%REGION%${REGION}%" aptly.conf.template > aptly.conf
+REPO="confluent-${REPO_RELEASE_SUBDIR}"
 APTLY_OPTS="-config=aptly.conf"
 APTLY_REPO_OPTS="-distribution=stable -component=main -architectures=all"
 aptly "${APTLY_OPTS}" repo list | grep $REPO || aptly "${APTLY_OPTS}" repo create ${APTLY_REPO_OPTS} $REPO
 aptly "${APTLY_OPTS}" repo add "$REPO" "${OUTPUT}"
-aptly "${APTLY_OPTS}" snapshot create "confluent-${CONFLUENT_VERSION}-${REVISION}" from repo "$REPO"
+SNAPSHOT_NAME="confluent-${CONFLUENT_VERSION}-${REVISION}"
+aptly "${APTLY_OPTS}" snapshot create "$SNAPSHOT_NAME" from repo "$REPO"
 if [ "$SIGN" == "yes" ]; then
     if [ -n "$SIGN_KEY" ]; then
         APTLY_SIGN_OPTS="-gpg-key $SIGN_KEY"
@@ -96,7 +99,7 @@ if [ "$SIGN" == "yes" ]; then
 else
     APTLY_SIGN_OPTS="--skip-signing=true"
 fi
-aptly "${APTLY_OPTS}" publish snapshot $APTLY_SIGN_OPTS ${APTLY_REPO_OPTS} "confluent-${CONFLUENT_VERSION}-${REVISION}" "s3:${BUCKET}:"
+aptly "${APTLY_OPTS}" publish snapshot $APTLY_SIGN_OPTS ${APTLY_REPO_OPTS} "$SNAPSHOT_NAME" "s3:${BUCKET}:"
 
 
 ##############
