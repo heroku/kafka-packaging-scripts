@@ -35,7 +35,8 @@ This section describes the high level workflow of how to perform a CP release, w
 
 ## Step 1: Decide the scope of the CP release
 
-First you must decide which features, bugs, etc. should be part of the CP release.  This decision is technically
+First you must decide which features, bugs, etc. should be part of the CP release (for simplicity we ignore the
+question which projects/components should be included in the first place).  This decision is technically
 captured as a _git tag_ in the various CP projects (e.g. `v1.2.3` would label the 1.2.3 release of a project), where
 such git tags are normally created for final releases as well alpha/beta/rc releases.  Snapshot releases are often
 different:  here, you would typically refer to a _git branch_ instead of a git tag.
