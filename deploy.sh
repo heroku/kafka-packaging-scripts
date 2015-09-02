@@ -19,6 +19,9 @@ if (( $ver < 7 )); then
     exit 1
 fi
 
+# Clean up deployment files from prior attempts
+rm -rf "${DEPLOYED}"
+
 # Note that all files are organized first by packaging system, then by
 # release. Organizing by packaging system at the top level will make it easier
 # to move things around if we ever decide to change how we distribute
