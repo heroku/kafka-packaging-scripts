@@ -8,7 +8,7 @@ set -x
 
 BASEDIR=`pwd`
 OUTPUT="${BASEDIR}/${OUTPUT_DIRECTORY}"
-DEPLOYED="${BASEDIR}/_deployed"
+DEPLOYED="${BASEDIR}/${DEPLOY_DIRECTORY}"
 PACKAGES="common rest-utils schema-registry kafka-rest camus"
 
 # Detect jdk version
