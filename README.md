@@ -240,6 +240,8 @@ If something went wrong with the tests, it'll print out a big, obvious error mes
 
 ## Step 5: Deploy the packages
 
+_Note: As mentioned below make you switch to Java 7 for the deploy step._
+
 Now we need to actually deploy the resulting packages and files in `output/`.  We need to do this in a number of
 formats (archives, rpm, deb), and we also need to deploy jars into a Maven repository.  We'll store all our Confluent
 repositories in S3, so we'll start by configuring S3 credentials.  Make a copy of the template
@@ -282,7 +284,7 @@ credentials.
 Optionally, you may add a prefix by setting `BUCKET_PREFIX` in `aws.sh` if you don't want to install to the root of
 the bucket -- just make sure it includes the leading `/` (no prefix is used by default).
 
-Next, make sure you are now switched to Java 7.
+**Next, make sure you are now switched to Java 7.**
 
 > **Java 6 vs. Java 7**:  Future releases of the Confuent Platform will target Java 7.  The Java 6 related instructions
 > in this README only apply to CP 1.x builds.
