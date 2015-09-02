@@ -391,6 +391,31 @@ instance, the CP packages typically need a specific version of Apache Kafka;  to
 you don't want to build CP 1.0.1-SNAPSHOT based on the very outdated Kafka 0.7 version.
 
 
+## Example settings for re-deploying a final release because of packaging bugs
+
+Let's assume that you already released a CP final release, e.g. CP 1.0 Release.  Now you notice that the deployed
+packages were generated incorrectly, for example due to a bug in the packaging scripts in this repository.  At this
+point you don't want to create a new release such as CP 1.0.1 Release, you'd rather fix the 1.0 Release packages
+themselves.  In other words, this situation may happen if the scope of the CP release didn't change but instead we
+made a packaging and/or deployment mistake.
+
+In this case you will keep the original release settings as is but increase the `REVISION` number.
+
+At the example of the CP 1.0 settings above, here are the settings to deploy a new revision of the same release:
+
+```bash
+CONFLUENT_VERSION="1.0"
+REVISION="2"   # < Only the revision was changed from 1 to 2
+BRANCH="v1.0"
+
+# Apache Kafka
+KAFKA_VERSION="0.8.2.1"
+KAFKA_BRANCH="0.8.2"
+SCALA_VERSIONS="2.9.1 2.9.2 2.10.4 2.11.5"
+```
+
+The `REVISION` (increased from `1` to `2`) is the only change compared to the original CP 1.0 Release settings.
+
 
 <a name="add-new"></a>
 
