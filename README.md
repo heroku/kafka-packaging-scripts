@@ -399,7 +399,7 @@ point you don't want to create a new release such as CP 1.0.1 Release, you'd rat
 themselves.  In other words, this situation may happen if the scope of the CP release didn't change but instead we
 made a packaging and/or deployment mistake.
 
-In this case you will keep the original release settings as is but increase the `REVISION` number.
+In this case you will keep the original release settings as-is but increase the `REVISION` number only.
 
 At the example of the CP 1.0 settings above, here are the settings to deploy a new revision of the same release:
 
