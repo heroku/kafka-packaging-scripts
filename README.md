@@ -55,11 +55,19 @@ accordingly.  Of course it is important that you pick a Kafka version that is ac
 the CP projects that you include in the CP release.
 
 
-## Step 2: Perform the CP release
+## Step 2: Perform the deployment of the release
 
 Once you have defined the scope of the CP release by configuring [settings.sh](settings.sh) as described in the
 previous step, you can then build and deploy the CP release as described in much detail in section
 [Building, testing, and deploying packages](#deploy) below.
+
+At a high level, deploying a release means we will:
+
+1. Package the respective components (e.g. [kafka-rest](https://github.com/confluentinc/kafka-rest/),
+   [schema-registry](https://github.com/confluentinc/schema-registry/) but also Kafka and
+   [Camus](https://github.com/confluentinc/camus)) in build VMs for our various target platforms (e.g. Debian).
+2. Run smoke tests to verify the generated packages.
+3. Deploy the generated packages to yum/apt/maven/... repositories, which in our case are hosted on AWS/S3.
 
 
 <a name="prerequisites"></a>
