@@ -63,19 +63,18 @@ the CP projects that you include in the CP release.
 
 ## Step 2: Perform the deployment of the release
 
-Once you have defined the scope of the CP release by configuring [settings.sh](settings.sh) as described in the
-previous step, you can then build and deploy the CP release as described in much detail in section
-[Building, testing, and deploying packages](#deploy) below.
+In the previous step we defined the scope of the CP release and ensured the various CP components are in a
+"release-ready" state.  Now we can build and deploy the CP release (cf. section
+[Building, testing, and deploying packages](#deploy) below for full details).  At a high level, deploying a release
+means we will perform the following steps via the scripts provided in this repository:
 
-At a high level, deploying a release means we will perform the following steps via the scripts provided in this
-repository:
-
-1. Package the respective components (e.g. [kafka-rest](https://github.com/confluentinc/kafka-rest/),
+1. Configure [settings.sh](settings.sh) to include the desired versions of the CP components (see step 1).
+2. Package the respective components (e.g. [kafka-rest](https://github.com/confluentinc/kafka-rest/),
    [schema-registry](https://github.com/confluentinc/schema-registry/) but also Kafka and
    [Camus](https://github.com/confluentinc/camus)) in build VMs for our various target platforms such as Debian.
    This packaging is driven by the configuration in [settings.sh](settings.sh).
-2. Run smoke tests to verify the generated packages.
-3. Deploy the generated packages to yum/apt/maven/... repositories, which in our case are hosted on AWS/S3.
+3. Run smoke tests to verify the generated packages.
+4. Deploy the generated packages to yum/apt/maven/... repositories, which in our case are hosted on AWS/S3.
 
 
 ## Step 3: Handle further release logistics
