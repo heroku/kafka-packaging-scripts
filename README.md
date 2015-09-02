@@ -367,12 +367,13 @@ credentials.
 **Now you must create a new S3 bucket for the new release.**
 This is required because the deployment script will create sub-folders in the target S3 bucket indexed by
 _majorVersion.minorVersion_, e.g.  `/rpm/1.0/` for CP 1.0.1.  This means that, unless you create a new S3 bucket for
-deploying a new CP release, you will **overwrite any existing packages etc. in S3* from previous `x.y.*` releases**.
+deploying a new CP release, you will **overwrite any existing packages etc. in S3 from previous `x.y.*` releases**.
 
 > **S3 bucket management**: The idea is that, for a given `x.y.*` release chain, we create a new S3 bucket whenever a
 > new `x.y.z` release is deployed.  This new S3 bucket will contain the contents of the new `x.y.z` release
 > _including all the contents of any prior releases going back to `x.z.0`_.  This approach ensures that users can
-> install `x.y.0`, `x.y.1`, ..., `x.y.z` packages from the same `x.y` indexed yum/apt/... repository.
+> install `x.y.0`, `x.y.1`, ..., `x.y.z` packages from the same `x.y` indexed yum/apt/... repository.  It also allows
+> us to easily rollback a faulty new release by pointing back to the S3 bucket of the previous, working CP release.
 
 **TODO: Document/automate the S3 bucket management step.**
 
