@@ -391,7 +391,7 @@ instance, the CP packages typically need a specific version of Apache Kafka;  to
 you don't want to build CP 1.0.1-SNAPSHOT based on the very outdated Kafka 0.7 version.
 
 
-## Example settings for re-deploying a final release because of packaging bugs
+## Example settings for re-deploying a final release because of packaging bugs (= revision of a release)
 
 Let's assume that you already released a CP final release, e.g. CP 1.0 Release.  Now you notice that the deployed
 packages were generated incorrectly, for example due to a bug in the packaging scripts in this repository.  At this
