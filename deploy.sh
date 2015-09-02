@@ -42,8 +42,8 @@ done
 pushd ${DEPLOYED}/archive/${CONFLUENT_VERSION}
 FILES=`ls ./*`
 for file in $FILES; do
-    sha1sum $file > ${file}.sha1.txt
-    sha256sum $file > ${file}.sha256.txt
+    shasum -a 1 $file > ${file}.sha1.txt
+    shasum -a 256 $file > ${file}.sha256.txt
 done
 popd
 
