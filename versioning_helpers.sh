@@ -17,6 +17,28 @@ rpm_version() {
   echo $rpm_ver
 }
 
+# Return the <major.minor> version snippet from the provided full version.
+#
+# Usage
+# -----
+# rpm_version_major_minor <full_version>
+#
+# Example
+# -------
+# rpm_version "1" -> "1"
+# rpm_version "1.0" -> "1.0"
+# rpm_version "1.0-alpha" -> "1.0"
+# rpm_version "1.0-beta2" -> "1.0"
+# rpm_version "1.0.2" -> "1.0"
+# rpm_version "1.0.1-SNAPSHOT" -> "1.0"
+#
+rpm_version_major_minor() {
+  local full_version=$1
+  local rpm_ver=`rpm_version $full_version`
+  local major_minor=`echo $rpm_ver | sed -E 's/^([0-9]+)(\.[0-9]+)?([-_\.].*)?$/\1\2/'`
+  echo $major_minor
+}
+
 # Return any -alpha, -beta, -rc piece that we need to put into the `Release` field of the RPM metadata since RPM
 # versions don't support non-numeric characters.
 #
