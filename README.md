@@ -62,9 +62,9 @@ managed by the Kafka project.  This means, for example, that we might need to wa
 officially released prior to our own packaging and deployment of said version (unless, for instance, we want to build
 and deploy a version of Kafka based on our fork).  But apart from this difference Kafka is handled just like the CP
 projects described above:  you must decide which Kafka version you'd like to use (expressed as a Kafka version number
-such as `0.8.2.1`) as the base for a CP release, and then configure [settings.sh](settings.sh) in this project
-accordingly.  Of course it is important that you pick a Kafka version that is actually compatible with the versions of
-the CP projects that you include in the CP release.
+such as `0.8.2.1` and a Kafka branch) as the base for a CP release, and then configure [settings.sh](settings.sh) in
+this project accordingly.  Of course it is important that you pick a Kafka version that is actually compatible with the
+versions of the CP projects that you include in the CP release.
 
 At this point individual releases of all the CP components including Kafka are available.  Now we can continue with
 packaging and deploying these components.
