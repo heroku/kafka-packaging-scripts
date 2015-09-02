@@ -32,24 +32,30 @@ Table of Contents
 This section describes the high level workflow of how to perform a CP release, whether this is a final release
 ("CP 1.0.0 Release"), a patch/bug fix release ("CP 1.0.1"), or a snapshot release ("CP 1.0.1-SNAPSHOT").
 
+> **Terminology:** A "CP release" means a set of CP components (e.g. kafka-rest, schema-registry, Kafka, Camus)
+> including their exact versions.  At the moment, the release number of the CP release is (and must be) identical to the
+> release number of the CP components (with the exception of Kafka, which follows its own release naming), and vice
+> versa.  For example, CP 1.0.1 Release consists of kafka-rest 1.0.1, schema-registry 1.0.1, Camus 1.0.1, and so on.
 
-## Step 1: Decide the scope of the CP release, make CP components release-ready
+
+## Step 1: Decide the scope of the CP release, create individual releases of CP components
 
 First you must decide which features, bugs, etc. should be part of the CP release (for simplicity we ignore the
 question which projects/components should be included in the first place).  This decision is technically
-captured as a _git tag_ in the various CP projects (e.g. `v1.2.3` would label the 1.2.3 release of a project), where
-such git tags are normally created for final releases as well alpha/beta/rc releases.  Snapshot releases are often
-different:  here, you would typically refer to a _git branch_ instead of a git tag.
-
-This kind of git tagging is done in the upstream projects themselves, and then the corresponding git information is
-configured appropriately in the [settings.sh](settings.sh) file of this repository for the actual packaging and
-deployment.
+captured by creating a new release of the respective CP projects such as kafka-rest and schema-registry.  With regards
+to packaging and deployment the important side-effects of creating these releases are the _git tags_ of the releases
+because this is the primary means by which we specify what gets packaged and deployed; e.g. the git tag `v1.2.3` would
+label the 1.2.3 release of a project.  Normally we create such git tags in the upstream projects for final releases as
+well alpha/beta/rc releases but not for snapshots (for deploying a snapshot release we'd refer to the _git branch_
+instead of a git tag).
 
 > **Version lock-step of CP projects**: For technical reasons the current implementation of the packaging scripts
 > requires that all CP projects make version updates in lock-step.  So as a consequence of releasing a newer version
 > of a CP project, we also need to release new versions of the remaining CP projects.  For further details see section
-> _Example workflow: deploying a patch/bug fix release_ below.  Removing this lock-step of versions is a desired future
-> improvement that we are already tracking.
+> _Example workflow: deploying a patch/bug fix release_ below.  It also means that the release number of a CP release
+> is (currently) always identical to the release number of the individual CP components (with the exception of Kafka,
+> which follows its own release naming).  Removing this lock-step of versions is a desired future improvement that we
+> are already tracking.
 
 As an Apache open source project Apache Kafka is slightly different from CP projects because its release process is
 managed by the Kafka project.  This means, for example, that we might need to wait until the desired Kafka version is
@@ -60,8 +66,11 @@ such as `0.8.2.1`) as the base for a CP release, and then configure [settings.sh
 accordingly.  Of course it is important that you pick a Kafka version that is actually compatible with the versions of
 the CP projects that you include in the CP release.
 
+At this point individual releases of all the CP components including Kafka are available.  Now we can continue with
+packaging and deploying these components.
 
-## Step 2: Perform the deployment of the release
+
+## Step 2: Perform the deployment of the CP release
 
 In the previous step we defined the scope of the CP release and ensured the various CP components are in a
 "release-ready" state.  Now we can build and deploy the CP release (cf. section
@@ -81,7 +90,7 @@ means we will perform the following steps via the scripts provided in this repos
 
 While we will not describe the various release logistics here, we do want to point out that there is follow-up work
 that needs to be done once a CP version is technically deployed and "released" as described above.  Such follow-up
-work includes announcements and blog posts, for instance.
+work may include documentation, announcements, and blog posts, for instance.
 
 
 ## Example workflow: deploying a patch/bug fix release
