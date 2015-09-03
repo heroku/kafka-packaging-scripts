@@ -439,8 +439,15 @@ organized by `CONFLUENT_VERSION`.  If we need to release any updates to packages
 so the packages go into the same repositories but are treated as updates to the existing packages.
 
 ```shell
-# Make sure you read the WARNING above before performing this step!
-$ ./deploy.sh
+###
+### Make sure you read the WARNING above before proceeding with these steps!
+###
+
+# Deploy deb/rpm/tar.gz/zip packages
+$ ./deploy_packages.sh
+
+# Deploy maven artifacts (jars)
+$ ./deploy_artifacts.sh
 ```
 
 At this point you have build, tested, and deployed the Confluent packages, which are now publicly available to
