@@ -68,7 +68,7 @@ fi
 
 # Now we can actually run the upload process for all the files we've arranged
 # for archives and RPMs. Debian upload to S3 is managed separately.
-aws s3 sync "${DEPLOYED}/" "s3://${BUCKET}${BUCKET_PREFIX}/"
+aws s3 sync "${DEPLOYED}/" "s3://${PACKAGES_BUCKET}${PACKAGES_BUCKET_PREFIX}/"
 
 
 ##########
@@ -77,7 +77,7 @@ aws s3 sync "${DEPLOYED}/" "s3://${BUCKET}${BUCKET_PREFIX}/"
 # Because aptly manages an S3-based repository better than we would
 # manage the uploads we just let it do everything.
 
-sed -e "s%PWD%${MY_DIR}%" -e "s%BUCKET%${BUCKET}%" -e "s%PREFIX%${BUCKET_PREFIX}%" -e "s%VERSION%${REPO_RELEASE_SUBDIR}%" -e "s%REGION%${REGION}%" aptly.conf.template > aptly.conf
+sed -e "s%PWD%${MY_DIR}%" -e "s%BUCKET%${PACKAGES_BUCKET}%" -e "s%PREFIX%${PACKAGES_BUCKET_PREFIX}%" -e "s%VERSION%${REPO_RELEASE_SUBDIR}%" -e "s%REGION%${REGION}%" aptly.conf.template > aptly.conf
 REPO="confluent-${REPO_RELEASE_SUBDIR}"
 APTLY_OPTS="-config=aptly.conf"
 APTLY_REPO_OPTS="-distribution=stable -component=main -architectures=all"
@@ -92,4 +92,4 @@ if [ "$SIGN" == "yes" ]; then
 else
     APTLY_SIGN_OPTS="--skip-signing=true"
 fi
-aptly "${APTLY_OPTS}" publish snapshot $APTLY_SIGN_OPTS ${APTLY_REPO_OPTS} "$SNAPSHOT_NAME" "s3:${BUCKET}:"
+aptly "${APTLY_OPTS}" publish snapshot $APTLY_SIGN_OPTS ${APTLY_REPO_OPTS} "$SNAPSHOT_NAME" "s3:${PACKAGES_BUCKET}:"

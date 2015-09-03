@@ -369,7 +369,7 @@ This is required because the deployment script will create sub-folders in the ta
 _majorVersion.minorVersion_, e.g.  `/rpm/1.0/` for CP 1.0.1.  This means that, unless you create a new S3 bucket for
 deploying a new CP release, you will **overwrite any existing packages etc. in S3 from previous `x.y.*` releases**.
 
-> **S3 bucket management**: The idea is that, for a given `x.y.*` release chain, we create a new S3 bucket whenever a
+> **S3 bucket management**: The idea is that, for a given `x.y.*` release line, we create a new S3 bucket whenever a
 > new `x.y.z` release is deployed.  This new S3 bucket will contain the contents of the new `x.y.z` release
 > _including all the contents of any prior releases going back to `x.z.0`_.  This approach ensures that users can
 > install `x.y.0`, `x.y.1`, ..., `x.y.z` packages from the same `x.y` indexed yum/apt/... repository.  It also allows
@@ -403,8 +403,9 @@ deploying a new CP release, you will **overwrite any existing packages etc. in S
 > ```
 
 
-Optionally, you may add a prefix by setting `BUCKET_PREFIX` in `aws.sh` if you don't want to install to the root of
-the bucket -- just make sure it includes the leading `/` (no prefix is used by default).
+Optionally, you may add a prefix by setting `PACKAGES_BUCKET_PREFIX` and/or `MAVEN_BUCKET_PREFIX` in `aws.sh` if you
+don't want to install to the root of the respective buckets -- just make sure it includes the leading `/` (no prefix
+is used by default).
 
 **Next, make sure you are now switched to Java 7.**
 

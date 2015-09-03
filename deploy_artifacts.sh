@@ -47,8 +47,8 @@ git checkout -b "deploy-$KAFKA_VERSION" origin/archive
 git merge --no-edit -m "deploy-$KAFKA_VERSION" upstream/$KAFKA_BRANCH
 make apply-patches # Note that this should also include the confluent-specific version # patch
 patch -p1 < ${MY_DIR}/patches/kafka-deploy.patch
-sed -i '' -e "s%REPOSITORY%s3://${BUCKET}${BUCKET_PREFIX}/maven%" \
-    -e "s%SNAPSHOT_REPOSITORY%s3://${BUCKET}${BUCKET_PREFIX}/maven%" build.gradle
+sed -i '' -e "s%REPOSITORY%s3://${MAVEN_BUCKET}${MAVEN_BUCKET_PREFIX}/maven%" \
+    -e "s%SNAPSHOT_REPOSITORY%s3://${MAVEN_BUCKET}${MAVEN_BUCKET_PREFIX}/maven%" build.gradle
 gradle --gradle-user-home /tmp/fakegradlehome
 ./gradlew --gradle-user-home /tmp/fakegradlehome uploadArchivesAll
 popd
@@ -74,7 +74,7 @@ for PACKAGE in $CP_PACKAGES; do
     pushd /tmp/confluent/$PACKAGE
     git checkout -b deploy $PACKAGE_BRANCH
     patch -p1 < ${MY_DIR}/patches/${PACKAGE}-deploy.patch
-    mvn "-Dconfluent.release.repo=s3://${BUCKET}${BUCKET_PREFIX}/maven" "-Dconfluent.snapshot.repo=s3://${BUCKET}${BUCKET_PREFIX}/maven" clean deploy
+    mvn "-Dconfluent.release.repo=s3://${MAVEN_BUCKET}${MAVEN_BUCKET_PREFIX}/maven" "-Dconfluent.snapshot.repo=s3://${MAVEN_BUCKET}${MAVEN_BUCKET_PREFIX}/maven" clean deploy
     popd
     rm -rf /tmp/confluent/$PACKAGE
 done
