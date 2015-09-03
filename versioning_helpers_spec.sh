@@ -33,3 +33,60 @@
     [ "$result" = "1.0.2" ]
   done
 }
+
+@test "extract CP x.y.z release number from a version-indexed S3 bucket name" {
+  result="$(cp_release_from_versioned_s3_bucket staging-confluent-packages-1.2.3)"
+  [ "$result" = "1.2.3" ]
+  result="$(cp_release_from_versioned_s3_bucket confluent-packages-2.0.0)"
+  [ "$result" = "2.0.0" ]
+}
+
+@test "extract CP repository release sub-directory from a version-indexed S3 bucket name" {
+  result="$(repo_release_subdir_from_versioned_s3_bucket staging-confluent-packages-1.2.3)"
+  [ "$result" = "1.2" ]
+  result="$(repo_release_subdir_from_versioned_s3_bucket confluent-packages-2.0.0)"
+  [ "$result" = "2.0" ]
+}
+
+@test "compare two version strings" {
+  result="$(version_compare 1 1)"
+  [ "$result" = "0" ]
+  result="$(version_compare 1.0 1.0)"
+  [ "$result" = "0" ]
+  result="$(version_compare 1 1.0)"
+  [ "$result" = "0" ]
+  result="$(version_compare 1 1.0.0)"
+  [ "$result" = "0" ]
+  result="$(version_compare 1.0.0 1)"
+  [ "$result" = "0" ]
+  result="$(version_compare 1.0 1)"
+  [ "$result" = "0" ]
+  result="$(version_compare 2.3 2.3.0)"
+  [ "$result" = "0" ]
+  result="$(version_compare 2.3.0 2.3)"
+  [ "$result" = "0" ]
+  result="$(version_compare 1.0 1.0.0)"
+  [ "$result" = "0" ]
+  result="$(version_compare 1.0 1.0.1)"
+  [ "$result" = "1" ]
+  result="$(version_compare 1.0.0 1.0.0)"
+  [ "$result" = "0" ]
+  result="$(version_compare 1.0.0 1.0.1)"
+  [ "$result" = "1" ]
+  result="$(version_compare 1.0.1 1.0.0)"
+  [ "$result" = "2" ]
+  result="$(version_compare 1.0.0 2.0.0)"
+  [ "$result" = "1" ]
+  result="$(version_compare 2.0.0 1.0.0)"
+  [ "$result" = "2" ]
+  result="$(version_compare 1.3.0 2.0.0)"
+  [ "$result" = "1" ]
+  result="$(version_compare 2.0.0 1.3.0)"
+  [ "$result" = "2" ]
+  result="$(version_compare 2.3.5 2.3.4)"
+  [ "$result" = "2" ]
+  result="$(version_compare 2.3 2.3.1)"
+  [ "$result" = "1" ]
+  result="$(version_compare 2.3.1 2.3)"
+  [ "$result" = "2" ]
+}

@@ -161,3 +161,100 @@ deb_version_field() {
   fi
   echo $version_field
 }
+
+# Extracts the CP x.y.z release number from a version-indexed S3 bucket name.
+#
+# A version-indexed bucket name must follow the naming convention:
+# /^[a-zA-Z0-9_-]+-([0-9]+\.[0-9]+\.[0-9]+$/
+#
+# Valid S3 bucket name examples:
+# - confluent-packages-1.2.3
+# - staging-confluent-packages-2.0.0
+#
+# Invalid S3 bucket name examples:
+# - confluent-packages-1.2.3-SNAPSHOT
+# - confluent-packages-1.2.3alpha
+#
+# TODO: Support alpha/beta/rc/snapshots releases, too?
+#
+# Usage
+# -----
+# cp_release_from_versioned_s3_bucket <version-indexed_s3_bucket_name>
+#
+# Examples
+# --------
+# cp_release_from_versioned_s3_bucket "staging-confluent-packages-1.2.3" -> "1.2.3"
+cp_release_from_versioned_s3_bucket() {
+  local s3_bucket_name=$1
+  local cp_release=`echo $s3_bucket_name | sed -E 's/^.*-([0-9]+\.[0-9]+\.[0-9]+)$/\1/'`
+  echo $cp_release
+}
+
+# Derives the CP repository "release subdirectory" (e.g. the `1.0` in `/deb/1.0/`)
+# from a version-indexed S3 bucket name.
+#
+# Usage
+# -----
+# repo_release_subdir_from_versioned_s3_bucket <version-indexed_s3_bucket_name>
+#
+# Examples
+# --------
+# repo_release_subdir_from_versioned_s3_bucket "staging-confluent-packages-1.2.3" -> "1.2"
+repo_release_subdir_from_versioned_s3_bucket() {
+  local s3_bucket_name=$1
+  local cp_rel=`cp_release_from_versioned_s3_bucket $s3_bucket_name`
+  local repo_release_subdir=`rpm_version_major_minor $cp_rel`
+  echo $repo_release_subdir
+}
+
+
+# Compares two version strings.
+#
+# Returns:
+# - 0 if first_version = second_version
+# - 1 if first_version < second_version
+# - 2 if first_version > second_version
+#
+# Code based on http://stackoverflow.com/a/4025065/1743580.
+#
+# Usage
+# -----
+# version_compare <first_version> <second_version>
+#
+# Examples
+# --------
+# version_compare "1.0.0" "1.0.1" -> "1" (meaning `<`)
+version_compare() {
+    if [[ $1 == $2 ]]
+    then
+        echo 0
+        return
+    fi
+    local IFS=.
+    local i ver1=($1) ver2=($2)
+    # fill empty fields in ver1 with zeros
+    for ((i=${#ver1[@]}; i<${#ver2[@]}; i++))
+    do
+        ver1[i]=0
+    done
+    for ((i=0; i<${#ver1[@]}; i++))
+    do
+        if [[ -z ${ver2[i]} ]]
+        then
+            # fill empty fields in ver2 with zeros
+            ver2[i]=0
+        fi
+        if ((10#${ver1[i]} > 10#${ver2[i]}))
+        then
+            echo 2
+            return
+        fi
+        if ((10#${ver1[i]} < 10#${ver2[i]}))
+        then
+            echo 1
+            return
+        fi
+    done
+    echo 0
+    return
+}
