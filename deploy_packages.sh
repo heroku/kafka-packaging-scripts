@@ -32,11 +32,11 @@ rm -rf "${DEPLOYED}"
 # for direct user download, including packaged up deb/rpm
 mkdir -p "${DEPLOYED}/archive/${REPO_RELEASE_SUBDIR}/"
 for SCALA_VERSION in $SCALA_VERSIONS; do
-    cp "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.tar.gz" \
-        "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.zip" \
-        "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}-deb.tar.gz" \
-        "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}-rpm.tar.gz" \
-        "${DEPLOYED}/archive/${REPO_RELEASE_SUBDIR}/"
+    cp -p "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.tar.gz" \
+          "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.zip" \
+          "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}-deb.tar.gz" \
+          "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}-rpm.tar.gz" \
+          "${DEPLOYED}/archive/${REPO_RELEASE_SUBDIR}/"
 done
 # Generate signatures for verification
 pushd ${DEPLOYED}/archive/${REPO_RELEASE_SUBDIR}
@@ -52,7 +52,7 @@ popd
 # RPM #
 #######
 mkdir -p "${DEPLOYED}/rpm/${REPO_RELEASE_SUBDIR}/"
-eval cp "${OUTPUT}/*.rpm" "${DEPLOYED}/rpm/${REPO_RELEASE_SUBDIR}/"
+eval cp -p "${OUTPUT}/*.rpm" "${DEPLOYED}/rpm/${REPO_RELEASE_SUBDIR}/"
 rm -f "${DEPLOYED}/rpm/${REPO_RELEASE_SUBDIR}/README.rpm"
 
 # These get copied into place, then we generate/update the index files
