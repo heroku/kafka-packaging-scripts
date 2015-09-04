@@ -150,6 +150,15 @@ You'll also need AWS CLI and Aptly (for deploying artifacts) and `bats`, `dpkg`,
 $ brew install awscli aptly bats dpkg rpm
 ```
 
+Then you must configure your AWS CLI environment, which particularly includes configuring your AWS credentials (AWS
+Access Key and AWS Secret Access Key):
+
+```shell
+$ aws configure
+```
+
+You will also need your AWS credentials later for configuring [aws.sh](aws.sh).
+
 
 ## NFS for synced folders
 
