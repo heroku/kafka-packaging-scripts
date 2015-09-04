@@ -75,13 +75,23 @@ for PACKAGE in $CP_PACKAGES; do
         PACKAGE_BRANCH="$BRANCH"
     fi
 
+    PACKAGE_SKIP_TESTS_VAR="${PACKAGE//-/_}_SKIP_TESTS"
+    PACKAGE_SKIP_TESTS="${!PACKAGE_SKIP_TESTS_VAR}"
+    if [ -z "$PACKAGE_SKIP_TESTS" ]; then
+        PACKAGE_SKIP_TESTS="$SKIP_TESTS"
+    fi
+
     mkdir -p /tmp/confluent
     rm -rf /tmp/confluent/$PACKAGE
     git clone $MY_DIR/repos/$PACKAGE /tmp/confluent/$PACKAGE
     pushd /tmp/confluent/$PACKAGE
     git checkout -b deploy $PACKAGE_BRANCH
     patch -p1 < ${MY_DIR}/patches/${PACKAGE}-deploy.patch
-    mvn "-Dconfluent.release.repo=s3://${MAVEN_BUCKET}${MAVEN_BUCKET_PREFIX}/maven" "-Dconfluent.snapshot.repo=s3://${MAVEN_BUCKET}${MAVEN_BUCKET_PREFIX}/maven" clean deploy
+    MAVEN_OPTS=""
+    if [ "$PACKAGE_SKIP_TESTS" = "yes" ]; then
+      MAVEN_OPTS="$MAVEN_OPTS -DskipTests=true"
+    fi
+    mvn $MAVEN_OPTS "-Dconfluent.release.repo=s3://${MAVEN_BUCKET}${MAVEN_BUCKET_PREFIX}/maven" "-Dconfluent.snapshot.repo=s3://${MAVEN_BUCKET}${MAVEN_BUCKET_PREFIX}/maven" clean deploy
     popd
     rm -rf /tmp/confluent/$PACKAGE
 done
