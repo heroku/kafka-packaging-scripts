@@ -104,3 +104,20 @@ PACKAGE_MIN_FILE_SIZE_BYTES=10000
 ###
 OUTPUT_DIRECTORY="output" # local directory; stores generated packages
 DEPLOYED_DIRECTORY="_deployed" # local directory; contains directory tree for S3 deployment uploads
+
+
+###
+### Input validation of settings defined above
+###
+
+# Ensure that we deploy packages only to staging S3 buckets
+if [[ "$PACKAGES_BUCKET" != staging-* ]]; then
+  echo "ERROR: PACKAGES_BUCKET must start with 'staging-'"
+  exit 1
+fi
+
+# Ensure that we deploy maven artifacts only to staging S3 buckets
+if [[ "$MAVEN_BUCKET" != staging-* ]]; then
+  echo "ERROR: MAVEN_BUCKET must start with 'staging-'"
+  exit 1
+fi
