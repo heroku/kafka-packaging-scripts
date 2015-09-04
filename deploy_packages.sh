@@ -55,8 +55,14 @@ mkdir -p "${DEPLOYED}/rpm/${REPO_RELEASE_SUBDIR}/"
 eval cp -p "${OUTPUT}/*.rpm" "${DEPLOYED}/rpm/${REPO_RELEASE_SUBDIR}/"
 rm -f "${DEPLOYED}/rpm/${REPO_RELEASE_SUBDIR}/README.rpm"
 
-# These get copied into place, then we generate/update the index files
-vagrant ssh rpm -- createrepo --update "/vagrant/_deployed/rpm/${REPO_RELEASE_SUBDIR}/"
+# These get copied into place, then we generate/update the index files.
+#
+# Sometimes createrepo fails for no apparent reason but works fine when we run it again.
+# Error message: "Could not find valid repo at: /vagrant/_deployed/rpm/1.0/"
+# See https://lists.fedorahosted.org/pipermail/copr-commits/2013-November/000256.html
+vagrant ssh rpm -- createrepo --update "/vagrant/_deployed/rpm/${REPO_RELEASE_SUBDIR}/" || \
+  vagrant ssh rpm -- createrepo --update "/vagrant/_deployed/rpm/${REPO_RELEASE_SUBDIR}/"
+
 
 # GPG keys -- we want to provide 1 per signed repository so that they are
 # associated with that repository instead of a single global key. We should only
