@@ -81,7 +81,7 @@ SCHEMA_REGISTRY_REPO="git@github.com:confluentinc/schema-registry.git"
 ### Package signing
 ###
 SIGN="yes"
-SIGN_KEY=""
+SIGN_KEY="41468433" # packages@confluent.io
 
 
 ###
