@@ -73,6 +73,8 @@ SIGN_KEY=""
 ### AWS/S3 configuration
 ###
 REGION="us-west-2" # S3 region, this is the default for Confluent's account
+PACKAGES_BUCKET="staging-confluent-packages-1.0.1"
+MAVEN_BUCKET="staging-confluent-packages-maven-1.0.1"
 
 
 ###

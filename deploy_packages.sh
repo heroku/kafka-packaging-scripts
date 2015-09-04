@@ -10,6 +10,9 @@ MY_DIR=`echo $(cd $(dirname $0); pwd)`
 . $MY_DIR/aws.sh
 . $MY_DIR/versioning_helpers.sh
 
+# We must export this env variable, which is defined in settings.sh, for the subsequent steps to work.
+export PACKAGES_BUCKET
+
 OUTPUT="${MY_DIR}/${OUTPUT_DIRECTORY}"
 DEPLOYED="${MY_DIR}/${DEPLOYED_DIRECTORY}"
 REPO_RELEASE_SUBDIR=`rpm_version_major_minor $CONFLUENT_VERSION`

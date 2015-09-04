@@ -9,6 +9,9 @@ MY_DIR=`echo $(cd $(dirname $0); pwd)`
 . $MY_DIR/settings.sh
 . $MY_DIR/aws.sh
 
+# We must export this env variable, which is defined in settings.sh, for the subsequent steps to work.
+export MAVEN_BUCKET
+
 # Detect jdk version
 jdk=`javac -version 2>&1 | cut -d ' ' -f 2`
 ver=`echo $jdk | cut -d '.' -f 2`
