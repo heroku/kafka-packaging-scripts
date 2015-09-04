@@ -468,15 +468,20 @@ Now you must verify that the packages and maven artifacts in the staging S3 buck
 *This step is currently documented elsewhere.*
 
 
-## Step 7: Publish staging data via CloudFront
+## Step 7: Publish staging data to production via S3 and CloudFront
 
 **WARNING: This step modifies production and is customer-facing.**
 
 Once you have confirmed that the packages and maven artifacts in the staging buckets are working as expected
-you can update our CloudFront setup so that our users will see the (old plus) new packages and artifacts via
-the official Confluent yum/apt/maven/etc. repositories.
+you must:
 
-*This step is currently documented elsewhere.*
+1. Maven: Sync the staging S3 bucket for maven artifacts with the production S3 bucket, modifying the production bucket
+   in-place.  (For rollbacks the process above created a timestamped backup of the production bucket).
+2. Packages: Update our CloudFront setup via the AWS console so that our users will see the (old plus) new packages and
+   artifacts via the official Confluent yum/apt/maven/etc. repositories.  (For rollbacks you can revert the CloudFront
+   changes by pointing it to the functioning S3 buckets of the previous release.)
+
+*These steps are currently documented elsewhere.*
 
 
 ## Step 8: Terminate the build VMs (clean up)
