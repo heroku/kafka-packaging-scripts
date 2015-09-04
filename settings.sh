@@ -110,9 +110,9 @@ PACKAGES_BUCKET="staging-confluent-packages-1.0.1"
 # This bucket follows the same naming convention as PACKAGES_BUCKET.
 #
 # Examples:
-# staging-confluent-packages-1.0.0  (if it still exists)
 # confluent-packages-1.0.0          (production S3 bucket)
-PACKAGES_BUCKET_OF_PREVIOUS_RELEASE="staging-confluent-packages-1.0.0"
+# staging-confluent-packages-1.0.0  (if it still exists)
+PACKAGES_BUCKET_OF_PREVIOUS_RELEASE="confluent-packages-1.0.0"
 
 # Staging S3 bucket to which we deploy the new maven artifacts (jars).
 #
@@ -163,6 +163,7 @@ PACKAGE_MIN_FILE_SIZE_BYTES=10000
 ###
 OUTPUT_DIRECTORY="output" # local directory; stores generated packages
 DEPLOYED_DIRECTORY="_deployed" # local directory; contains directory tree for S3 deployment uploads
+TEMP_DIRECTORY="_temp" # local directory; used for extracting deb/rpm packages of a previous release from an S3 bucket
 
 
 ###

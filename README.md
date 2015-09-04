@@ -425,7 +425,7 @@ JRE7.   Where necessary, small patches are applied to ensure the output targets 
 $ export JAVA_HOME=/path/to/jdk7
 ```
 
-Now we can run the deploy script.
+Now we can run the deployment scripts.
 
 > **IMPORTANT WARNING REGARDING DEPLOYMENTS**:  Not only will you be pushing artifacts to a public server, you can
 > seriously break things if you do this wrong. You *MUST* be working with a full copy of the existing data for some
@@ -445,19 +445,40 @@ so the packages go into the same repositories but are treated as updates to the 
 ### Make sure you read the WARNING above before proceeding with these steps!
 ###
 
-# Deploy deb/rpm/tar.gz/zip packages
+# Prepare the staging S3 buckets. Also, download any "historical" deb/rpm packages from previous
+# x.y.* releases from S3 and store them under the local output directory.
+$ ./deploy_prepare_staging_s3_buckets_and_historical_packages.sh
+
+# Deploy packages (deb, rpm, tar.gz, zip)
 $ ./deploy_packages.sh
 
 # Deploy maven artifacts (jars)
 $ ./deploy_artifacts.sh
 ```
 
-At this point you have build, tested, and deployed the Confluent packages, which are now publicly available to
-Confluent users.
+At this point you have build, tested, and deployed the Confluent packages to staging S3 buckets.
 
-## Step 6: Terminate the build VMs (clean up)
+## Step 6: Testing and validation of staged packages and maven artifacts
 
-Finally, clean up the VMs.  Except for the build output under `output/`, the scripts should be careful to do
+Now you must verify that the packages and maven artifacts in the staging S3 buckets work as expected.
+
+*This step is currently documented elsewhere.*
+
+
+## Step 7: Publish staging data via CloudFront
+
+**WARNING: This step modifies production and is customer-facing.**
+
+Once you have confirmed that the packages and maven artifacts in the staging buckets are working as expected
+you can update our CloudFront setup so that our users will see the (old plus) new packages and artifacts via
+the official Confluent yum/apt/maven/etc. repositories.
+
+*This step is currently documented elsewhere.*
+
+
+## Step 8: Terminate the build VMs (clean up)
+
+Finally, clean up the build VMs.  Except for the build output under `output/`, the scripts should be careful to do
 everything in temporary space in the VMs so your source tree doesn't get polluted with build by-products.
 
 ```shell

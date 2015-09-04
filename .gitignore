@@ -1,6 +1,7 @@
 .vagrant
 aws.sh
 _deployed
+_temp
 .aptly
 aptly.conf
 bucket-policy-public-read.json

@@ -1,15 +1,30 @@
 #!/bin/bash
 #
-# This script creates the two staging S3 buckets for (1) packages (deb, rpm, tar.gz, zip) and (2) maven artifacts.
-# We also copy archive packages (tar.gz, zip) from a previous release if we're preparing the staging buckets for
-# a patch release (such as CP 1.0.1).
+# This scripts does two things: a. (AWS) create staging S3 buckets, b. (local) download any historical deb/rpm packages
+# from S3 and integrate them locally alongside the newly generated packages under OUTPUT_DIRECTORY.
+#
+# A) This script creates the two staging S3 buckets for (1) packages (deb, rpm, tar.gz, zip) and (2) maven artifacts.
+# As an optimization to reduce deployment time, we also AWS-to-AWS copy archive packages (tar.gz, zip) from a previous
+# release into the staging bucket for packages if we're preparing the buckets for a patch release (such as CP 1.0.1).
+#
+# B) Also, this script retrieves "historical" deb and rpm packages (= from a previous release) from S3 and stores them
+# in the local OUTPUT_DIRECTORY.
+#
+# Step B is required so that our packaging scripts can regenerate the various deb/rpm index files.
+# At a higher level, this step is required because of our decision to provide `x.y` (major.minor version) indexed
+# yum and apt repositories, where a given `x.y` repository (e.g., `1.2` for the CP 1.2.* release line) will contain
+# all available `x.y.*` packages at this point.  For example, when CP 1.2.3 is released, the `1.2` repositories
+# will contain the deb and rpm packages for 1.2.0, 1.2.1, 1.2.2, and 1.2.3.
 
 set -e
 set -x
 
-. settings.sh
-. aws.sh
-. versioning_helpers.sh
+MYSELF=`basename $0`
+MY_DIR=`echo $(cd $(dirname $0); pwd)`
+
+. $MY_DIR/settings.sh
+. $MY_DIR/aws.sh
+. $MY_DIR/versioning_helpers.sh
 
 declare -r CURRENT_RELEASE_BUCKET="$PACKAGES_BUCKET_OF_PREVIOUS_RELEASE"
 declare -r CURRENT_RELEASE_BUCKET_URL="s3://${CURRENT_RELEASE_BUCKET}"
@@ -85,6 +100,17 @@ if ! is_initial_release; then
   echo "Copying archive packages from CP release $CURRENT_RELEASE_VERSION into new staging bucket for packages..."
   aws s3 sync "${CURRENT_RELEASE_BUCKET_URL}/${ARCHIVE_BASE}/${REPO_RELEASE_SUBDIR}" \
                   "${NEW_RELEASE_BUCKET_URL}/${ARCHIVE_BASE}/${REPO_RELEASE_SUBDIR}"
+
+  # Download historical deb and rpm packages from S3 and integrate them with the local OUTPUT_DIRECTORY.
+  mkdir -p $MY_DIR/$TEMP_DIRECTORY
+  pushd $MY_DIR/$TEMP_DIRECTORY
+  mkdir -p "deb" "rpm"
+  aws s3 sync "${CURRENT_RELEASE_BUCKET_URL}/${DEB_BASE}/${CURRENT_MAJOR_MINOR_RELEASE}" deb
+  find deb -type f -name "*_all.deb" -exec mv {} "$MY_DIR/$OUTPUT_DIRECTORY" \;
+  aws s3 sync "${CURRENT_RELEASE_BUCKET_URL}/${RPM_BASE}/${CURRENT_MAJOR_MINOR_RELEASE}" rpm
+  find rpm -maxdepth 1 -type f -name "*.rpm" -exec mv {} "$MY_DIR/$OUTPUT_DIRECTORY" \;
+  rm -rf deb rpm
+  popd
 fi
 
 ###
