@@ -22,6 +22,10 @@ fi
 # Maven jars #
 ##############
 
+# S3 wagon uses a different environment variable for AWS_SECRET_ACCESS_KEY
+# (cf. https://github.com/jcaddel/maven-s3-wagon/wiki/Authentication)
+export AWS_SECRET_KEY="$AWS_SECRET_ACCESS_KEY"
+
 # FIXME because of the way the Kafka build works, we can't actually specify
 # SCALA_LANGUAGES here. Also, we unfortunately need to store the info for
 # signing here, including the full password. To avoid clobbering the user's real
