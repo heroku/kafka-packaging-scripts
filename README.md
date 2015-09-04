@@ -720,6 +720,30 @@ You can also use the `SKIP_TESTS` configuration in [settings.sh](settings.sh) (s
 globally or per-project.  But only disable tests if you really know what you are doing!
 
 
+## Build fails with "org.bouncycastle.openpgp.PGPException: checksum mismatch at 0 of 20"
+
+The following error indicates that you (1) mistyped your GPG password or (2) you typed the password for the "expected"
+GPG key correctly but the packaging setup actually ended up using a different GPG key;  the latter may happen if you
+manually configured the wrong GPG key (set via `SIGN_KEY` in `settings.sh`) or if the wrong GPG key was deduced
+automatically for you (automatic "key lookup" happens when `SIGN_KEY` is empty and thus was not set by you).
+
+```
+:kafka-packaging:core:signArchives
+:uploadCoreArchives_2_10_4 FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+org.bouncycastle.openpgp.PGPException: checksum mismatch at 0 of 20
+> checksum mismatch at 0 of 20
+
+* Try:
+Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.
+
+BUILD FAILED
+```
+
+
 <a name="references"></a>
 
 # References
