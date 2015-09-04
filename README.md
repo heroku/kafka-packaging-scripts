@@ -427,11 +427,10 @@ $ export JAVA_HOME=/path/to/jdk7
 
 Now we can run the deployment scripts.
 
-> **IMPORTANT WARNING REGARDING DEPLOYMENTS**:  Not only will you be pushing artifacts to a public server, you can
-> seriously break things if you do this wrong. You *MUST* be working with a full copy of the existing data for some
-> of these operations to work correctly.  For example, if you don't have all the old RPMs, the index you generate
-> will omit a bunch of files.  Since you'll want to do a staging release before any final releases, you really need
-> to be careful about being in sync with the existing repository for final releases.
+> **SAFETY NOTE**: None of the deployment scripts will modify production, i.e. all modifying actions are performed
+> against staging S3 buckets.  Production data is only ever read from, e.g. to create backups for rollback purposes.
+> The steps that do modify production by publishing the staged packages and maven artifacts via S3 and CloudFront
+> are not (yet) covered and documented here.
 
 You will be prompted multiple times for your GPG key password since some package index files, which are generated
 during this deployment step, will need to be signed.
@@ -445,11 +444,15 @@ so the packages go into the same repositories but are treated as updates to the 
 ### Make sure you read the WARNING above before proceeding with these steps!
 ###
 
-# Deployment preparation consists of three important tasks.
-# First, we prepare the staging S3 buckets for packages and maven artifacts.
-# Also, we download any "historical" deb/rpm packages from previous x.y.* releases from S3 and
-# store them under the local output directory.
-# Lastly, we create a timestamped backup of our production S3 bucket for maven artifacts.
+# Deployment preparation consists of three important tasks:
+#
+# 1. We prepare the staging S3 buckets for packages and maven artifacts.
+# 2. We download any "historical" deb/rpm packages from previous x.y.* releases from S3 and
+#    store them under the local output directory.  This is required because, for example,
+#    the S3 bucket for CP 1.0.3 should contain all packages for the 1.0.* release line,
+#    i.e. 1.0.0, 1.0.1, 1.0.2, 1.0.3.
+# 3. We create a timestamped backup of our production S3 bucket for maven artifacts.
+#
 $ ./deployment_preparation.sh
 
 # Deploy packages (deb, rpm, tar.gz, zip)
@@ -473,14 +476,13 @@ Now you must verify that the packages and maven artifacts in the staging S3 buck
 
 **WARNING: This step modifies production and is customer-facing.**
 
-Once you have confirmed that the packages and maven artifacts in the staging buckets are working as expected
-you must:
+Once you have confirmed that the staged packages and maven artifacts are working as expected you must:
 
 1. Maven: Sync the staging S3 bucket for maven artifacts with the production S3 bucket, modifying the production bucket
-   in-place.  (For rollbacks the process above created a timestamped backup of the production bucket).
+   in-place.  (The process above created a timestamped backup of the production bucket in case you must do a rollback).
 2. Packages: Update our CloudFront setup via the AWS console so that our users will see the (old plus) new packages and
    artifacts via the official Confluent yum/apt/maven/etc. repositories.  (For rollbacks you can revert the CloudFront
-   changes by pointing it to the functioning S3 buckets of the previous release.)
+   changes by pointing to the functioning S3 buckets of the previous release.)
 
 *These steps are currently documented elsewhere.*
 
