@@ -271,7 +271,8 @@ Specify any required build and release settings in [settings.sh](settings.sh), w
   *MUST* also be your default key (which will be the case if you have only one secret key) because of differences in
   how RPM and DEB signing work.  You can configure a GPG default key by setting `default-key ABCD1234` in your
   `$HOME/.gnupg/gpg.conf`, where you must replace `ABCD1234` with the id of the actual GPG private key.
-  If `SIGN_KEY` is empty, we'll try to fill it in automatically using `gpg --list-secret-keys`.
+  If `SIGN_KEY` is empty, we'll try to fill it in automatically using `gpg --list-secret-keys` but this is quite
+  unreliable -- we strongly recommend to explicitly set `SIGN_KEY`.
 
 Note that we do not currently have per-project overrides for `CONFLUENT_VERSION`, so the assumption here is that all
 projects make version updates in lock-step.
