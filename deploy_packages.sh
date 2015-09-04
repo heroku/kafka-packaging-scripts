@@ -32,6 +32,7 @@ rm -rf "${DEPLOYED}"
 # for direct user download, including packaged up deb/rpm
 mkdir -p "${DEPLOYED}/archive/${REPO_RELEASE_SUBDIR}/"
 for SCALA_VERSION in $SCALA_VERSIONS; do
+    # `cp -p` preserves last modified time, which minimizes duplicate uploads for files already existing in S3.
     cp -p "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.tar.gz" \
           "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.zip" \
           "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}-deb.tar.gz" \
@@ -52,6 +53,7 @@ popd
 # RPM #
 #######
 mkdir -p "${DEPLOYED}/rpm/${REPO_RELEASE_SUBDIR}/"
+# `cp -p` preserves last modified time, which minimizes duplicate uploads for files already existing in S3.
 eval cp -p "${OUTPUT}/*.rpm" "${DEPLOYED}/rpm/${REPO_RELEASE_SUBDIR}/"
 rm -f "${DEPLOYED}/rpm/${REPO_RELEASE_SUBDIR}/README.rpm"
 
