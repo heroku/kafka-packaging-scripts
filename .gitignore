@@ -3,3 +3,4 @@ aws.sh
 _deployed
 .aptly
 aptly.conf
+bucket-policy-public-read.json
