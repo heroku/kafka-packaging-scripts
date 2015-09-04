@@ -142,9 +142,9 @@ if [ $? -ne 0 ]; then
   aws s3 mb ${MAVEN_BUCKET_PRODUCTION_BACKUP_URL}
   sed -e "s%BUCKET%${MAVEN_BUCKET_PRODUCTION_BACKUP}%" $BUCKET_POLICY_FILE_TEMPLATE > $BUCKET_POLICY_FILE
   aws s3api put-bucket-policy --bucket $MAVEN_BUCKET_PRODUCTION_BACKUP --policy file://${BUCKET_POLICY_FILE}
-  aws s3 sync "${MAVEN_BUCKET_PRODUCTION_URL}" "${MAVEN_BUCKET_PRODUCTION_BACKUP_URL}"
 fi
 set -e
+aws s3 sync "${MAVEN_BUCKET_PRODUCTION_URL}" "${MAVEN_BUCKET_PRODUCTION_BACKUP_URL}"
 
 # Create the staging bucket for maven artifacts (jars) of the new release
 set +e
@@ -155,6 +155,6 @@ if [ $? -ne 0 ]; then
   aws s3 mb ${MAVEN_BUCKET_URL}
   sed -e "s%BUCKET%${MAVEN_BUCKET}%" $BUCKET_POLICY_FILE_TEMPLATE > $BUCKET_POLICY_FILE
   aws s3api put-bucket-policy --bucket $MAVEN_BUCKET --policy file://${BUCKET_POLICY_FILE}
-  aws s3 sync "${MAVEN_BUCKET_PRODUCTION_URL}" "${MAVEN_BUCKET_URL}"
 fi
 set -e
+aws s3 sync "${MAVEN_BUCKET_PRODUCTION_URL}" "${MAVEN_BUCKET_URL}"
