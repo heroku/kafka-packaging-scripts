@@ -456,6 +456,7 @@ $ ./deployment_preparation.sh
 $ ./deploy_packages.sh
 
 # Deploy maven artifacts (jars)
+# You will be asked (once) for the password of the GPG signing key.
 $ ./deploy_artifacts.sh
 ```
 
