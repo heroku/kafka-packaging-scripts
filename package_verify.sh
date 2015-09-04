@@ -23,6 +23,7 @@
 
 # Test settings
 CONFLUENT_PACKAGE_PREFIX="confluent"
+STAT_MAC_OPTS_FOR_FILESIZE="-f%z"
 
 
 @test "archive packages (tar base) were built" {
@@ -78,6 +79,17 @@ CONFLUENT_PACKAGE_PREFIX="confluent"
   done
 }
 
+@test "deb packages have a certain minimum file size (heuristic to detect broken packages)" {
+  # We do not check for `confluent-platform` packages as these are expected to be only a few KB in size.
+  for pkg in $CP_PACKAGES kafka; do
+    for file in `ls $OUTPUT_DIRECTORY/ | egrep "^${CONFLUENT_PACKAGE_PREFIX}-${pkg}_[0-9a-zA-Z\.~-]+_all\.deb$"`; do
+      run stat $STAT_MAC_OPTS_FOR_FILESIZE $OUTPUT_DIRECTORY/$file
+      local filesize=$(($output + 0))
+      [ "$filesize" -ge $PACKAGE_MIN_FILE_SIZE_BYTES ]
+    done
+  done
+}
+
 @test "rpm packages were built" {
   for pkg in $CP_PACKAGES kafka platform; do
     run bash -c "ls $OUTPUT_DIRECTORY/ | egrep \"^${CONFLUENT_PACKAGE_PREFIX}-${pkg}-[0-9a-zA-Z\.~-]+\.noarch\.rpm$\""
@@ -109,6 +121,17 @@ CONFLUENT_PACKAGE_PREFIX="confluent"
       actual_release_field="$(rpm -qpi $rpm_file_pattern | grep '^Release' | sed -E 's/^Release[[:space:]]+: (.+)[[:space:]]+Build Date:.*$/\1/' | sed -e 's/[[:space:]]*$//')"
       expected_release_field=`rpm_release_field $KAFKA_VERSION $REVISION`
       [ "$actual_release_field" = "$expected_release_field" ]
+    done
+  done
+}
+
+@test "rpm packages have a certain minimum file size (heuristic to detect broken packages)" {
+  # We do not check for `confluent-platform` packages as these are expected to be only a few KB in size.
+  for pkg in $CP_PACKAGES kafka; do
+    for file in `ls $OUTPUT_DIRECTORY/ | egrep "^${CONFLUENT_PACKAGE_PREFIX}-${pkg}-[0-9a-zA-Z\.~-]+\.noarch\.rpm$"`; do
+      run stat $STAT_MAC_OPTS_FOR_FILESIZE $OUTPUT_DIRECTORY/$file
+      local filesize=$(($output + 0))
+      [ "$filesize" -ge $PACKAGE_MIN_FILE_SIZE_BYTES ]
     done
   done
 }

@@ -93,6 +93,11 @@ camus_SKIP_TESTS="yes" # We do not run tests for Camus.
 
 
 ###
+### Package verification rules
+###
+PACKAGE_MIN_FILE_SIZE_BYTES=10000
+
+###
 ### Misc settings
 ###
 OUTPUT_DIRECTORY="output" # local directory; stores generated packages
