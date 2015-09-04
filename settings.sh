@@ -125,6 +125,12 @@ PACKAGES_BUCKET_OF_PREVIOUS_RELEASE="confluent-packages-1.0.0"
 # Example: staging-confluent-packages-maven-1.0.0
 MAVEN_BUCKET="staging-confluent-packages-maven-1.0.1"
 
+# Production S3 bucket that contains our production Maven repository.
+# This bucket is only read from but never written to.
+#
+# NOTE: You should never need to modify this setting!
+MAVEN_BUCKET_PRODUCTION="confluent-packages-maven"
+
 # Top-level bucket sub-directory (cf. PACKAGES_BUCKET) for archive packages
 PACKAGES_BUCKET_ARCHIVE_BASE="archive"
 # Top-level bucket sub-directory (cf. PACKAGES_BUCKET) for deb packages
@@ -177,6 +183,10 @@ if [ -z "$PACKAGES_BUCKET" ]; then
 fi
 if [ -z "$MAVEN_BUCKET" ]; then
   echo "ERROR: MAVEN_BUCKET must be set"
+  exit 1
+fi
+if [ -z "$MAVEN_BUCKET_PRODUCTION" ]; then
+  echo "ERROR: MAVEN_BUCKET_PRODUCTION must be set"
   exit 1
 fi
 

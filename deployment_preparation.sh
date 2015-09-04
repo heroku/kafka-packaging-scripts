@@ -1,16 +1,23 @@
 #!/bin/bash
 #
-# This scripts does two things: a. (AWS) create staging S3 buckets, b. (local) download any historical deb/rpm packages
-# from S3 and integrate them locally alongside the newly generated packages under OUTPUT_DIRECTORY.
+# This scripts does three things:
+#   A. (AWS) create staging S3 buckets for 1. packages and 2. maven artifacts.
+#   B. (AWS) create a backup of our production S3 bucket for maven artifacts.
+#   C. (local) download any historical deb/rpm packages from S3 and integrate them locally alongside the newly
+#      generated packages under OUTPUT_DIRECTORY.
 #
 # A) This script creates the two staging S3 buckets for (1) packages (deb, rpm, tar.gz, zip) and (2) maven artifacts.
-# As an optimization to reduce deployment time, we also AWS-to-AWS copy archive packages (tar.gz, zip) from a previous
-# release into the staging bucket for packages if we're preparing the buckets for a patch release (such as CP 1.0.1).
+#    As an optimization to reduce deployment time, we also AWS-to-AWS copy archive packages (tar.gz, zip) from a
+#    previous release into the staging bucket for packages if we're preparing the buckets for a patch release (such as
+#    CP 1.0.1).
 #
-# B) Also, this script retrieves "historical" deb and rpm packages (= from a previous release) from S3 and stores them
-# in the local OUTPUT_DIRECTORY.
+# B) This scripts creates a backup S3 bucket of our production S3 bucket for maven artifacts.  This is a safety measure
+#    that allows us to perform rollbacks.
 #
-# Step B is required so that our packaging scripts can regenerate the various deb/rpm index files.
+# C) Lastly, this script retrieves "historical" deb and rpm packages (= from a previous release) from S3 and stores them
+#    in the local OUTPUT_DIRECTORY.
+#
+# Step C is required so that our packaging scripts can regenerate the various deb/rpm index files.
 # At a higher level, this step is required because of our decision to provide `x.y` (major.minor version) indexed
 # yum and apt repositories, where a given `x.y` repository (e.g., `1.2` for the CP 1.2.* release line) will contain
 # all available `x.y.*` packages at this point.  For example, when CP 1.2.3 is released, the `1.2` repositories
@@ -39,6 +46,14 @@ declare -r ARCHIVE_BASE="$PACKAGES_BUCKET_ARCHIVE_BASE"
 declare -r DEB_BASE="$PACKAGES_BUCKET_DEB_BASE"
 declare -r RPM_BASE="$PACKAGES_BUCKET_RPM_BASE"
 declare -r MAVEN_BUCKET_URL="s3://${MAVEN_BUCKET}"
+declare -r MAVEN_BUCKET_PRODUCTION_URL="s3://${MAVEN_BUCKET_PRODUCTION}"
+declare -r BACKUP_TIMESTAMP=`date +"%Y%m%d-%H%M%S"`
+if [ -z "$BACKUP_TIMESTAMP" ]; then
+  echo "ERROR: Could not create a valid backup timestamp."
+  exit 1
+fi
+declare -r MAVEN_BUCKET_PRODUCTION_BACKUP="${MAVEN_BUCKET_PRODUCTION}-${BACKUP_TIMESTAMP}"
+declare -r MAVEN_BUCKET_PRODUCTION_BACKUP_URL="s3://${MAVEN_BUCKET_PRODUCTION_BACKUP}"
 
 # TODO: We can derive the same information by inspecting the version suffix in PACKAGES_BUCKET (or CONFLUENT_VERSION).
 is_initial_release() {
@@ -117,7 +132,21 @@ fi
 ### Staging bucket for maven artifacts
 ###
 
-# Create, if needed, the staging bucket for maven artifacts (jars) of the new release
+# Create a backup of our production bucket for maven artifacts.
+set +e
+aws s3 ls ${MAVEN_BUCKET_PRODUCTION_BACKUP_URL} &> /dev/null
+if [ $? -ne 0 ]; then
+  set -e
+  echo "Creating backup S3 bucket '$MAVEN_BUCKET_PRODUCTION_BACKUP' of production S3 bucket "\
+   "'$MAVEN_BUCKET_PRODUCTION' for maven artifacts..."
+  aws s3 mb ${MAVEN_BUCKET_PRODUCTION_BACKUP_URL}
+  sed -e "s%BUCKET%${MAVEN_BUCKET_PRODUCTION_BACKUP}%" $BUCKET_POLICY_FILE_TEMPLATE > $BUCKET_POLICY_FILE
+  aws s3api put-bucket-policy --bucket $MAVEN_BUCKET_PRODUCTION_BACKUP --policy file://${BUCKET_POLICY_FILE}
+  aws s3 sync "${MAVEN_BUCKET_PRODUCTION_URL}" "${MAVEN_BUCKET_PRODUCTION_BACKUP_URL}"
+fi
+set -e
+
+# Create the staging bucket for maven artifacts (jars) of the new release
 set +e
 aws s3 ls ${MAVEN_BUCKET_URL} &> /dev/null
 if [ $? -ne 0 ]; then

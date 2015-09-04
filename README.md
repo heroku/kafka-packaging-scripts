@@ -445,9 +445,12 @@ so the packages go into the same repositories but are treated as updates to the 
 ### Make sure you read the WARNING above before proceeding with these steps!
 ###
 
-# Prepare the staging S3 buckets. Also, download any "historical" deb/rpm packages from previous
-# x.y.* releases from S3 and store them under the local output directory.
-$ ./deploy_prepare_staging_s3_buckets_and_historical_packages.sh
+# Deployment preparation consists of three important tasks.
+# First, we prepare the staging S3 buckets for packages and maven artifacts.
+# Also, we download any "historical" deb/rpm packages from previous x.y.* releases from S3 and
+# store them under the local output directory.
+# Lastly, we create a timestamped backup of our production S3 bucket for maven artifacts.
+$ ./deployment_preparation.sh
 
 # Deploy packages (deb, rpm, tar.gz, zip)
 $ ./deploy_packages.sh
