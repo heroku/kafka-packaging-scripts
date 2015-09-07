@@ -90,10 +90,29 @@ aws s3 sync "${DEPLOYED}/" "s3://${PACKAGES_BUCKET}${PACKAGES_BUCKET_PREFIX}/"
 
 sed -e "s%PWD%${MY_DIR}%" -e "s%BUCKET%${PACKAGES_BUCKET}%" -e "s%PREFIX%${PACKAGES_BUCKET_PREFIX}%" -e "s%VERSION%${REPO_RELEASE_SUBDIR}%" -e "s%REGION%${REGION}%" aptly.conf.template > aptly.conf
 REPO="confluent-${REPO_RELEASE_SUBDIR}"
+REPO_DISTRIBUTION="stable"
 APTLY_OPTS="-config=aptly.conf"
-APTLY_REPO_OPTS="-distribution=stable -component=main -architectures=all"
+APTLY_REPO_OPTS="-distribution=${REPO_DISTRIBUTION} -component=main -architectures=all"
 aptly "${APTLY_OPTS}" repo list | grep $REPO || aptly "${APTLY_OPTS}" repo create ${APTLY_REPO_OPTS} $REPO
 aptly "${APTLY_OPTS}" repo add "$REPO" "${OUTPUT}"
+
+# If needed, remove any existing snapshot of the same name.
+set +e
+aptly -config=aptly.conf snapshot show "$SNAPSHOT_NAME"
+if [ $? -eq 0 ]; then
+  # Snapshot exists already, which means we need to remove (drop) it.
+  # If the snapshot was also published already, we need to unpublish
+  # it first before we are allowed to drop the snapshot.
+  aptly "${APTLY_OPTS}" publish list -raw=false | grep -F "s3:${PACKAGES_BUCKET}:./${REPO_DISTRIBUTION}" | grep -q "$SNAPSHOT_NAME"
+  if [ $? -eq 0 ]; then
+    set -e
+    aptly "${APTLY_OPTS}" publish drop "$REPO_DISTRIBUTION" "s3:${PACKAGES_BUCKET}:."
+  fi
+  set -e
+  aptly -config aptly.conf snapshot drop "$SNAPSHOT_NAME"
+fi
+set -e
+
 SNAPSHOT_NAME="confluent-${CONFLUENT_VERSION}-${REVISION}"
 aptly "${APTLY_OPTS}" snapshot create "$SNAPSHOT_NAME" from repo "$REPO"
 if [ "$SIGN" == "yes" ]; then
