@@ -33,6 +33,16 @@ STAT_MAC_OPTS_FOR_FILESIZE="-f%z"
   done
 }
 
+@test "archive packages (tar base) have a certain minimum file size (heuristic to detect broken packages)" {
+  for pkg in $CP_PACKAGES kafka; do
+    for file in `ls $OUTPUT_DIRECTORY/ | egrep "^${CONFLUENT_PACKAGE_PREFIX}-${pkg}-[0-9a-zA-Z\.~-]+\.tar\.gz$"`; do
+      run stat $STAT_MAC_OPTS_FOR_FILESIZE $OUTPUT_DIRECTORY/$file
+      local filesize=$(($output + 0))
+      [ "$filesize" -ge $PACKAGE_MIN_FILE_SIZE_BYTES ]
+    done
+  done
+}
+
 @test "archive packages (tar orig/debian) were built" {
   for pkg in $CP_PACKAGES kafka platform; do
     run bash -c "ls $OUTPUT_DIRECTORY/ | egrep \"^${CONFLUENT_PACKAGE_PREFIX}-${pkg}_[0-9a-zA-Z\.~-]+\.(orig|debian)\.tar\.gz$\""
@@ -47,6 +57,21 @@ STAT_MAC_OPTS_FOR_FILESIZE="-f%z"
   done
   run bash -c "ls $OUTPUT_DIRECTORY/ | egrep \"^${CONFLUENT_PACKAGE_PREFIX}-[0-9a-zA-Z\.~-]+\.zip$\""
   [ "$status" -eq 0 ]
+}
+
+@test "archive packages (zip) have a certain minimum file size (heuristic to detect broken packages)" {
+  for pkg in $CP_PACKAGES kafka; do
+    for file in `ls $OUTPUT_DIRECTORY/ | egrep "^${CONFLUENT_PACKAGE_PREFIX}-${pkg}-[0-9a-zA-Z\.~-]+\.zip$"`; do
+      run stat $STAT_MAC_OPTS_FOR_FILESIZE $OUTPUT_DIRECTORY/$file
+      local filesize=$(($output + 0))
+      [ "$filesize" -ge $PACKAGE_MIN_FILE_SIZE_BYTES ]
+    done
+  done
+  for file in `s $OUTPUT_DIRECTORY/ | egrep "^${CONFLUENT_PACKAGE_PREFIX}-[0-9a-zA-Z\.~-]+\.zip$"`; do
+    run stat $STAT_MAC_OPTS_FOR_FILESIZE $OUTPUT_DIRECTORY/$file
+    local filesize=$(($output + 0))
+    [ "$filesize" -ge $PACKAGE_MIN_FILE_SIZE_BYTES ]
+  done
 }
 
 @test "deb packages were built" {
