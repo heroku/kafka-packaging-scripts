@@ -87,20 +87,27 @@ STAT_MAC_OPTS_FOR_FILESIZE="-f%z"
 }
 
 @test "deb metadata has correct version field" {
-  for pkg in $CP_PACKAGES platform; do
+  for pkg in $CP_PACKAGES; do
     local deb_file_pattern="${OUTPUT_DIRECTORY}/${CONFLUENT_PACKAGE_PREFIX}-${pkg}[-_]*.deb"
     actual_version_field="$(dpkg -f $deb_file_pattern | grep '^Version' | sed -E 's/^Version: (.+)$/\1/')"
     expected_version_field=`deb_version_field $CONFLUENT_VERSION $REVISION`
     [ "$actual_version_field" = "$expected_version_field" ]
   done
 
-  for pkg in kafka; do
-    for scala_version in $SCALA_VERSIONS; do
-    local deb_file_pattern="${OUTPUT_DIRECTORY}/${CONFLUENT_PACKAGE_PREFIX}-${pkg}-${scala_version}_*.deb"
-      actual_version_field="$(dpkg -f $deb_file_pattern | grep '^Version' | sed -E 's/^Version: (.+)$/\1/')"
-      expected_version_field=`deb_version_field $KAFKA_VERSION $REVISION`
-      [ "$actual_version_field" = "$expected_version_field" ]
-    done
+  # Kafka
+  for scala_version in $SCALA_VERSIONS; do
+  local deb_file_pattern="${OUTPUT_DIRECTORY}/${CONFLUENT_PACKAGE_PREFIX}-kafka-${scala_version}_*.deb"
+    actual_version_field="$(dpkg -f $deb_file_pattern | grep '^Version' | sed -E 's/^Version: (.+)$/\1/')"
+    expected_version_field=`deb_version_field $KAFKA_VERSION $REVISION`
+    [ "$actual_version_field" = "$expected_version_field" ]
+  done
+
+  # Platform
+  for scala_version in $SCALA_VERSIONS; do
+  local deb_file_pattern="${OUTPUT_DIRECTORY}/${CONFLUENT_PACKAGE_PREFIX}-platform-${scala_version}_*.deb"
+    actual_version_field="$(dpkg -f $deb_file_pattern | grep '^Version' | sed -E 's/^Version: (.+)$/\1/')"
+    expected_version_field=`deb_version_field $CONFLUENT_VERSION $REVISION`
+    [ "$actual_version_field" = "$expected_version_field" ]
   done
 }
 
@@ -123,30 +130,36 @@ STAT_MAC_OPTS_FOR_FILESIZE="-f%z"
 }
 
 @test "rpm metadata has correct version+release fields" {
-  for pkg in $CP_PACKAGES platform; do
+  for pkg in $CP_PACKAGES; do
     local rpm_file_pattern="${OUTPUT_DIRECTORY}/${CONFLUENT_PACKAGE_PREFIX}-${pkg}[-_]*.rpm"
-
     actual_version_field="$(rpm -qpi $rpm_file_pattern | grep '^Version' | sed -E 's/^Version[[:space:]]+: (.+)[[:space:]]+Vendor:.*$/\1/' | sed -e 's/[[:space:]]*$//')"
     expected_version_field=`rpm_version_field $CONFLUENT_VERSION`
-    [ "$actual_version_field" = "$expected_version_field" ]
-
     actual_release_field="$(rpm -qpi $rpm_file_pattern | grep '^Release' | sed -E 's/^Release[[:space:]]+: (.+)[[:space:]]+Build Date:.*$/\1/' | sed -e 's/[[:space:]]*$//')"
     expected_release_field=`rpm_release_field $CONFLUENT_VERSION $REVISION`
+    [ "$actual_version_field" = "$expected_version_field" ]
     [ "$actual_release_field" = "$expected_release_field" ]
   done
 
-  for pkg in kafka; do
-    for scala_version in $SCALA_VERSIONS; do
-      local rpm_file_pattern="${OUTPUT_DIRECTORY}/${CONFLUENT_PACKAGE_PREFIX}-${pkg}-${scala_version}-*.rpm"
+  # Kafka
+  for scala_version in $SCALA_VERSIONS; do
+    local rpm_file_pattern="${OUTPUT_DIRECTORY}/${CONFLUENT_PACKAGE_PREFIX}-kafka-${scala_version}-*.rpm"
+    actual_version_field="$(rpm -qpi $rpm_file_pattern | grep '^Version' | sed -E 's/^Version[[:space:]]+: (.+)[[:space:]]+Vendor:.*$/\1/' | sed -e 's/[[:space:]]*$//')"
+    expected_version_field=`rpm_version_field $KAFKA_VERSION $REVISION`
+    actual_release_field="$(rpm -qpi $rpm_file_pattern | grep '^Release' | sed -E 's/^Release[[:space:]]+: (.+)[[:space:]]+Build Date:.*$/\1/' | sed -e 's/[[:space:]]*$//')"
+    expected_release_field=`rpm_release_field $KAFKA_VERSION $REVISION`
+    [ "$actual_version_field" = "$expected_version_field" ]
+    [ "$actual_release_field" = "$expected_release_field" ]
+  done
 
-      actual_version_field="$(rpm -qpi $rpm_file_pattern | grep '^Version' | sed -E 's/^Version[[:space:]]+: (.+)[[:space:]]+Vendor:.*$/\1/' | sed -e 's/[[:space:]]*$//')"
-      expected_version_field=`rpm_version_field $KAFKA_VERSION $REVISION`
-      [ "$actual_version_field" = "$expected_version_field" ]
-
-      actual_release_field="$(rpm -qpi $rpm_file_pattern | grep '^Release' | sed -E 's/^Release[[:space:]]+: (.+)[[:space:]]+Build Date:.*$/\1/' | sed -e 's/[[:space:]]*$//')"
-      expected_release_field=`rpm_release_field $KAFKA_VERSION $REVISION`
-      [ "$actual_release_field" = "$expected_release_field" ]
-    done
+  # Platform
+  for scala_version in $SCALA_VERSIONS; do
+    local rpm_file_pattern="${OUTPUT_DIRECTORY}/${CONFLUENT_PACKAGE_PREFIX}-platform-${scala_version}-*.rpm"
+    actual_version_field="$(rpm -qpi $rpm_file_pattern | grep '^Version' | sed -E 's/^Version[[:space:]]+: (.+)[[:space:]]+Vendor:.*$/\1/' | sed -e 's/[[:space:]]*$//')"
+    expected_version_field=`rpm_version_field $CONFLUENT_VERSION $REVISION`
+    actual_release_field="$(rpm -qpi $rpm_file_pattern | grep '^Release' | sed -E 's/^Release[[:space:]]+: (.+)[[:space:]]+Build Date:.*$/\1/' | sed -e 's/[[:space:]]*$//')"
+    expected_release_field=`rpm_release_field $CONFLUENT_VERSION $REVISION`
+    [ "$actual_version_field" = "$expected_version_field" ]
+    [ "$actual_release_field" = "$expected_release_field" ]
   done
 }
 
