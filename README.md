@@ -234,7 +234,7 @@ $ vagrant up
 Specify any required build and release settings in [settings.sh](settings.sh), which is sourced into
 [package.sh](package.sh):
 
-* `CONFLUENT_VERSION`:  Version of Confluent's tools.  Examples: `1.0` (a release), `1.0.1-SNAPSHOT`.
+* `CONFLUENT_VERSION`:  Version of Confluent's tools.  Examples: `1.0.0` (a release), `1.0.1-SNAPSHOT`.
 * `KAFKA_BRANCH`:  Apache Kafka branch to build (for CP Kafka) and to build against (for CP projects such as
    `kafka-rest`).  Think: `upstream/<BRANCH>`.  Example: `0.8.2`.
 * `KAFKA_VERSION`:  The associated Apache Kafka version.  This variable is used mostly for version number parsing in
@@ -245,10 +245,10 @@ Specify any required build and release settings in [settings.sh](settings.sh), w
   extracted from the Kafka build scripts.  Examples: `2.10.4`, `2.9.1 2.9.2 2.10.4 2.11.5`
 * `REVISION`:  Packages go into yum/apt/... repositories organized by `CONFLUENT_VERSION`.  If we need to release any
   updates to packages *with the same version* (cf. `CONFLUENT_VERSION`), the `REVISION` needs to be bumped up so the
-  packages go into the same repositories but are treated as updates to the existing packages.  For instance,
-  this could be needed in case the initial package we built for kafka-rest v1.0 was broken, and we wanted to release
-  a fixed package (now at revision 2) that otherwise contained the same contents as the initial package.
-  See section *5.6.12 Version* in the
+  packages go into the same repositories but are treated as updates to the existing packages.
+  For example, this would be needed if you made a mistake during the packaging of CP 1.0.0 and now wanted to publish
+  fixed CP 1.0.0 packages without bumping the CP version to 1.0.1; in this case, `CONFLUENT_VERSION` would stay at
+  `1.0.0` but you would increase `REVISION` from `1` to `2`.  See section *5.6.12 Version* in the
   [Debian Policy Manual](https://www.debian.org/doc/debian-policy/ch-controlfields.html) for further details.
 * `BRANCH`:  For testing/debugging purposes, setting this will override the branch/tag we merge with for each
   (non-Kafka) project. For example, setting `BRANCH` to `origin/master` will build and test against the latest,
@@ -447,12 +447,6 @@ Now we can run the deployment scripts.
 
 You will be prompted multiple times for your GPG key password since some package index files, which are generated
 during this deployment step, will need to be signed.
-
-Note that the `REVISION` specified in [settings.sh](settings.sh) is important here.  Packages go into repositories
-organized by `CONFLUENT_VERSION`.  If we need to release any updates to packages _while keeping the contents of the_
-_packages identical_ (e.g. because of a packaging bug), the `REVISION` needs to be bumped up so the packages go into
-the same repositories but are treated as updates to the existing packages (e.g. you made a mistake during the
-packaging of CP 1.0.0 so you want to publish fixed CP 1.0.0 packages without bumping the CP version to 1.0.1).
 
 ```shell
 ###
