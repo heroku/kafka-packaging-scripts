@@ -235,7 +235,12 @@ Specify any required build and release settings in [settings.sh](settings.sh), w
 [package.sh](package.sh):
 
 * `CONFLUENT_VERSION`:  Version of Confluent's tools.  Examples: `1.0` (a release), `1.0.1-SNAPSHOT`.
-* `KAFKA_VERSION`:  Apache Kafka version to build against.  Example: `0.8.2.1`.
+* `KAFKA_BRANCH`:  Apache Kafka branch to build (for CP Kafka) and to build against (for CP projects such as
+   `kafka-rest`).  Think: `upstream/<BRANCH>`.  Example: `0.8.2`.
+* `KAFKA_VERSION`:  The associated Apache Kafka version.  This variable is used mostly for version number parsing in
+   the build scripts (as sometimes the version information in the upstream Kafka branches are not matching our
+   desired build configuration) as well as for naming the generated package files.  Example: `0.8.2.1`.  (In the future
+   we might consider deriving `KAFKA_VERSION` automatically.)
 * `SCALA_VERSIONS`:  Space-separated list of Scala versions to use for Scala-dependent projects.  These should just be
   extracted from the Kafka build scripts.  Examples: `2.10.4`, `2.9.1 2.9.2 2.10.4 2.11.5`
 * `REVISION`:  Packages go into yum/apt/... repositories organized by `CONFLUENT_VERSION`.  If we need to release any
@@ -525,8 +530,8 @@ REVISION="1"
 BRANCH="v1.0" # <<< git tag of `v1.0` release
 
 # Apache Kafka
-KAFKA_VERSION="0.8.2.1"
 KAFKA_BRANCH="0.8.2"
+KAFKA_VERSION="0.8.2.1"
 SCALA_VERSIONS="2.9.1 2.9.2 2.10.4 2.11.5"
 ```
 
@@ -555,8 +560,8 @@ REVISION="1"
 BRANCH="origin/1.x"
 
 # Apache Kafka
-KAFKA_VERSION="0.8.2.1"
 KAFKA_BRANCH="0.8.2"
+KAFKA_VERSION="0.8.2.1"
 SCALA_VERSIONS="2.9.1 2.9.2 2.10.4 2.11.5"
 ```
 
@@ -585,8 +590,8 @@ REVISION="2"   # < Only the revision was changed from 1 to 2
 BRANCH="v1.0"
 
 # Apache Kafka
-KAFKA_VERSION="0.8.2.1"
 KAFKA_BRANCH="0.8.2"
+KAFKA_VERSION="0.8.2.1"
 SCALA_VERSIONS="2.9.1 2.9.2 2.10.4 2.11.5"
 ```
 
