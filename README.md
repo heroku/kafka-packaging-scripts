@@ -382,7 +382,9 @@ Optionally, you may add a prefix by setting `PACKAGES_BUCKET_PREFIX` and/or `MAV
 don't want to install to the root of the respective buckets -- just make sure it includes the leading `/` (no prefix
 is used by default).
 
-Now we will prepare the deployment, which notably includes creating staging S3 buckets.
+Now we will prepare the deployment, which notably includes creating staging S3 buckets.  The contents of these
+staging buckets, once tested and verified, will eventually be promoted to corresponding production S3 buckets
+(this promotion step is covered and documented elsewhere).
 
 ```shell
 # Deployment preparation consists of three important tasks:
