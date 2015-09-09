@@ -96,30 +96,32 @@ APTLY_REPO_OPTS="-distribution=${REPO_DISTRIBUTION} -component=main -architectur
 aptly "${APTLY_OPTS}" repo list | grep $REPO || aptly "${APTLY_OPTS}" repo create ${APTLY_REPO_OPTS} $REPO
 aptly "${APTLY_OPTS}" repo add "$REPO" "${OUTPUT}"
 
+# If needed, unpublish the repo/distribution.
+# This must be done before we can remove an associated existing snapshot (if any).
+set +e
+aptly "${APTLY_OPTS}" publish list -raw=false | grep -F "s3:${PACKAGES_BUCKET}:./${REPO_DISTRIBUTION}" | grep -q "$SNAPSHOT_NAME"
+if [ $? -eq 0 ]; then
+  set -e
+  aptly "${APTLY_OPTS}" publish drop "$REPO_DISTRIBUTION" "s3:${PACKAGES_BUCKET}:."
+fi
+set -e
+
+SNAPSHOT_NAME="confluent-${CONFLUENT_VERSION}-${REVISION}"
 # If needed, remove any existing snapshot of the same name.
 set +e
 aptly -config=aptly.conf snapshot show "$SNAPSHOT_NAME"
 if [ $? -eq 0 ]; then
-  # Snapshot exists already, which means we need to remove (drop) it.
-  # If the snapshot was also published already, we need to unpublish
-  # it first before we are allowed to drop the snapshot.
-  aptly "${APTLY_OPTS}" publish list -raw=false | grep -F "s3:${PACKAGES_BUCKET}:./${REPO_DISTRIBUTION}" | grep -q "$SNAPSHOT_NAME"
-  if [ $? -eq 0 ]; then
-    set -e
-    aptly "${APTLY_OPTS}" publish drop "$REPO_DISTRIBUTION" "s3:${PACKAGES_BUCKET}:."
-  fi
   set -e
   aptly -config aptly.conf snapshot drop "$SNAPSHOT_NAME"
 fi
 set -e
 
-SNAPSHOT_NAME="confluent-${CONFLUENT_VERSION}-${REVISION}"
 aptly "${APTLY_OPTS}" snapshot create "$SNAPSHOT_NAME" from repo "$REPO"
 if [ "$SIGN" == "yes" ]; then
-    if [ -n "$SIGN_KEY" ]; then
-        APTLY_SIGN_OPTS="-gpg-key $SIGN_KEY"
-    fi
+  if [ -n "$SIGN_KEY" ]; then
+    APTLY_SIGN_OPTS="-gpg-key $SIGN_KEY"
+  fi
 else
-    APTLY_SIGN_OPTS="--skip-signing=true"
+  APTLY_SIGN_OPTS="--skip-signing=true"
 fi
 aptly "${APTLY_OPTS}" publish snapshot $APTLY_SIGN_OPTS ${APTLY_REPO_OPTS} "$SNAPSHOT_NAME" "s3:${PACKAGES_BUCKET}:"
