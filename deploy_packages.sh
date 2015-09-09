@@ -96,6 +96,7 @@ APTLY_REPO_OPTS="-distribution=${REPO_DISTRIBUTION} -component=main -architectur
 aptly "${APTLY_OPTS}" repo list | grep $REPO || aptly "${APTLY_OPTS}" repo create ${APTLY_REPO_OPTS} $REPO
 aptly "${APTLY_OPTS}" repo add "$REPO" "${OUTPUT}"
 
+SNAPSHOT_NAME="confluent-${CONFLUENT_VERSION}-${REVISION}"
 # If needed, unpublish the repo/distribution.
 # This must be done before we can remove an associated existing snapshot (if any).
 set +e
@@ -106,7 +107,6 @@ if [ $? -eq 0 ]; then
 fi
 set -e
 
-SNAPSHOT_NAME="confluent-${CONFLUENT_VERSION}-${REVISION}"
 # If needed, remove any existing snapshot of the same name.
 set +e
 aptly -config=aptly.conf snapshot show "$SNAPSHOT_NAME"
