@@ -93,6 +93,10 @@ REPO="confluent-${REPO_RELEASE_SUBDIR}"
 REPO_DISTRIBUTION="stable"
 APTLY_OPTS="-config=aptly.conf"
 APTLY_REPO_OPTS="-distribution=${REPO_DISTRIBUTION} -component=main -architectures=all"
+
+# Remove any prior aptly pool etc. so that we don't accidentally include "other" packages,
+# which may have slipped into the pool because of e.g. previous manual testing.
+rm -rf "./.aptly"
 aptly "${APTLY_OPTS}" repo list | grep $REPO || aptly "${APTLY_OPTS}" repo create ${APTLY_REPO_OPTS} $REPO
 aptly "${APTLY_OPTS}" repo add "$REPO" "${OUTPUT}"
 
