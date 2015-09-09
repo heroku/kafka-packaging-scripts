@@ -443,7 +443,7 @@ Now we can run the deployment scripts.
 > **SAFETY NOTE**: None of the deployment scripts will modify production, i.e. all modifying actions are performed
 > against staging S3 buckets.  Production data is only ever read from, e.g. to create backups for rollback purposes.
 > The steps that do modify production by publishing the staged packages and maven artifacts via S3 and CloudFront
-> are not (yet) covered and documented here.
+> are covered and documented elsewhere.
 
 You will be prompted multiple times for your GPG key password since some package index files, which are generated
 during this deployment step, will need to be signed.
