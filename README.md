@@ -378,81 +378,13 @@ $ vi aws.sh
 The file `aws.sh` is ignored by git so you won't accidentally check it in and thereby leak your confidential AWS
 credentials.
 
-**Now you must create a new S3 bucket for the new release.**
-This is required because the deployment script will create sub-folders in the target S3 bucket indexed by
-_majorVersion.minorVersion_, e.g.  `/rpm/1.0/` for CP 1.0.1.  This means that, unless you create a new S3 bucket for
-deploying a new CP release, you will **overwrite any existing packages etc. in S3 from previous `x.y.*` releases**.
-
-> **S3 bucket management**: The idea is that, for a given `x.y.*` release line, we create a new S3 bucket whenever a
-> new `x.y.z` release is deployed.  This new S3 bucket will contain the contents of the new `x.y.z` release
-> _including all the contents of any prior releases going back to `x.z.0`_.  This approach ensures that users can
-> install `x.y.0`, `x.y.1`, ..., `x.y.z` packages from the same `x.y` indexed yum/apt/... repository.  It also allows
-> us to easily rollback a faulty new release by pointing back to the S3 bucket of the previous, working CP release.
-
-**TODO: Document/automate the S3 bucket management step.**
-
-> **When testing deploying to S3:**  If you're setting up your own S3 bucket for testing, this script assumes that
-> there is an ACL policy on the bucket that makes everything readable anonymously:
-> ```
-> {
->   "Version": "2008-10-17",
->   "Id": "Everyone-Read-2015-02-17",
->   "Statement": [
->     {
->       "Sid": "AddPerm",
->       "Effect": "Allow",
->       "Principal": "*",
->       "Action": "s3:ListBucket",
->       "Resource": "arn:aws:s3:::my-testing-bucket-confluent-packages"
->     },
->     {
->       "Sid": "AddPerm",
->       "Effect": "Allow",
->       "Principal": "*",
->       "Action": "s3:GetObject",
->       "Resource": "arn:aws:s3:::my-testing-bucket-confluent-packages/*"
->     }
->   ]
-> }
-> ```
-
-
 Optionally, you may add a prefix by setting `PACKAGES_BUCKET_PREFIX` and/or `MAVEN_BUCKET_PREFIX` in `aws.sh` if you
 don't want to install to the root of the respective buckets -- just make sure it includes the leading `/` (no prefix
 is used by default).
 
-**Next, make sure you are now switched to Java 7.**
-
-> **Java 6 vs. Java 7**:  Future releases of the Confuent Platform will target Java 7.  The Java 6 related instructions
-> in this README only apply to CP 1.x builds.
-
-During deployment, we re-build to generate the Maven output, but we use the S3 Maven Wagon to deploy, which requires
-JRE7.   Where necessary, small patches are applied to ensure the output targets the correct Java 6 compatible version.
+Now we will prepare the deployment, which notably includes creating staging S3 buckets.
 
 ```shell
-# On a Mac you can use the `java_home` command:
-#
-# export JAVA_HOME=`/usr/libexec/java_home -v 1.6` # Java 6
-# export JAVA_HOME=`/usr/libexec/java_home -v 1.7` # Java 7
-#
-$ export JAVA_HOME=/path/to/jdk7
-```
-
-Now we can run the deployment scripts.
-
-> **SAFETY NOTE**: None of the deployment scripts will modify production, i.e. all modifying actions are performed
-> against staging S3 buckets.  Production data is only ever read from, e.g. to create backups for rollback purposes.
-> The steps that do modify production by publishing the staged packages and maven artifacts via S3 and CloudFront
-> are covered and documented elsewhere.
-
-You will be prompted multiple times for your GPG key password since some package index files, which are generated
-during this deployment step, will need to be signed.
-
-```shell
-###
-### Make sure you read the WARNING above before proceeding with these steps!
-###
-
 # Deployment preparation consists of three important tasks:
 #
 # 1. We prepare the staging S3 buckets for packages and maven artifacts.
@@ -463,7 +395,44 @@ during this deployment step, will need to be signed.
 # 3. We create a timestamped backup of our production S3 bucket for maven artifacts.
 #
 $ ./deployment_preparation.sh
+```
 
+> **S3 bucket management**: The idea is that, for the packages of a given `x.y.*` release line, we create a new S3
+> bucket whenever a new `x.y.z` release is deployed.  This new S3 bucket will contain the contents of the new `x.y.z`
+> release _including all the contents of any prior releases going back to `x.z.0`_.  This approach ensures that users
+> can install `x.y.0`, `x.y.1`, ..., `x.y.z` packages from the same `x.y` indexed yum/apt/... repository.  It also
+> enables us to easily rollback a faulty new release by pointing back to the S3 bucket of the previous, working CP
+> release.
+
+**Next, make sure you are now switched to Java 7.**
+During deployment, we re-build to generate the Maven output, but we use the S3 Maven Wagon to deploy, which requires
+JRE7.   Where necessary, small patches are applied to ensure the output targets the correct Java 6 compatible version.
+
+
+> **Java 6 vs. Java 7**:  Future releases of the Confuent Platform will target Java 7.  The Java 6 related instructions
+> in this README only apply to CP 1.x builds.
+
+```shell
+# On a Mac you can use the `java_home` command:
+#
+# export JAVA_HOME=`/usr/libexec/java_home -v 1.6` # Java 6
+# export JAVA_HOME=`/usr/libexec/java_home -v 1.7` # Java 7
+#
+$ export JAVA_HOME=/path/to/jdk7
+```
+
+Now we can run the deployment scripts, which will deploy the packages and maven artifacts to the staging S3 buckets
+we prepared previously.
+
+> **SAFETY NOTE**: None of the deployment scripts will modify production, i.e. all modifying actions are performed
+> against staging S3 buckets.  Production data is only ever read from, e.g. to create backups for rollback purposes.
+> The steps that do modify production by publishing the staged packages and maven artifacts via S3 and CloudFront
+> are covered and documented elsewhere.
+
+You will be prompted multiple times for your GPG key password since some package index files, which are generated
+during this deployment step, will need to be signed.
+
+```shell
 # Deploy packages (deb, rpm, tar.gz, zip)
 $ ./deploy_packages.sh
 
@@ -472,7 +441,8 @@ $ ./deploy_packages.sh
 $ ./deploy_artifacts.sh
 ```
 
-At this point you have build, tested, and deployed the Confluent packages to staging S3 buckets.
+At this point you have built, tested, and deployed the Confluent packages to staging S3 buckets.
+
 
 ## Step 6: Testing and validation of staged packages and maven artifacts
 
