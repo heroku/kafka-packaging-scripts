@@ -449,8 +449,10 @@ You will be prompted multiple times for your GPG key password since some package
 during this deployment step, will need to be signed.
 
 Note that the `REVISION` specified in [settings.sh](settings.sh) is important here.  Packages go into repositories
-organized by `CONFLUENT_VERSION`.  If we need to release any updates to packages, the `REVISION` needs to be bumped up
-so the packages go into the same repositories but are treated as updates to the existing packages.
+organized by `CONFLUENT_VERSION`.  If we need to release any updates to packages _while keeping the contents of the_
+_packages identical_ (e.g. because of a packaging bug), the `REVISION` needs to be bumped up so the packages go into
+the same repositories but are treated as updates to the existing packages (e.g. you made a mistake during the
+packaging of CP 1.0.0 so you want to publish fixed CP 1.0.0 packages without bumping the CP version to 1.0.1).
 
 ```shell
 ###
