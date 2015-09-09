@@ -407,7 +407,7 @@ $ ./deployment_preparation.sh
 > release.
 
 **Next, make sure you are now switched to Java 7.**
-During deployment, we re-build to generate the Maven output, but we use the S3 Maven Wagon to deploy, which requires
+During deployment we re-build to generate the Maven output, but we use the S3 Maven Wagon to deploy, which requires
 JRE7.   Where necessary, small patches are applied to ensure the output targets the correct Java 6 compatible version.
 
 
