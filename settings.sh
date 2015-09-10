@@ -8,7 +8,7 @@
 
 # Kafka has its own version and branch settings as it has a special requirements
 # in our build setup.  For example, we need to support multiple Scala versions.
-KAFKA_VERSION="0.8.2.1" # Will eventually be 0.8.2.2
+KAFKA_VERSION="0.8.2.2"
 KAFKA_BRANCH="0.8.2"
 SCALA_VERSIONS="2.9.1 2.9.2 2.10.4 2.11.5"
 
@@ -27,7 +27,7 @@ SCALA_VERSIONS="2.9.1 2.9.2 2.10.4 2.11.5"
 #   settings below.  The S3 buckets we use follow a naming convention that
 #   must match CONFLUENT_VERSION.
 #
-CONFLUENT_VERSION="1.0.1-SNAPSHOT"
+CONFLUENT_VERSION="1.0.1"
 
 # Used for "Revision" field of deb packages and "Release" field of rpm packages.
 #
@@ -53,8 +53,9 @@ CP_PACKAGES="common rest-utils schema-registry kafka-rest camus"
 # --------
 # BRANCH="origin/master" # for snapshots
 # BRANCH="origin/1.x" # for development/maintenance branches
+# BRANCH="v1.0.1" # tag
 #
-BRANCH="origin/1.x"
+BRANCH="v1.0.1"
 
 # You may add branch overrides for specific projects, if needed.
 # Use project_name_using_underscores_BRANCH.
