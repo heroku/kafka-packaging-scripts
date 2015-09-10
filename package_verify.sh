@@ -96,7 +96,7 @@ STAT_MAC_OPTS_FOR_FILESIZE="-f%z"
 
   # Kafka
   for scala_version in $SCALA_VERSIONS; do
-  local deb_file_pattern="${OUTPUT_DIRECTORY}/${CONFLUENT_PACKAGE_PREFIX}-kafka-${scala_version}_*.deb"
+    local deb_file_pattern="${OUTPUT_DIRECTORY}/${CONFLUENT_PACKAGE_PREFIX}-kafka-${scala_version}_*.deb"
     actual_version_field="$(dpkg -f $deb_file_pattern | grep '^Version' | sed -E 's/^Version: (.+)$/\1/')"
     expected_version_field=`deb_version_field $KAFKA_VERSION $REVISION`
     [ "$actual_version_field" = "$expected_version_field" ]
@@ -104,7 +104,7 @@ STAT_MAC_OPTS_FOR_FILESIZE="-f%z"
 
   # Platform
   for scala_version in $SCALA_VERSIONS; do
-  local deb_file_pattern="${OUTPUT_DIRECTORY}/${CONFLUENT_PACKAGE_PREFIX}-platform-${scala_version}_*.deb"
+    local deb_file_pattern="${OUTPUT_DIRECTORY}/${CONFLUENT_PACKAGE_PREFIX}-platform-${scala_version}_*.deb"
     actual_version_field="$(dpkg -f $deb_file_pattern | grep '^Version' | sed -E 's/^Version: (.+)$/\1/')"
     expected_version_field=`deb_version_field $CONFLUENT_VERSION $REVISION`
     [ "$actual_version_field" = "$expected_version_field" ]
