@@ -27,7 +27,7 @@ SCALA_VERSIONS="2.9.1 2.9.2 2.10.4 2.11.5"
 #   settings below.  The S3 buckets we use follow a naming convention that
 #   must match CONFLUENT_VERSION.
 #
-CONFLUENT_VERSION="1.0.1"
+CONFLUENT_VERSION="2.0-SNAPSHOT"
 
 # Used for "Revision" field of deb packages and "Release" field of rpm packages.
 #
@@ -55,7 +55,7 @@ CP_PACKAGES="common rest-utils schema-registry kafka-rest camus"
 # BRANCH="origin/1.x" # for development/maintenance branches
 # BRANCH="v1.0.1" # tag
 #
-BRANCH="v1.0.1"
+BRANCH="origin/master"
 
 # You may add branch overrides for specific projects, if needed.
 # Use project_name_using_underscores_BRANCH.
@@ -99,7 +99,7 @@ REGION="us-west-2" # S3 region, this is the default for Confluent's account
 # - Z = Patch CP release number (cf. CONFLUENT_VERSION)
 #
 # Example: staging-confluent-packages-1.0.0
-PACKAGES_BUCKET="staging-confluent-packages-1.0.1"
+PACKAGES_BUCKET="staging-confluent-packages-2.0.0"
 
 # S3 bucket that contains all packages for the previous release.
 # (previous release: if you want to deploy 1.0.3, then the previous release
@@ -112,8 +112,7 @@ PACKAGES_BUCKET="staging-confluent-packages-1.0.1"
 #
 # Examples:
 # confluent-packages-1.0.0          (production S3 bucket)
-# staging-confluent-packages-1.0.0  (if it still exists)
-PACKAGES_BUCKET_OF_PREVIOUS_RELEASE="confluent-packages-1.0.0"
+PACKAGES_BUCKET_OF_PREVIOUS_RELEASE=""
 
 # Staging S3 bucket to which we deploy the new maven artifacts (jars).
 #
@@ -124,7 +123,7 @@ PACKAGES_BUCKET_OF_PREVIOUS_RELEASE="confluent-packages-1.0.0"
 # - Z = Patch CP release number (cf. CONFLUENT_VERSION)
 #
 # Example: staging-confluent-packages-maven-1.0.0
-MAVEN_BUCKET="staging-confluent-packages-maven-1.0.1"
+MAVEN_BUCKET="staging-confluent-packages-maven-2.0.0"
 
 # Production S3 bucket that contains our production Maven repository.
 # This bucket is only read from but never written to.
