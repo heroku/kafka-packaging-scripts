@@ -235,6 +235,8 @@ Specify any required build and release settings in [settings.sh](settings.sh), w
 [package.sh](package.sh):
 
 * `CONFLUENT_VERSION`:  Version of Confluent's tools.  Examples: `1.0.0` (a release), `1.0.1-SNAPSHOT`.
+  Note that we do not currently have per-project overrides for `CONFLUENT_VERSION`, so the assumption here is that all
+  projects make version updates in lock-step.
 * `KAFKA_BRANCH`:  Apache Kafka branch to build (for CP Kafka) and to build against (for CP projects such as
    `kafka-rest`).  Think: `upstream/<BRANCH>`.  Example: `0.8.2`.
 * `KAFKA_VERSION`:  The associated Apache Kafka version.  This variable is used mostly for version number parsing in
@@ -286,9 +288,6 @@ Specify any required build and release settings in [settings.sh](settings.sh), w
   in your `$HOME/.gnupg/gpg.conf`, where you must replace `ABCD1234` with the id of the actual GPG private key.
   If `SIGN_KEY` is empty, we'll try to fill it in automatically using `gpg --list-secret-keys` but this is quite
   unreliable -- we strongly recommend to explicitly set `SIGN_KEY`.
-
-Note that we do not currently have per-project overrides for `CONFLUENT_VERSION`, so the assumption here is that all
-projects make version updates in lock-step.
 
 
 ## Step 3: Run the packaging build
