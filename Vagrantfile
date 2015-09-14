@@ -20,7 +20,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define "rpm" do |rpm|
-    rpm.vm.box = "chef/fedora-20"
+    rpm.vm.box = "rafacas/fedora20-plain"
     rpm.vm.provision "shell", path: "vagrant/rpm.sh"
     rpm.vm.synced_folder ".", "/vagrant",
         :nfs => true,
