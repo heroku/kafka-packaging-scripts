@@ -43,10 +43,86 @@ STAT_MAC_OPTS_FOR_FILESIZE="-f%z"
   done
 }
 
+@test "archive platform packages (aggregated tar) contain all individual packages (heuristic to detect broken packages)" {
+  for scala_version in $SCALA_VERSIONS; do
+    for file in `ls $OUTPUT_DIRECTORY/ | egrep "^${CONFLUENT_PACKAGE_PREFIX}-${CONFLUENT_VERSION}-${scala_version}\.tar\.gz$"`; do
+      paths=`tar -tzf $OUTPUT_DIRECTORY/$file`
+      for pkg in $CP_PACKAGES kafka; do
+        local pkg_dir="$pkg"
+        if [ "$pkg" = "common" ]; then
+          pkg_dir="${CONFLUENT_PACKAGE_PREFIX}-common"
+        fi
+        local found_a_jar=0
+        for path in $paths; do
+          if [[ "$path" == *${CONFLUENT_PACKAGE_PREFIX}-${CONFLUENT_VERSION}/share/java/${pkg_dir}/*.jar ]]; then
+            found_a_jar=1
+            break
+          fi
+        done
+        [ "$found_a_jar" -eq 1 ]
+      done
+    done
+  done
+}
+
 @test "archive packages (tar orig/debian) were built" {
   for pkg in $CP_PACKAGES kafka platform; do
     run bash -c "ls $OUTPUT_DIRECTORY/ | egrep \"^${CONFLUENT_PACKAGE_PREFIX}-${pkg}_[0-9a-zA-Z\.~-]+\.(orig|debian)\.tar\.gz$\""
     [ "$status" -eq 0 ]
+  done
+}
+
+@test "archive platform packages (tar for debs) contain all individual packages (heuristic to detect broken packages)" {
+  for scala_version in $SCALA_VERSIONS; do
+    for file in `ls $OUTPUT_DIRECTORY/ | egrep "^${CONFLUENT_PACKAGE_PREFIX}-${CONFLUENT_VERSION}-${scala_version}-deb\.tar\.gz$"`; do
+      paths=`tar -tzf $OUTPUT_DIRECTORY/$file`
+      for pkg in $CP_PACKAGES; do
+        local found=0
+        for path in $paths; do
+          if [[ "$path" == */${CONFLUENT_PACKAGE_PREFIX}-${pkg}_${CONFLUENT_VERSION}-${REVISION}_all.deb ]]; then
+            found=1
+            break
+          fi
+        done
+        [ "$found" -eq 1 ]
+      done
+      # Kafka
+      local found=0
+      for path in $paths; do
+        if [[ "$path" == */${CONFLUENT_PACKAGE_PREFIX}-kafka-${scala_version}_${KAFKA_VERSION}-${REVISION}_all.deb ]]; then
+          found=1
+          break
+        fi
+      done
+      [ "$found" -eq 1 ]
+    done
+  done
+}
+
+@test "archive platform packages (tar for rpms) contain all individual packages (heuristic to detect broken packages)" {
+  for scala_version in $SCALA_VERSIONS; do
+    for file in `ls $OUTPUT_DIRECTORY/ | egrep "^${CONFLUENT_PACKAGE_PREFIX}-${CONFLUENT_VERSION}-${scala_version}-rpm\.tar\.gz$"`; do
+      paths=`tar -tzf $OUTPUT_DIRECTORY/$file`
+      for pkg in $CP_PACKAGES; do
+        local found=0
+        for path in $paths; do
+          if [[ "$path" == */${CONFLUENT_PACKAGE_PREFIX}-${pkg}-${CONFLUENT_VERSION}-${REVISION}.noarch.rpm ]]; then
+            found=1
+            break
+          fi
+        done
+        [ "$found" -eq 1 ]
+      done
+      # Kafka
+      local found=0
+      for path in $paths; do
+        if [[ "$path" == */${CONFLUENT_PACKAGE_PREFIX}-kafka-${scala_version}-${KAFKA_VERSION}-${REVISION}.noarch.rpm ]]; then
+          found=1
+          break
+        fi
+      done
+      [ "$found" -eq 1 ]
+    done
   done
 }
 
@@ -71,6 +147,28 @@ STAT_MAC_OPTS_FOR_FILESIZE="-f%z"
     run stat $STAT_MAC_OPTS_FOR_FILESIZE $OUTPUT_DIRECTORY/$file
     local filesize=$(($output + 0))
     [ "$filesize" -ge $PACKAGE_MIN_FILE_SIZE_BYTES ]
+  done
+}
+
+@test "archive platform packages (aggregated zip) contain all individual packages (heuristic to detect broken packages)" {
+  for scala_version in $SCALA_VERSIONS; do
+    for file in `ls $OUTPUT_DIRECTORY/ | egrep "^${CONFLUENT_PACKAGE_PREFIX}-${CONFLUENT_VERSION}-${scala_version}\.zip$"`; do
+      paths=`unzip -l $OUTPUT_DIRECTORY/$file | awk '{ print $4 }'| grep "^confluent-" `
+      for pkg in $CP_PACKAGES kafka; do
+        local pkg_dir="$pkg"
+        if [ "$pkg" = "common" ]; then
+          pkg_dir="${CONFLUENT_PACKAGE_PREFIX}-common"
+        fi
+        local found_a_jar=0
+        for path in $paths; do
+          if [[ "$path" == ${CONFLUENT_PACKAGE_PREFIX}-${CONFLUENT_VERSION}/share/java/${pkg_dir}/*.jar ]]; then
+            found_a_jar=1
+            break
+          fi
+        done
+        [ "$found_a_jar" -eq 1 ]
+      done
+    done
   done
 }
 
