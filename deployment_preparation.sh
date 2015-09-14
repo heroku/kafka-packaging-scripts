@@ -60,7 +60,7 @@ is_initial_release() {
   if [ -z "$CURRENT_RELEASE_BUCKET" ]; then
     return 0 # initial release (x.y.0)
   else
-    return 1 # patch release (x.z.1 onwards)
+    return 1 # patch release (x.y.1 onwards)
   fi
 }
 
