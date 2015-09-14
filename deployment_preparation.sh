@@ -75,7 +75,7 @@ is_initial_release() {
 #
 # TODO: Prevent the user from skipping intermediate patch releases (e.g. 1.0.0 -> 1.0.7)?
 #
-if is_initial_release; then
+if ! is_initial_release; then
   echo "Verifying correct lineage of S3 buckets..."
   if [ `version_compare $CURRENT_MAJOR_MINOR_RELEASE $NEW_MAJOR_MINOR_RELEASE` != "0" ]; then
     echo "ERROR: You may only prepare a new S3 bucket for the same CP x.y.* release line "\
