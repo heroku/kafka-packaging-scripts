@@ -20,7 +20,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define "rpm" do |rpm|
-    rpm.vm.box = "chef/fedora-20"
+    # FIXME: Use bento/fedora-21 (https://atlas.hashicorp.com/bento/boxes/fedora-21)
+    # or boxcutter/fedora20 (https://atlas.hashicorp.com/boxcutter/boxes/fedora20)
+    # now that chef/fedora20 is not available anymore since Sep 2015?
+    rpm.vm.box = "rafacas/fedora20-plain"
     rpm.vm.provision "shell", path: "vagrant/rpm.sh"
     rpm.vm.synced_folder ".", "/vagrant",
         :nfs => true,
