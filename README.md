@@ -280,10 +280,10 @@ Specify any required build and release settings in [settings.sh](settings.sh), w
   by setting it to `no` while testing since it is the only step that can't be automated -- you are required to manually
   enter your GPG key password for every package, and GPG password prompts may timeout (thus cancelling/stopping the
   build process).
-* `SIGN_KEY`:  The name (e.g. "Ewen Cheslack-Postava <ewen@confluent.io>") of the GPG key to sign with.  This currently
-  *MUST* also be your default key (which will be the case if you have only one secret key) because of differences in
-  how RPM and DEB signing work.  You can configure a GPG default key by setting `default-key ABCD1234` in your
-  `$HOME/.gnupg/gpg.conf`, where you must replace `ABCD1234` with the id of the actual GPG private key.
+* `SIGN_KEY`:  The id or name (e.g. "Confluent Packaging <packages@confluent.io>") of the GPG key to sign with.  This
+  currently *MUST* also be your default key (which will be the case if you have only one secret key) because of
+  differences in how RPM and DEB signing work.  You can configure a GPG default key by setting `default-key ABCD1234`
+  in your `$HOME/.gnupg/gpg.conf`, where you must replace `ABCD1234` with the id of the actual GPG private key.
   If `SIGN_KEY` is empty, we'll try to fill it in automatically using `gpg --list-secret-keys` but this is quite
   unreliable -- we strongly recommend to explicitly set `SIGN_KEY`.
 
