@@ -98,7 +98,13 @@ REGION="us-west-2" # S3 region, this is the default for Confluent's account
 # - Y = Minor CP release number (cf. CONFLUENT_VERSION)
 # - Z = Patch CP release number (cf. CONFLUENT_VERSION)
 #
-# Example: staging-confluent-packages-1.0.0
+# In the rare case we need to publish a release with REVISION > 1
+# (which would happen in case of a packaging mistake, for example),
+# then we also add the suffix `-$REVISION`.
+#
+# Examples:
+# staging-confluent-packages-1.0.0    => staging bucket for CP 1.0.0 packages
+# staging-confluent-packages-1.2.3-4  => staging bucket for CP 1.2.3 packages with REVISION=4
 PACKAGES_BUCKET="staging-confluent-packages-2.0.0"
 
 # S3 bucket that contains all packages for the previous release.
@@ -111,7 +117,7 @@ PACKAGES_BUCKET="staging-confluent-packages-2.0.0"
 # This bucket follows the same naming convention as PACKAGES_BUCKET.
 #
 # Examples:
-# confluent-packages-1.0.0          (production S3 bucket)
+# confluent-packages-1.0.0  (production S3 bucket)
 PACKAGES_BUCKET_OF_PREVIOUS_RELEASE=""
 
 # Staging S3 bucket to which we deploy the new maven artifacts (jars).
@@ -122,7 +128,13 @@ PACKAGES_BUCKET_OF_PREVIOUS_RELEASE=""
 # - Y = Minor CP release number (cf. CONFLUENT_VERSION)
 # - Z = Patch CP release number (cf. CONFLUENT_VERSION)
 #
-# Example: staging-confluent-packages-maven-1.0.0
+# In the rare case we need to publish a release with REVISION > 1
+# (which would happen in case of a packaging mistake, for example),
+# then we also add the suffix `-$REVISION`.
+#
+# Examples:
+# staging-confluent-packages-maven-1.0.0    => staging bucket for CP 1.0.0 maven artifacts
+# staging-confluent-packages-maven-1.2.3-4  => staging bucket for CP 1.2.3 maven artifacts with REVISION=4
 MAVEN_BUCKET="staging-confluent-packages-maven-2.0.0"
 
 # Production S3 bucket that contains our production Maven repository.
