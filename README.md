@@ -362,7 +362,7 @@ If something went wrong with the tests, it'll print out a big, obvious error mes
 
 ## Step 5: Deploy the packages
 
-_Note: As mentioned below make you sure you have switched to Java 7 for the deploy step._
+_Note: As mentioned below make sure you have switched to Java 7 for the deploy step._
 
 Now we need to actually deploy the resulting packages and files in `output/`.  We need to do this in a number of
 formats (archives, rpm, deb), and we also need to deploy jars into a Maven repository.  We'll store all our Confluent
