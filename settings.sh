@@ -32,7 +32,7 @@ CONFLUENT_VERSION="1.0.1"
 # Used for "Revision" field of deb packages and "Release" field of rpm packages.
 #
 # REVISION should be reset to `1` whenever we bump CONFLUENT_VERSION.
-REVISION="1"
+REVISION="2"
 
 # Space-separated list of all the packages except for Kafka, without the
 # `confluent-` prefix.  These all need to have the same version number
