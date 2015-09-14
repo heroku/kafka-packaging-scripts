@@ -304,7 +304,7 @@ $ ./package.sh
 $ ls output/
 ```
 
-Example files for a build with `VERSION=1.0.1-SNAPSHOT`:
+Example files for a build with `CONFLUENT_VERSION=1.0.1-SNAPSHOT`, `KAFKA_VERSION=0.8.2.1`, and `REVISION=1`:
 
 ```
 confluent-1.0.1-SNAPSHOT-2.10.4-deb.tar.gz
