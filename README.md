@@ -469,13 +469,29 @@ Once you have confirmed that the staged packages and maven artifacts are working
 
 ## Step 8: Terminate the build VMs (clean up)
 
-Finally, clean up the build VMs.  Except for the build output under `output/`, the scripts should be careful to do
+Now we can clean up the build VMs.  Except for the build output under `output/`, the scripts should be careful to do
 everything in temporary space in the VMs so your source tree doesn't get polluted with build by-products.
 
 ```shell
 # Terminate the VMs
 $ vagrant destroy
 ```
+
+
+## Step 9: Add a git tag for the new release
+
+Finally we must add a git tag to this repository for the new release, just like we do for the various CP packages.
+
+The tags follow the convention:
+
+    vX.Y.Z-<REVISION>
+
+Examples:
+
+    v1.0.1    # CP 1.0.1 Release
+    v1.0.1-2  # CP 1.0.1 Release, Revision 2
+
+Make sure to push the git tag to the upstream packaging repository.
 
 
 <a name="example-settings"></a>
