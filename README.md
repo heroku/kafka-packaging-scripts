@@ -484,7 +484,7 @@ Finally we must add a git tag to this repository for the new release, just like 
 
 The tags follow the convention:
 
-```shell
+```bash
 v${MAJOR}.${MINOR}.${PATCH}              # when REVISION == 1
 v${MAJOR}.${MINOR}.${PATCH}-${REVISION}  # when REVISION >= 2
 ```
