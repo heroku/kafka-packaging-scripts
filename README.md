@@ -726,6 +726,28 @@ Here's how we've generated our packages so far:
 
 # Troubleshooting
 
+## Patch files and CRLF line endings (e.g. Windows .bat files)
+
+When you create patch files the corresponding lines _must_ use the same line endings as the target file.
+The great majority of files we package use Unix-style line endings aka `LF`.  However, some files such as
+Kafka's [kafka-run-class.bat](https://github.com/apache/kafka/blob/trunk/bin/windows/kafka-run-class.bat)
+use Windows-style line endings, i.e. `CRLF` (Windows/DOS, shown as `^M` in vim).
+
+Here are a few tricks to deal with these files:
+
+* Modify, if needed, how git treats line endings via `git config core.autocrlf`.  Vvalid options are
+  `true`, `false`, and `input`.
+  See [Dealing with line endings](https://help.github.com/articles/dealing-with-line-endings/) and
+  [git replacing LF with CRLF](http://stackoverflow.com/questions/1967370/git-replacing-lf-with-crlf) for
+  further information.
+* Instruct your editor to display line endings to ensure that you can verify whether the patch files you
+  created use `CRLF` line endings for those lines in the patch that modify files that use `CRLF`.  Vim users
+  can start vim with the `-b` option to display line endings: `vim -b foo.patch` (vim will display `CRLF`
+  line endings as `^M`).
+* Vim users: You can manually enter a CRLF aka `^M` character via `Ctrl-v Ctrl-m`.
+* Vim users: You can manually enter a TAB character via `Ctrl-v Ctrl-<TAB>`.
+
+
 ## Synced folders do not work, Vagrant hangs at "Mounting NFS shared folders..."
 
 Make sure you disable any local firewalls on your computer or add an appropriate whitelist entry while packaging,
