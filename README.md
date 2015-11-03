@@ -746,6 +746,7 @@ Here are a few tricks to deal with these files:
   line endings as `^M`).
 * Vim users: You can manually enter a CRLF aka `^M` character via `Ctrl-v Ctrl-m`.
 * Vim users: You can manually enter a TAB character via `Ctrl-v Ctrl-<TAB>`.
+* Show special characters such as CRLF aka `^M` when using normal `diff`: `diff foo.txt bar.txt | cat -t`.
 
 
 ## Synced folders do not work, Vagrant hangs at "Mounting NFS shared folders..."
