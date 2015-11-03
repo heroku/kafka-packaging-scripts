@@ -1,21 +1,21 @@
 diff --git a/build.gradle b/build.gradle
-index 1cbab29..dbc65b8 100644
+index 1c3bd63..2f987ee 100644
 --- a/build.gradle
 +++ b/build.gradle
-@@ -23,6 +23,10 @@ buildscript {
- def slf4jlog4j='org.slf4j:slf4j-log4j12:1.7.6'
+@@ -38,6 +38,10 @@ def jetty_version = '9.2.12.v20150709'
+ def jersey_version = '2.22.1'
  
  allprojects {
 +  apply plugin: 'java'
-+  sourceCompatibility = 1.6
-+  targetCompatibility = 1.6
++  sourceCompatibility = 1.7
++  targetCompatibility = 1.7
 +
    apply plugin: 'idea'
    repositories {
      mavenCentral()
-@@ -49,6 +53,14 @@ subprojects {
- 
-   licenseTest.onlyIf { isVerificationRequired(project) }
+@@ -95,6 +99,14 @@ subprojects {
+       }
+   }
  
 +  configurations {
 +    deployerJars
@@ -28,16 +28,16 @@ index 1cbab29..dbc65b8 100644
    uploadArchives {
      repositories {
        signing {
-@@ -58,9 +70,9 @@ subprojects {
-               // To test locally, replace mavenUrl in ~/.gradle/gradle.properties to file://localhost/tmp/myRepo/
-               mavenDeployer {
-                   beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
--                  repository(url: "${mavenUrl}") {
--                      authentication(userName: "${mavenUsername}", password: "${mavenPassword}")
--                  }
-+                  configuration = configurations.deployerJars
-+                  repository(url: "REPOSITORY")
-+                  snapshotRepository(url: "SNAPSHOT_REPOSITORY")
-                   afterEvaluate {
-                       pom.artifactId = "${archivesBaseName}"
-                       pom.project {
+@@ -104,9 +116,9 @@ subprojects {
+           // To test locally, replace mavenUrl in ~/.gradle/gradle.properties to file://localhost/tmp/myRepo/
+           mavenDeployer {
+               beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+-              repository(url: "${mavenUrl}") {
+-                  authentication(userName: "${mavenUsername}", password: "${mavenPassword}")
+-              }
++              configuration = configurations.deployerJars
++              repository(url: "REPOSITORY")
++              snapshotRepository(url: "SNAPSHOT_REPOSITORY")
+               afterEvaluate {
+                   pom.artifactId = "${archivesBaseName}"
+                   pom.project {
