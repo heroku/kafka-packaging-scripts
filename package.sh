@@ -117,24 +117,24 @@ vagrant ssh deb -- -t sudo VERSION=$CONFLUENT_VERSION REVISION=$REVISION "SCALA_
 
 
 ## COMPILED PACKAGES ##
-OUTPUT="${MY_DIR}/output"
-
 rm -rf /tmp/confluent-packaging
 mkdir -p /tmp/confluent-packaging
 pushd /tmp/confluent-packaging
+
+ABS_OUTPUT_DIRECTORY=${MY_DIR}/${OUTPUT_DIRECTORY}
 
 # zip/tar.gz
 for SCALA_VERSION in $SCALA_VERSIONS; do
     mkdir "confluent-${CONFLUENT_VERSION}"
     pushd "confluent-${CONFLUENT_VERSION}"
-    tar -xz --strip-components 1 -f "${OUTPUT}/confluent-kafka-${KAFKA_VERSION}-${SCALA_VERSION}.tar.gz"
+    tar -xz --strip-components 1 -f "${ABS_OUTPUT_DIRECTORY}/confluent-kafka-${KAFKA_VERSION}-${SCALA_VERSION}.tar.gz"
     for PACKAGE in $CP_PACKAGES; do
-        tar -xz --strip-components 1 -f "${OUTPUT}/confluent-${PACKAGE}-${CONFLUENT_VERSION}.tar.gz"
+        tar -xz --strip-components 1 -f "${ABS_OUTPUT_DIRECTORY}/confluent-${PACKAGE}-${CONFLUENT_VERSION}.tar.gz"
     done
     cp ${MY_DIR}/installers/README.archive .
     popd
-    tar -czf "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.tar.gz" "confluent-${CONFLUENT_VERSION}"
-    zip -r "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.zip" "confluent-${CONFLUENT_VERSION}"
+    tar -czf "${ABS_OUTPUT_DIRECTORY}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.tar.gz" "confluent-${CONFLUENT_VERSION}"
+    zip -r "${ABS_OUTPUT_DIRECTORY}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.zip" "confluent-${CONFLUENT_VERSION}"
     rm -rf "confluent-${CONFLUENT_VERSION}"
 done
 
@@ -146,14 +146,14 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
         # Getting the actual filenames is a pain because of the version number
         # mangling. We just use globs to find them instead, but this means you
         # *MUST* work with a clean output/ directory
-        eval "cp ${OUTPUT}/confluent-kafka-${SCALA_VERSION}*.${PKG_TYPE} ."
+        eval "cp ${ABS_OUTPUT_DIRECTORY}/confluent-kafka-${SCALA_VERSION}*.${PKG_TYPE} ."
         for PACKAGE in $CP_PACKAGES; do
-            eval "cp ${OUTPUT}/confluent-${PACKAGE}*.${PKG_TYPE} ."
+            eval "cp ${ABS_OUTPUT_DIRECTORY}/confluent-${PACKAGE}*.${PKG_TYPE} ."
         done
         cp ${MY_DIR}/installers/install.sh .
         cp ${MY_DIR}/installers/README .
         popd
-        tar -czf "${OUTPUT}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}-${PKG_TYPE}.tar.gz" "confluent-${CONFLUENT_VERSION}"
+        tar -czf "${ABS_OUTPUT_DIRECTORY}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}-${PKG_TYPE}.tar.gz" "confluent-${CONFLUENT_VERSION}"
         rm -rf "confluent-${CONFLUENT_VERSION}"
     done
 done
