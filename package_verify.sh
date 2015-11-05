@@ -73,13 +73,14 @@ STAT_MAC_OPTS_FOR_FILESIZE="-f%z"
 }
 
 @test "archive platform packages (tar for debs) contain all individual packages (heuristic to detect broken packages)" {
+  version_token=`deb_version_field $CONFLUENT_VERSION $REVISION`
   for scala_version in $SCALA_VERSIONS; do
     for file in `ls $OUTPUT_DIRECTORY/ | egrep "^${CONFLUENT_PACKAGE_PREFIX}-${CONFLUENT_VERSION}-${scala_version}-deb\.tar\.gz$"`; do
       paths=`tar -tzf $OUTPUT_DIRECTORY/$file`
       for pkg in $CP_PACKAGES; do
         local found=0
         for path in $paths; do
-          if [[ "$path" == */${CONFLUENT_PACKAGE_PREFIX}-${pkg}_${CONFLUENT_VERSION}-${REVISION}_all.deb ]]; then
+          if [[ "$path" == */${CONFLUENT_PACKAGE_PREFIX}-${pkg}_${version_token}_all.deb ]]; then
             found=1
             break
           fi
@@ -100,13 +101,15 @@ STAT_MAC_OPTS_FOR_FILESIZE="-f%z"
 }
 
 @test "archive platform packages (tar for rpms) contain all individual packages (heuristic to detect broken packages)" {
+  version_token=`rpm_version $CONFLUENT_VERSION`
+  revision_token=`rpm_release_field $CONFLUENT_VERSION $REVISION`
   for scala_version in $SCALA_VERSIONS; do
     for file in `ls $OUTPUT_DIRECTORY/ | egrep "^${CONFLUENT_PACKAGE_PREFIX}-${CONFLUENT_VERSION}-${scala_version}-rpm\.tar\.gz$"`; do
       paths=`tar -tzf $OUTPUT_DIRECTORY/$file`
       for pkg in $CP_PACKAGES; do
         local found=0
         for path in $paths; do
-          if [[ "$path" == */${CONFLUENT_PACKAGE_PREFIX}-${pkg}-${CONFLUENT_VERSION}-${REVISION}.noarch.rpm ]]; then
+          if [[ "$path" == */${CONFLUENT_PACKAGE_PREFIX}-${pkg}-${version_token}-${revision_token}.noarch.rpm ]]; then
             found=1
             break
           fi
