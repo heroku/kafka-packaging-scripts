@@ -11,8 +11,16 @@ pushd $MY_DIR
 
 . $MY_DIR/settings.sh
 
+# Ensure that important local directories are in good shape.
 if [ ! -d $OUTPUT_DIRECTORY ]; then
   git checkout $OUTPUT_DIRECTORY
+fi
+
+if [ "$PURGE_REPOS_DIRECTORY_BEFORE_PACKAGING" = "yes" ]; then
+  rm -rf ${MY_DIR}/${REPOS_DIRECTORY}
+fi
+if [ ! -d $REPOS_DIRECTORY ]; then
+  git checkout $REPOS_DIRECTORY
 fi
 
 # Ensure that local clones also track any required upstream packaging branches.
@@ -31,7 +39,7 @@ for remote_branch in rpm debian confluent-platform; do
   git branch --track $remote_branch origin/$remote_branch
 done
 
-pushd repos
+pushd $REPOS_DIRECTORY
 for REPO in $KAFKA_REPO \
     $KAFKA_PACKAGING_REPO \
     $COMMON_REPO \

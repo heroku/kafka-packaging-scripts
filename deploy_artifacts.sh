@@ -45,9 +45,9 @@ EOF
 
 rm -rf /tmp/confluent/kafka-packaging
 mkdir -p /tmp/confluent
-git clone $MY_DIR/repos/kafka-packaging.git /tmp/confluent/kafka-packaging
+git clone $MY_DIR/$REPOS_DIRECTORY/kafka-packaging.git /tmp/confluent/kafka-packaging
 pushd /tmp/confluent/kafka-packaging
-git remote add upstream $MY_DIR/repos/kafka.git
+git remote add upstream $MY_DIR/$REPOS_DIRECTORY/kafka.git
 git fetch --tags upstream
 
 git checkout -b "deploy-$KAFKA_VERSION" origin/archive
@@ -83,7 +83,7 @@ for PACKAGE in $CP_PACKAGES; do
 
     mkdir -p /tmp/confluent
     rm -rf /tmp/confluent/$PACKAGE
-    git clone $MY_DIR/repos/$PACKAGE /tmp/confluent/$PACKAGE
+    git clone $MY_DIR/$REPOS_DIRECTORY/$PACKAGE /tmp/confluent/$PACKAGE
     pushd /tmp/confluent/$PACKAGE
     git checkout -b deploy $PACKAGE_BRANCH
     patch -p1 < ${MY_DIR}/patches/${PACKAGE}-deploy.patch

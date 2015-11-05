@@ -182,6 +182,15 @@ PACKAGE_MIN_FILE_SIZE_BYTES=10000
 OUTPUT_DIRECTORY="output" # local directory; stores generated packages
 DEPLOYED_DIRECTORY="_deployed" # local directory; contains directory tree for S3 deployment uploads
 TEMP_DIRECTORY="_temp" # local directory; used for extracting deb/rpm packages of a previous release from an S3 bucket
+REPOS_DIRECTORY="repos" # local directory; stores local checkout of git repos such as KAFKA_REPO
+
+###
+### Build optimization/tuning
+###
+# If "yes", then we delete the contents of REPOS_DIRECTORY at the beginning of the packaging step ("no" means keep any
+# existing contents).  The recommended setting is "yes" to ensure that any recent changes to the git repositories, e.g.
+# new commits made in-between packaging runs, are properly pulled to our local repository checkouts.
+PURGE_REPOS_DIRECTORY_BEFORE_PACKAGING="yes"
 
 
 ###
