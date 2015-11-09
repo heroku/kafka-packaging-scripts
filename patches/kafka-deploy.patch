@@ -1,5 +1,5 @@
 diff --git a/build.gradle b/build.gradle
-index 1c3bd63..2f987ee 100644
+index 49733c4..124b8ee 100644
 --- a/build.gradle
 +++ b/build.gradle
 @@ -38,6 +38,10 @@ def jetty_version = '9.2.12.v20150709'
