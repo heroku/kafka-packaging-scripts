@@ -62,7 +62,7 @@ test_schema_registry() {
     machine=$1
     vagrant ssh $machine -- "sudo /usr/bin/schema-registry-start /etc/schema-registry/schema-registry.properties &> /tmp/schema-registry.log &"
     sleep 5
-    vagrant ssh $machine -- "ps aux | grep 'schemaregistry\.rest\.Main' | grep -v grep"
+    vagrant ssh $machine -- "ps aux | grep 'schemaregistry\.rest\.SchemaRegistryMain' | grep -v grep"
     vagrant ssh $machine -- "sudo /usr/bin/schema-registry-stop"
 }
 
@@ -70,7 +70,7 @@ test_rest() {
     machine=$1
     vagrant ssh $machine -- "sudo /usr/bin/kafka-rest-start &> /tmp/rest.log &"
     sleep 5
-    vagrant ssh $machine -- "ps aux | grep 'kafkarest\.Main' | grep -v grep"
+    vagrant ssh $machine -- "ps aux | grep 'kafkarest\.KafkaRestMain' | grep -v grep"
     vagrant ssh $machine -- "sudo /usr/bin/kafka-rest-stop"
 }
 
