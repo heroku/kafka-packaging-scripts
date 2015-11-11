@@ -8,9 +8,9 @@
 
 # Kafka has its own version and branch settings as it has a special requirements
 # in our build setup.  For example, we need to support multiple Scala versions.
-KAFKA_VERSION="0.8.2.2"
-KAFKA_BRANCH="0.8.2"
-SCALA_VERSIONS="2.9.1 2.9.2 2.10.4 2.11.5"
+KAFKA_VERSION="0.9.0.0"
+KAFKA_BRANCH="0.9.0"
+SCALA_VERSIONS="2.10.5 2.11.7"
 
 
 ###
