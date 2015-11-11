@@ -171,8 +171,6 @@ SKIP_TESTS="no"
 # Override examples:
 # ------------------
 # kafka_rest_SKIP_TESTS="yes"
-#
-camus_SKIP_TESTS="yes" # We do not run tests for Camus.
 
 
 ###
