@@ -18,7 +18,7 @@ SCALA_VERSIONS="2.9.1 2.9.2 2.10.4 2.11.5"
 ###
 
 # Version of the CP release and also the version of the various CP projects.
-# Examples: `1.0`, `1.0.1-SNAPSHOT`
+# Examples: `1.0.0`, `1.0.1-SNAPSHOT`
 #
 # *** IMPORTANT ***:
 # - This setting must work with the must work with BRANCH settings below.
@@ -27,7 +27,7 @@ SCALA_VERSIONS="2.9.1 2.9.2 2.10.4 2.11.5"
 #   settings below.  The S3 buckets we use follow a naming convention that
 #   must match CONFLUENT_VERSION.
 #
-CONFLUENT_VERSION="2.0-SNAPSHOT"
+CONFLUENT_VERSION="2.0.0-SNAPSHOT"
 
 # Used for "Revision" field of deb packages and "Release" field of rpm packages.
 #
