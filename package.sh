@@ -46,6 +46,7 @@ for REPO in $KAFKA_REPO \
     $REST_UTILS_REPO \
     $SCHEMA_REGISTRY_REPO \
     $KAFKA_REST_REPO \
+    $KAFKA_CONNECT_JDBC_REPO \
     $CAMUS_REPO; do
     REPO_DIR=`basename $REPO`
     if [ ! -e $REPO_DIR ]; then

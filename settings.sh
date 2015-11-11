@@ -40,7 +40,7 @@ REVISION="1"
 #
 # The packages must be listed in the order of their dependencies.  For example,
 # rest-utils must be listed before kafka-rest as the latter depends on the former.
-CP_PACKAGES="common rest-utils schema-registry kafka-rest camus"
+CP_PACKAGES="common rest-utils schema-registry kafka-rest kafka-connect-jdbc camus"
 
 # `BRANCH` is the global setting for build branches of Confluent packages incl. Camus.
 #
@@ -79,6 +79,7 @@ KAFKA_PACKAGING_REPO="git@github.com:confluentinc/kafka-packaging.git"
 KAFKA_REST_REPO="git@github.com:confluentinc/kafka-rest.git"
 REST_UTILS_REPO="git@github.com:confluentinc/rest-utils.git"
 SCHEMA_REGISTRY_REPO="git@github.com:confluentinc/schema-registry.git"
+KAFKA_CONNECT_JDBC_REPO="git@github.com:confluentinc/kafka-connect-jdbc.git"
 
 
 ###

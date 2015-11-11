@@ -74,6 +74,11 @@ test_rest() {
     vagrant ssh $machine -- "sudo /usr/bin/kafka-rest-stop"
 }
 
+test_kafka_connect_jdbc() {
+    machine=$1
+    # TODO
+}
+
 test_camus() {
     # There's no good way to test the Camus jar since it doesn't contain unit
     # tests and everything it has requires Hadoop to be running. In this case
@@ -97,17 +102,20 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-rest-utils-*.rpm
     vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-schema-registry-*.rpm
     vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-kafka-rest-*.rpm
+    vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-kafka-connect-jdbc-*.rpm
     vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-camus-*.rpm
 
     test_zk_start rpm
     test_kafka_start rpm
     test_schema_registry rpm
     test_rest rpm
+    test_kafka_connect_jdbc rpm
     test_camus rpm
     test_kafka_stop rpm
     test_zk_stop rpm
 
     vagrant ssh rpm -- sudo rpm --erase confluent-camus
+    vagrant ssh rpm -- sudo rpm --erase confluent-kafka-connect-jdbc
     vagrant ssh rpm -- sudo rpm --erase confluent-kafka-rest
     vagrant ssh rpm -- sudo rpm --erase confluent-schema-registry
     vagrant ssh rpm -- sudo rpm --erase confluent-rest-utils
@@ -123,17 +131,20 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-rest-utils*_all.deb
     vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-schema-registry*_all.deb
     vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-kafka-rest*_all.deb
+    vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-kafka-connect-jdbc*_all.deb
     vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-camus*_all.deb
 
     test_zk_start deb
     test_kafka_start deb
     test_schema_registry deb
     test_rest deb
+    test_kafka_connect_jdbc deb
     test_camus deb
     test_kafka_stop deb
     test_zk_stop deb
 
     vagrant ssh deb -- sudo dpkg --remove confluent-camus
+    vagrant ssh deb -- sudo dpkg --remove confluent-kafka-connect-jdbc
     vagrant ssh deb -- sudo dpkg --remove confluent-kafka-rest
     vagrant ssh deb -- sudo dpkg --remove confluent-schema-registry
     vagrant ssh deb -- sudo dpkg --remove confluent-rest-utils
