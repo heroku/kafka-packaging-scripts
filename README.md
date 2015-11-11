@@ -698,6 +698,9 @@ Here's how we've generated our packages so far:
      base for your `archive`, `rpm`, and `deb` branches and do some renaming as a
      start. Often this is all that's necessary, but we maintain separate scripts
      for separate packages to allow for easy customization where needed.
+   * Add the package to the `debian` and `rpm` branches of this repository.
+     For the `debian` branch take a look at e.g. `debian/control.binary.in`.
+     For the `rpm` branch take a look at e.g. `confluent-platform.spec.in`.
    * If necessary, add any version variables you need to
      [settings.sh](settings.sh).
    * Add the package to the [package.sh](package.sh) script. Key steps include:
