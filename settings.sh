@@ -12,6 +12,23 @@ KAFKA_VERSION="0.9.0.0"
 KAFKA_BRANCH="0.9.0"
 SCALA_VERSIONS="2.10.5 2.11.7"
 
+###
+### Proactive Support
+###
+### Note: By convention the proactive support packages must build from a /branch/
+### of the same name as the Kafka /version/ they are integrating with, i.e. KAFKA_VERSION.
+### For example, the code of the support packages for Kafka 0.9.0.0 must be maintained
+### in a branch named `0.9.0.0`.  However, the version (pom.xml) of the packages must
+### match CONFLUENT_VERSION (like other CP projects such as kafka-rest).
+
+# The package that contains the (fully assembled) proactive support client.
+PS_CLIENT_PACKAGE="support-metrics-client"
+
+# The packages must be listed in the order of their dependencies.  For example,
+# support-metrics-common must be listed before support-metrics-fullcollector as
+# the latter depends on the former.
+PS_PACKAGES="support-metrics-common support-metrics-fullcollector $PS_CLIENT_PACKAGE"
+
 
 ###
 ### Confluent packages: versioning and packaging configuration
@@ -72,6 +89,11 @@ schema_registry_BRANCH="origin/2.x"
 ###
 ### Git repositories
 ###
+### CAVEAT: The short names of the repositories (e.g. "kafka-rest") are
+###         currently still hardcoded in the various `build/` scripts.
+###         So when you actually rename a project/repository on GitHub you need
+###         to update the repository's URL here but also in the corresponding
+###         `build/*-{archive,deb,rpm}.sh` scripts of the project..
 KAFKA_REPO="http://git-wip-us.apache.org/repos/asf/kafka.git"
 CAMUS_REPO="git@github.com:confluentinc/camus.git"
 COMMON_REPO="git@github.com:confluentinc/common.git"
@@ -80,6 +102,9 @@ KAFKA_REST_REPO="git@github.com:confluentinc/kafka-rest.git"
 REST_UTILS_REPO="git@github.com:confluentinc/rest-utils.git"
 SCHEMA_REGISTRY_REPO="git@github.com:confluentinc/schema-registry.git"
 KAFKA_CONNECT_JDBC_REPO="git@github.com:confluentinc/kafka-connect-jdbc.git"
+SUPPORT_METRICS_COMMON_REPO="git@github.com:confluentinc/support-metrics-common.git"
+SUPPORT_METRICS_FULLCOLLECTOR_REPO="git@github.com:confluentinc/support-metrics-fullcollector.git"
+SUPPORT_METRICS_CLIENT_REPO="git@github.com:confluentinc/support-metrics-client.git"
 
 
 ###
