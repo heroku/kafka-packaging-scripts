@@ -14,8 +14,6 @@ cd $BUILDROOT
 ###
 ### Proactive Support
 ###
-### Note: By convention we must build from the branch of the same name as the Kafka version
-###       (here: $VERSION) we are integrating with.
 for PS_PKG in $PS_PACKAGES; do
   rm -rf $BUILDROOT/$PS_PKG
   git clone /vagrant/repos/$PS_PKG.git

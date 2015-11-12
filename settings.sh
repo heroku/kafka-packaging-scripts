@@ -15,7 +15,7 @@ SCALA_VERSIONS="2.10.5 2.11.7"
 ###
 ### Proactive Support
 ###
-### Note: By convention the proactive support packages must build from a /branch/
+### Note: By convention the proactive support packages must be built from a /branch/
 ### of the same name as the Kafka /version/ they are integrating with, i.e. KAFKA_VERSION.
 ### For example, the code of the support packages for Kafka 0.9.0.0 must be maintained
 ### in a branch named `0.9.0.0`.  However, the version (pom.xml) of the packages must
