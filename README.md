@@ -752,7 +752,7 @@ If that does still not work, roll back to Vagrant 1.7.0 and Virtualbox 4.3.30 an
 vagrant plugin install vagrant-vbguest
 ```
 
-Two links that describe these steps in more detail are <a href="https://github.com/mitchellh/vagrant/issues/6360">here</a> and <a href="http://kodi.wiki/view/NFS#Troubleshooting_NFS_on_OS_X">here</a>
+Two links that describe these steps in more detail are <a href="https://github.com/mitchellh/vagrant/issues/6360">here</a> and <a href="http://kodi.wiki/view/NFS#Troubleshooting_NFS_on_OS_X">here</a>.
 
 
 ## Intermittent test failures (e.g. timeouts, time-based assertions)
