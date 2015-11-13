@@ -63,6 +63,8 @@ REVISION="1"
 #
 # The packages must be listed in the order of their dependencies.  For example,
 # rest-utils must be listed before kafka-rest as the latter depends on the former.
+#
+# Important: the Proactive Support packages (PS_PACKAGES) MUST NOT be added here!
 CP_PACKAGES="common rest-utils schema-registry kafka-rest kafka-connect-jdbc camus"
 
 # `BRANCH` is the global setting for build branches of Confluent packages incl. Camus.
