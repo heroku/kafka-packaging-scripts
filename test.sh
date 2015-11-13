@@ -43,8 +43,8 @@ test_zk_start() {
 test_zk_stop() {
     machine=$1
     # zookeeper-server-stop finds more than one process because it only
-    # searches for 'zookeeper', so we do this manually in a way that filters
-    # more accurately to the right process.
+    # searches for 'zookeeper', so to prevent collateral damage we do this
+    # manually in a way that filters more accurately to the right process.
     vagrant ssh $machine -- "ps ax | grep java | grep -i QuorumPeerMain | grep -v grep | awk '{print \$1}' | sudo xargs kill -SIGINT"
 }
 
