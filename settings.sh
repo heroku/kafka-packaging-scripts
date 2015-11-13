@@ -118,7 +118,7 @@ SUPPORT_METRICS_CLIENT_REPO="git@github.com:confluentinc/support-metrics-client.
 ###
 ### Package signing
 ###
-SIGN="no"
+SIGN="yes"
 SIGN_KEY="41468433" # packages@confluent.io
 
 
@@ -204,7 +204,6 @@ SKIP_TESTS="no"
 # Override examples:
 # ------------------
 # kafka_rest_SKIP_TESTS="yes"
-rest_utils_SKIP_TESTS="yes"
 
 
 ###
