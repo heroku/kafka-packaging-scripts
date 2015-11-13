@@ -21,6 +21,12 @@ SCALA_VERSIONS="2.10.5 2.11.7"
 ### in a branch named `0.9.0.0`.  However, the version (pom.xml) of the packages must
 ### match CONFLUENT_VERSION (like other CP projects such as kafka-rest).
 
+# If "yes" (default), then we integrate Proactive Support into our CP Kafka package.
+# This means, for example, that the command line to start/stop a Kafka broker will change
+# compared to stock Kafka (cf. Kafka's `bin/kafka-server-{start,stop}.sh`).
+# Set to "no" to disable PS integration.
+PS_ENABLED="yes"
+
 # The package that contains the (fully assembled) proactive support client.
 PS_CLIENT_PACKAGE="support-metrics-client"
 

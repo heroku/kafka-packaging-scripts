@@ -50,7 +50,11 @@ test_kafka_start() {
     # This will only stay up for about 6 seconds, we need to figure out how to make this more reliable
     vagrant ssh $machine -- "sudo /usr/bin/kafka-server-start /etc/kafka/server.properties &> /tmp/kafka.log &"
     sleep 5
-    vagrant ssh $machine -- "ps aux | grep 'kafka\.Kafka' | grep -v grep"
+    if [ "$PS_ENABLED" = "yes" ]; then
+        vagrant ssh $machine -- "ps ax | grep -i 'io\.confluent\.support\.metrics\.SupportedKafka' | grep java | grep -v grep"
+    else
+        vagrant ssh $machine -- "ps ax | grep 'kafka\.Kafka' | grep java | grep -v grep"
+    fi
 }
 
 test_kafka_stop() {

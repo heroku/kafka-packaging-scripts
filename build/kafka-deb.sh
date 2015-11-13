@@ -14,16 +14,18 @@ cd $BUILDROOT
 ###
 ### Proactive Support
 ###
-for PS_PKG in $PS_PACKAGES; do
-  rm -rf $BUILDROOT/$PS_PKG
-  git clone /vagrant/repos/$PS_PKG.git
-  pushd $BUILDROOT/$PS_PKG
-  git checkout origin/$VERSION
-  # Sanitize checkout directory
-  git reset --hard HEAD
-  git status --ignored --porcelain | cut -d ' ' -f 2 | xargs rm -rf
-  popd
-done
+if [ "$PS_ENABLED" = "yes" ]; then
+  for PS_PKG in $PS_PACKAGES; do
+    rm -rf $BUILDROOT/$PS_PKG
+    git clone /vagrant/repos/$PS_PKG.git
+    pushd $BUILDROOT/$PS_PKG
+    git checkout origin/$VERSION
+    # Sanitize checkout directory
+    git reset --hard HEAD
+    git status --ignored --porcelain | cut -d ' ' -f 2 | xargs rm -rf
+    popd
+  done
+fi
 
 ###
 ### Kafka
