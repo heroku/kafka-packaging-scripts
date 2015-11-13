@@ -763,22 +763,22 @@ enabled on your host machine:
     ==> rpm: Mounting NFS shared folders...
     # ^ Vagrant will hang here
 
-Note than on Mac OS 10.11.1 (El Capitan) Apple changed the way the user interacts with system files. If the NFS folder do not work, disable the System Integrity Protection (SIP) and add the "-N" parameter to /System/Library/LaunchDaemons/com.apple.nfsd.plist like shown below. Afterwards you can re-enable SIP again.
+**Note for for Mac OS 10.11.1 (El Capitan) users:**
+Apple changed the way the user interacts with system files. If the NFS folder do not work, disable the System Integrity Protection (SIP) and add the `-N` parameter to `/System/Library/LaunchDaemons/com.apple.nfsd.plist` like shown below.  Afterwards you can re-enable SIP again.
 
-```
-<array>
-   <string>/sbin/nfsd</string>
-   <string>-N</string>
- </array>
-```
+    <array>
+       <string>/sbin/nfsd</string>
+       <string>-N</string>
+    </array>
 
 If that does still not work, roll back to Vagrant 1.7.0 and Virtualbox 4.3.30 and also install the following plugin:
 
-```
-vagrant plugin install vagrant-vbguest
-```
+    vagrant plugin install vagrant-vbguest
 
-Two links that describe these steps in more detail are <a href="https://github.com/mitchellh/vagrant/issues/6360">here</a> and <a href="http://kodi.wiki/view/NFS#Troubleshooting_NFS_on_OS_X">here</a>.
+For further information take a look at:
+
+* [Problem with NFS Shared Folder Permissions on Mac OS X (El Capitan)](https://github.com/mitchellh/vagrant/issues/6360)
+* [Troubleshooting NFS on OS X](http://kodi.wiki/view/NFS#Troubleshooting_NFS_on_OS_X)
 
 
 ## Intermittent test failures (e.g. timeouts, time-based assertions)
