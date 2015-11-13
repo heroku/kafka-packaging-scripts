@@ -135,7 +135,7 @@ In more detail:
 
 ## Software packages on host machine
 
-_This section covers Mac OS X only._
+_This section covers Mac OS X only (for OS X El Capitan see note below)._
 
 You must install the following software packages on your host machine (e.g. your laptop):
 
@@ -762,6 +762,23 @@ enabled on your host machine:
 
     ==> rpm: Mounting NFS shared folders...
     # ^ Vagrant will hang here
+
+Note than on Mac OS 10.11.1 (El Capitan) Apple changed the way the user interacts with system files. If the NFS folder do not work, disable the System Integrity Protection (SIP) and add the "-N" parameter to /System/Library/LaunchDaemons/com.apple.nfsd.plist like shown below. Afterwards you can re-enable SIP again.
+
+```
+<array>
+   <string>/sbin/nfsd</string>
+   <string>-N</string>
+ </array>
+```
+
+If that does still not work, roll back to Vagrant 1.7.0 and Virtualbox 4.3.30 and also install the following plugin:
+
+```
+vagrant plugin install vagrant-vbguest
+```
+
+Two links that describe these steps in more detail are <a href="https://github.com/mitchellh/vagrant/issues/6360">here</a> and <a href="http://kodi.wiki/view/NFS#Troubleshooting_NFS_on_OS_X">here</a>.
 
 
 ## Intermittent test failures (e.g. timeouts, time-based assertions)
