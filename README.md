@@ -137,9 +137,6 @@ In more detail:
 
 _This section covers Mac OS X only._
 
-> OS X 10.11 (El Capitan) users: There exists a known NFS-related issue that will require your intervention.
-> See the note on synced folders in the Troubleshooting section below.
-
 You must install the following software packages on your host machine (e.g. your laptop):
 
 * [Vagrant](https://www.vagrantup.com/downloads.html) (1.7+ recommended)
@@ -165,6 +162,10 @@ You will also need your AWS credentials later for configuring [aws.sh](aws.sh).
 ## NFS for synced folders
 
 _If you're running on Mac OS X then you should be ready to go out of the box._
+
+> **OS X 10.11 (El Capitan) users**: There exists a known NFS-related issue that will require your intervention.
+> See the note on synced folders in the Troubleshooting section below.
+
 
 Our [Vagrant setup](Vagrantfile) uses [NFS for synced folders](http://docs.vagrantup.com/v2/synced-folders/nfs.html)
 because [it is faster than Vagrant's default](http://auramo.github.io/2014/12/vagrant-performance-tuning/).
