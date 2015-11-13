@@ -45,6 +45,9 @@ git fetch --tags upstream
 
 git checkout -b debian-$VERSION origin/debian
 make -f debian/Makefile debian-control
+# We use this custom make target to create the desired [debian/]patches/series
+# file depending on whether Proactive Support integration is enabled or not.
+make -f debian/Makefile patch-series
 # Update the release info
 export DEBEMAIL="Confluent Packaging <packages@confluent.io>"
 dch --newversion ${VERSION/-/\~}-${REVISION} "Release version $VERSION" --urgency low && dch --release --distribution unstable ""

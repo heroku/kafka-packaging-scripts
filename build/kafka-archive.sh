@@ -38,6 +38,10 @@ git fetch --tags upstream
 
 git checkout -b archive-$VERSION origin/archive
 git merge upstream/$BRANCH
+# We use this custom make target to create the desired [debian/]patches/series
+# file depending on whether Proactive Support integration is enabled or not.
+make -f Makefile patch-series
+
 for SCALA_VERSION in $SCALA_VERSIONS; do
     SCALA_VERSION=$SCALA_VERSION make distclean
     SCALA_VERSION=$SCALA_VERSION make archive
