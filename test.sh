@@ -5,6 +5,9 @@ set -x
 
 . settings.sh
 
+KAFKA_DATA_DIR=/var/lib/kafka
+ZOOKEEPER_DATA_DIR=/var/lib/zookeeper
+
 on_exit() {
     LAST_RESULT=$?
     if [[ $LAST_RESULT != 0 ]]; then
@@ -101,6 +104,8 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     #######
     # RPM #
     #######
+    vagrant ssh rpm -- sudo rm -rf $KAFKA_DATA_DIR
+    vagrant ssh rpm -- sudo rm -rf $ZOOKEEPER_DATA_DIR
     vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-kafka-${SCALA_VERSION}-*.noarch.rpm
     vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-common-*.rpm
     vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-rest-utils-*.rpm
@@ -130,6 +135,8 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     #######
     # DEB #
     #######
+    vagrant ssh deb -- sudo rm -rf $KAFKA_DATA_DIR
+    vagrant ssh deb -- sudo rm -rf $ZOOKEEPER_DATA_DIR
     vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-kafka-${SCALA_VERSION}*_all.deb
     vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-common*_all.deb
     vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-rest-utils*_all.deb
