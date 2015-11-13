@@ -767,7 +767,9 @@ enabled on your host machine:
     # ^ Vagrant will hang here
 
 **Note for Mac OS 10.11.1 (El Capitan) users:**
-Apple changed the way the user interacts with system files. If the NFS folder do not work, disable the System Integrity Protection (SIP) and add the `-N` parameter to `/System/Library/LaunchDaemons/com.apple.nfsd.plist` like shown below.  Afterwards you can re-enable SIP again.
+Apple changed the way the user interacts with system files.  If the NFS folders do not work, disable the System
+Integrity Protection (SIP) and add the `-N` parameter to `/System/Library/LaunchDaemons/com.apple.nfsd.plist` like
+shown below.  Afterwards you can re-enable SIP again.
 
     <array>
        <string>/sbin/nfsd</string>
