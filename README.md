@@ -738,14 +738,19 @@ enabled on your host machine:
     # ^ Vagrant will hang here
 
 Note than on Mac OS 10.11.1 (El Capitan) Apple changed the way the user interacts with system files. If the NFS folder do not work, disable the System Integrity Protection (SIP) and add the "-N" parameter to /System/Library/LaunchDaemons/com.apple.nfsd.plist like shown below. Afterwards you can re-enable SIP again.
+
+```
 <array>
    <string>/sbin/nfsd</string>
    <string>-N</string>
  </array>
+```
 
 If that does still not work, roll back to Vagrant 1.7.0 and Virtualbox 4.3.30 and also install the following plugin:
-vagrant plugin install vagrant-vbguest
 
+```
+vagrant plugin install vagrant-vbguest
+```
 
 ## Intermittent test failures (e.g. timeouts, time-based assertions)
 
