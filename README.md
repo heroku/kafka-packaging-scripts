@@ -135,7 +135,10 @@ In more detail:
 
 ## Software packages on host machine
 
-_This section covers Mac OS X only (for OS X El Capitan see note below)._
+_This section covers Mac OS X only._
+
+> OS X 10.11 (El Capitan) users: There exists a known NFS-related issue that will require your intervention.
+> See the note on synced folders in the Troubleshooting section below.
 
 You must install the following software packages on your host machine (e.g. your laptop):
 
@@ -763,7 +766,7 @@ enabled on your host machine:
     ==> rpm: Mounting NFS shared folders...
     # ^ Vagrant will hang here
 
-**Note for for Mac OS 10.11.1 (El Capitan) users:**
+**Note for Mac OS 10.11.1 (El Capitan) users:**
 Apple changed the way the user interacts with system files. If the NFS folder do not work, disable the System Integrity Protection (SIP) and add the `-N` parameter to `/System/Library/LaunchDaemons/com.apple.nfsd.plist` like shown below.  Afterwards you can re-enable SIP again.
 
     <array>
