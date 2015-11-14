@@ -87,6 +87,20 @@ test_kafka_stop() {
     sleep 25
 }
 
+# This test assumes the broker has already started
+test_ps() {
+    machine=$1
+    # Metrics will be collected at shutdown
+    test_kafka_stop $machine
+    # Restart broker so CLI script can collect metrics
+    test_kafka_start $machine
+    # Collect metrics
+    vagrant ssh $machine -- "sudo /usr/bin/support-metrics-bundle --zookeeper localhost:2181 &"
+    # Check metrics are there
+    vagrant ssh $machine -- "sudo ls -l /usr/bin/support-metrics-*.zip "
+    
+}
+
 test_schema_registry() {
     machine=$1
     vagrant ssh $machine -- "sudo /usr/bin/schema-registry-start /etc/schema-registry/schema-registry.properties &> /tmp/schema-registry.log &"
@@ -126,7 +140,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     #######
     # RPM #
     #######
-
+    
     # pre-test sanitization
     vagrant ssh rpm -- sudo rpm --erase confluent-camus || true
     vagrant ssh rpm -- sudo rpm --erase confluent-kafka-connect-jdbc || true
@@ -154,6 +168,9 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     test_rest rpm
     test_kafka_connect_jdbc rpm
     test_camus rpm
+    if [ "$PS_ENABLED" = "yes" ]; then
+        test_ps rpm
+    fi
     test_kafka_stop rpm
     test_zk_stop rpm
 
@@ -197,6 +214,9 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     test_rest deb
     test_kafka_connect_jdbc deb
     test_camus deb
+    if [ "$PS_ENABLED" = "yes" ]; then
+        test_ps deb
+    fi
     test_kafka_stop deb
     test_zk_stop deb
 
