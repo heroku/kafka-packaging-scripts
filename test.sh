@@ -145,7 +145,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     #######
     # RPM #
     #######
-    
+
     # pre-test sanitization
     vagrant ssh rpm -- sudo rpm --erase confluent-camus || true
     vagrant ssh rpm -- sudo rpm --erase confluent-kafka-connect-jdbc || true
