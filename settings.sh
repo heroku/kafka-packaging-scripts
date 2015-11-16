@@ -65,7 +65,7 @@ REVISION="1"
 # rest-utils must be listed before kafka-rest as the latter depends on the former.
 #
 # Important: the Proactive Support packages (PS_PACKAGES) MUST NOT be added here!
-CP_PACKAGES="common rest-utils schema-registry kafka-rest kafka-connect-jdbc camus"
+CP_PACKAGES="common rest-utils schema-registry kafka-rest kafka-connect-hdfs kafka-connect-jdbc camus"
 
 # `BRANCH` is the global setting for build branches of Confluent packages incl. Camus.
 #
@@ -109,6 +109,7 @@ KAFKA_PACKAGING_REPO="git@github.com:confluentinc/kafka-packaging.git"
 KAFKA_REST_REPO="git@github.com:confluentinc/kafka-rest.git"
 REST_UTILS_REPO="git@github.com:confluentinc/rest-utils.git"
 SCHEMA_REGISTRY_REPO="git@github.com:confluentinc/schema-registry.git"
+KAFKA_CONNECT_HDFS_REPO="git@github.com:confluentinc/kafka-connect-hdfs.git"
 KAFKA_CONNECT_JDBC_REPO="git@github.com:confluentinc/kafka-connect-jdbc.git"
 SUPPORT_METRICS_COMMON_REPO="git@github.com:confluentinc/support-metrics-common.git"
 SUPPORT_METRICS_FULLCOLLECTOR_REPO="git@github.com:confluentinc/support-metrics-fullcollector.git"

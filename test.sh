@@ -103,6 +103,11 @@ test_rest() {
     vagrant ssh $machine -- "sudo /usr/bin/kafka-rest-stop"
 }
 
+test_kafka_connect_hdfs() {
+    machine=$1
+    # TODO
+}
+
 test_kafka_connect_jdbc() {
     machine=$1
     # TODO
@@ -130,6 +135,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     # pre-test sanitization
     vagrant ssh rpm -- sudo rpm --erase confluent-camus || true
     vagrant ssh rpm -- sudo rpm --erase confluent-kafka-connect-jdbc || true
+    vagrant ssh rpm -- sudo rpm --erase confluent-kafka-connect-hdfs || true
     vagrant ssh rpm -- sudo rpm --erase confluent-kafka-rest || true
     vagrant ssh rpm -- sudo rpm --erase confluent-schema-registry || true
     vagrant ssh rpm -- sudo rpm --erase confluent-rest-utils || true
@@ -145,6 +151,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-rest-utils-*.rpm
     vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-schema-registry-*.rpm
     vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-kafka-rest-*.rpm
+    vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-kafka-connect-hdfs-*.rpm
     vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-kafka-connect-jdbc-*.rpm
     vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-camus-*.rpm
 
@@ -152,6 +159,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     test_kafka_start rpm
     test_schema_registry rpm
     test_rest rpm
+    test_kafka_connect_hdfs rpm
     test_kafka_connect_jdbc rpm
     test_camus rpm
     test_kafka_stop rpm
@@ -160,6 +168,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     # post-test sanitization
     vagrant ssh rpm -- sudo rpm --erase confluent-camus
     vagrant ssh rpm -- sudo rpm --erase confluent-kafka-connect-jdbc
+    vagrant ssh rpm -- sudo rpm --erase confluent-kafka-connect-hdfs
     vagrant ssh rpm -- sudo rpm --erase confluent-kafka-rest
     vagrant ssh rpm -- sudo rpm --erase confluent-schema-registry
     vagrant ssh rpm -- sudo rpm --erase confluent-rest-utils
@@ -173,6 +182,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     # pre-test sanitization
     vagrant ssh deb -- sudo dpkg --purge confluent-camus || true
     vagrant ssh deb -- sudo dpkg --purge confluent-kafka-connect-jdbc || true
+    vagrant ssh deb -- sudo dpkg --purge confluent-kafka-connect-hdfs || true
     vagrant ssh deb -- sudo dpkg --purge confluent-kafka-rest || true
     vagrant ssh deb -- sudo dpkg --purge confluent-schema-registry || true
     vagrant ssh deb -- sudo dpkg --purge confluent-rest-utils || true
@@ -188,6 +198,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-rest-utils*_all.deb
     vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-schema-registry*_all.deb
     vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-kafka-rest*_all.deb
+    vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-kafka-connect-hdfs*_all.deb
     vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-kafka-connect-jdbc*_all.deb
     vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-camus*_all.deb
 
@@ -195,6 +206,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     test_kafka_start deb
     test_schema_registry deb
     test_rest deb
+    test_kafka_connect_hdfs deb
     test_kafka_connect_jdbc deb
     test_camus deb
     test_kafka_stop deb
@@ -203,6 +215,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     # post-test sanitization
     vagrant ssh deb -- sudo dpkg --purge confluent-camus
     vagrant ssh deb -- sudo dpkg --purge confluent-kafka-connect-jdbc
+    vagrant ssh deb -- sudo dpkg --purge confluent-kafka-connect-hdfs
     vagrant ssh deb -- sudo dpkg --purge confluent-kafka-rest
     vagrant ssh deb -- sudo dpkg --purge confluent-schema-registry
     vagrant ssh deb -- sudo dpkg --purge confluent-rest-utils
