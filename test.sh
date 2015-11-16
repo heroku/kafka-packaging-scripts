@@ -87,18 +87,21 @@ test_kafka_stop() {
     sleep 25
 }
 
-# This test assumes the broker has already started
-test_ps() {
+# This test assumes that:
+# 1. The broker has already started.
+# 2. The proactive support package(s) are installed.
+test_proactive_support() {
     machine=$1
-    # Metrics will be collected at shutdown
+    SUPPORT_METRICS_BUNDLE_FILE="/tmp/test_support-metrics-bundle.zip"
+    rm -f $SUPPORT_METRICS_BUNDLE_FILE
+    # Stop the broker because metrics will be collected (at least) at shutdown,
+    # and the default report interval is 24 hours (we don't want to wait that long...)
     test_kafka_stop $machine
-    # Restart broker so CLI script can collect metrics
+    # Restart the broker so the `support-metrics-bundle` script can retrieve the
+    # collected metrics from the support metrics topic.
     test_kafka_start $machine
-    # Collect metrics
-    vagrant ssh $machine -- "sudo /usr/bin/support-metrics-bundle --zookeeper localhost:2181 &"
-    # Check metrics are there
-    vagrant ssh $machine -- "sudo ls -l /usr/bin/support-metrics-*.zip "
-    
+    vagrant ssh $machine -- "/usr/bin/support-metrics-bundle --zookeeper localhost:2181 --file $SUPPORT_METRICS_BUNDLE_FILE"
+    vagrant ssh $machine -- "test -s $SUPPORT_METRICS_BUNDLE_FILE"
 }
 
 test_schema_registry() {
@@ -177,7 +180,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     test_kafka_connect_jdbc rpm
     test_camus rpm
     if [ "$PS_ENABLED" = "yes" ]; then
-        test_ps rpm
+        test_proactive_support rpm
     fi
     test_kafka_stop rpm
     test_zk_stop rpm
@@ -227,7 +230,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     test_kafka_connect_jdbc deb
     test_camus deb
     if [ "$PS_ENABLED" = "yes" ]; then
-        test_ps deb
+        test_proactive_support deb
     fi
     test_kafka_stop deb
     test_zk_stop deb
