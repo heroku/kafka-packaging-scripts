@@ -513,7 +513,7 @@ Examples:
 v1.0.1    # CP 1.0.1 Release
 v1.0.1-2  # CP 1.0.1 Release, Revision 2
 
-# `debian` and `rpm` branches
+# `debian` and `rpm` branches (only `rpm` examples shown)
 rpm-v1.0.1    # CP 1.0.1 Release
 rpm-v1.0.1-2  # CP 1.0.1 Release, Revision 2
 ```
