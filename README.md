@@ -486,19 +486,35 @@ $ vagrant destroy
 
 Finally we must add a git tag to this repository for the new release, just like we do for the various CP packages.
 
+We need two kinds of tags:
+
+1. For the "normal" packaging code, i.e. what you see in the `master` branch.
+2. For packaging's own `debian` and `rpm` branches (there is no `archive` branch).
+
 The tags follow the convention:
 
 ```bash
+# For tagging the normal packaging code, cf. `master` branch
 v${MAJOR}.${MINOR}.${PATCH}              # when REVISION == 1
 v${MAJOR}.${MINOR}.${PATCH}-${REVISION}  # when REVISION >= 2
+
+# For tagging the `debian` and `rpm` branches of this repository.
+# Same tag convention as above but with "debian-" and "rpm-" prefixes, respectively.
+[debian,rpm]-v${MAJOR}.${MINOR}.${PATCH}              # when REVISION == 1
+[debian,rpm]-v${MAJOR}.${MINOR}.${PATCH}-${REVISION}  # when REVISION >= 2
 ```
 
 Examples:
 
+    # Normal packaging code, cf. `master` branch
     v1.0.1    # CP 1.0.1 Release
     v1.0.1-2  # CP 1.0.1 Release, Revision 2
 
-Make sure to push the git tag to the upstream packaging repository.
+    # `debian` and `rpm` branches
+    rpm-v1.0.1    # CP 1.0.1 Release
+    rpm-v1.0.1-2  # CP 1.0.1 Release, Revision 2
+
+Make sure to push the git tags to the upstream packaging repository.
 
 
 <a name="example-settings"></a>
