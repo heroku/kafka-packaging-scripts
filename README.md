@@ -508,13 +508,15 @@ v${MAJOR}.${MINOR}.${PATCH}-${REVISION}  # when REVISION >= 2
 
 Examples:
 
-    # Normal packaging code, cf. `master` branch
-    v1.0.1    # CP 1.0.1 Release
-    v1.0.1-2  # CP 1.0.1 Release, Revision 2
+```bash
+# Normal packaging code, cf. `master` branch
+v1.0.1    # CP 1.0.1 Release
+v1.0.1-2  # CP 1.0.1 Release, Revision 2
 
-    # `debian` and `rpm` branches
-    rpm-v1.0.1    # CP 1.0.1 Release
-    rpm-v1.0.1-2  # CP 1.0.1 Release, Revision 2
+# `debian` and `rpm` branches
+rpm-v1.0.1    # CP 1.0.1 Release
+rpm-v1.0.1-2  # CP 1.0.1 Release, Revision 2
+```
 
 Make sure to push the git tags to the upstream packaging repository.
 
