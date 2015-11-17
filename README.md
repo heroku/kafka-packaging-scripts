@@ -494,6 +494,8 @@ We need two kinds of tags:
 The tags follow the convention:
 
 ```bash
+# CP x.y.z = CP $MAJOR.$MINOR.$PATCH
+
 # For tagging the normal packaging code, cf. `master` branch
 v${MAJOR}.${MINOR}.${PATCH}              # when REVISION == 1
 v${MAJOR}.${MINOR}.${PATCH}-${REVISION}  # when REVISION >= 2
