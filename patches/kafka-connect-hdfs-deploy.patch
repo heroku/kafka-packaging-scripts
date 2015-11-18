@@ -1,0 +1,38 @@
+diff --git a/pom.xml b/pom.xml
+index 02366af..d742f38 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -181,6 +181,14 @@
+                 <filtering>true</filtering>
+             </resource>
+         </resources>
++
++        <extensions>
++            <extension>
++                <groupId>org.springframework.build</groupId>
++                <artifactId>aws-maven</artifactId>
++                <version>5.0.0.RELEASE</version>
++            </extension>
++        </extensions>
+     </build>
+ 
+     <profiles>
+@@ -200,4 +208,18 @@
+             </build>
+         </profile>
+     </profiles>
++
++    <distributionManagement>
++        <repository>
++            <id>aws-release</id>
++            <name>AWS Release Repository</name>
++            <url>${confluent.release.repo}</url>
++        </repository>
++        <snapshotRepository>
++            <id>aws-snapshot</id>
++            <name>AWS Snapshot Repository</name>
++            <url>${confluent.snapshot.repo}</url>
++        </snapshotRepository>
++    </distributionManagement>
++
+ </project>
