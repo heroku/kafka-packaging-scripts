@@ -387,7 +387,7 @@ is used by default).
 
 Now we will prepare the deployment, which notably includes creating staging S3 buckets.  The contents of these
 staging buckets, once tested and verified, will eventually be promoted to corresponding production S3 buckets
-(this promotion step is covered and documented elsewhere).
+(this promotion step is covered and documented elsewhere; cf. our wiki page on "Packaging and deploying a CP release").
 
 ```shell
 # Deployment preparation consists of three important tasks:
@@ -432,7 +432,7 @@ we prepared previously.
 > **SAFETY NOTE**: None of the deployment scripts will modify production, i.e. all modifying actions are performed
 > against staging S3 buckets.  Production data is only ever read from, e.g. to create backups for rollback purposes.
 > The steps that do modify production by publishing the staged packages and maven artifacts via S3 and CloudFront
-> are covered and documented elsewhere.
+> are covered and documented elsewhere (cf. our wiki page on "Packaging and deploying a CP release").
 
 You will be prompted multiple times for your GPG key password since some package index files, which are generated
 during this deployment step, will need to be signed.
@@ -453,7 +453,7 @@ At this point you have built, tested, and deployed the Confluent packages to sta
 
 Now you must verify that the packages and maven artifacts in the staging S3 buckets work as expected.
 
-*This step is currently documented elsewhere.*
+*This step is currently documented elsewhere (cf. our wiki page on "Packaging and deploying a CP release").*
 
 
 ## Step 7: Publish staging data to production via S3 and CloudFront
@@ -468,7 +468,7 @@ Once you have confirmed that the staged packages and maven artifacts are working
    artifacts via the official Confluent yum/apt/maven/etc. repositories.  (For rollbacks you can revert the CloudFront
    changes by pointing to the functioning S3 buckets of the previous release.)
 
-*These steps are currently documented elsewhere.*
+*These steps are currently documented elsewhere (cf. our wiki page on "Packaging and deploying a CP release").*
 
 
 ## Step 8: Terminate the build VMs (clean up)
