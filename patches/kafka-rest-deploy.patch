@@ -1,9 +1,9 @@
 diff --git a/pom.xml b/pom.xml
-index 907a68e..0dff389 100644
+index b50128c..14cca5e 100644
 --- a/pom.xml
 +++ b/pom.xml
-@@ -163,6 +163,14 @@
-                 </configuration>
+@@ -187,6 +187,14 @@
+                 </executions>
              </plugin>
          </plugins>
 +
@@ -17,7 +17,7 @@ index 907a68e..0dff389 100644
      </build>
  
      <profiles>
-@@ -182,4 +190,17 @@
+@@ -206,4 +214,17 @@
              </build>
          </profile>
      </profiles>
