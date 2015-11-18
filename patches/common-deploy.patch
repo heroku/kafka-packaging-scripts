@@ -1,9 +1,9 @@
 diff --git a/pom.xml b/pom.xml
-index fabf65b..3f48dbd 100644
+index 75dfbbe..b55bb6e 100644
 --- a/pom.xml
 +++ b/pom.xml
-@@ -72,5 +72,26 @@
-                 </configuration>
+@@ -115,5 +115,26 @@
+                 </executions>
              </plugin>
          </plugins>
 +
