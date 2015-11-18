@@ -746,6 +746,7 @@ Here's how we've generated our packages so far:
    * Add the package to the
      [installers/install.sh](installers/install.sh) script, which is used when
      users download the full platform in deb or rpm format.
+   * Add a `*-deploy.patch` to the [patches/](patches/) directory.
    * Test, fix up any issues, and commit.
 
 
