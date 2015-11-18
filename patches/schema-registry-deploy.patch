@@ -1,8 +1,8 @@
 diff --git a/pom.xml b/pom.xml
-index 3e6b3cd..d2dbfd5 100644
+index 4b3ea02..b2d859e 100644
 --- a/pom.xml
 +++ b/pom.xml
-@@ -68,5 +68,26 @@
+@@ -135,5 +135,27 @@
                  </executions>
              </plugin>
          </plugins>
@@ -28,4 +28,5 @@ index 3e6b3cd..d2dbfd5 100644
 +            <url>${confluent.snapshot.repo}</url>
 +        </snapshotRepository>
 +    </distributionManagement>
++
  </project>
