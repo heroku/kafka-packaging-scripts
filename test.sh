@@ -112,6 +112,17 @@ test_schema_registry() {
     vagrant ssh $machine -- "sudo /usr/bin/schema-registry-stop"
 }
 
+# TODO: Add a more meaningful test.  We currently verify only the existence of key kafka-serde-tools files.
+#
+# This test requires that schema registry is installed because as of CP 2.0.0
+# kafka-serde-tools are bundled with the schema registry package.
+test_kafka_serde_tools() {
+    machine=$1
+    vagrant ssh $machine -- "test -s /usr/share/java/kafka-serde-tools/kafka-avro-serializer-${CONFLUENT_VERSION}.jar"
+    vagrant ssh $machine -- "test -s /usr/share/java/kafka-serde-tools/kafka-connect-avro-converter-${CONFLUENT_VERSION}.jar"
+    vagrant ssh $machine -- "test -s /usr/share/java/kafka-serde-tools/kafka-json-serializer-${CONFLUENT_VERSION}.jar"
+}
+
 test_rest() {
     machine=$1
     vagrant ssh $machine -- "sudo /usr/bin/kafka-rest-start &> /tmp/rest.log &"
@@ -175,6 +186,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     test_zk_start rpm
     test_kafka_start rpm
     test_schema_registry rpm
+    test_kafka_serde_tools rpm
     test_rest rpm
     test_kafka_connect_hdfs rpm
     test_kafka_connect_jdbc rpm
@@ -225,6 +237,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     test_zk_start deb
     test_kafka_start deb
     test_schema_registry deb
+    test_kafka_serde_tools deb
     test_rest deb
     test_kafka_connect_hdfs deb
     test_kafka_connect_jdbc deb
