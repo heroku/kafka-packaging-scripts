@@ -10,7 +10,10 @@
 # in our build setup.  For example, we need to support multiple Scala versions.
 KAFKA_VERSION="0.9.0.0"
 KAFKA_BRANCH="0.9.0"
-SCALA_VERSIONS="2.10.5 2.11.7"
+# Build Kafka w/ Scala 2.11 first because of Proactive Support, which depends on the 2.11 variant.
+# We must build 2.11 before 2.10 because the Proactive Support projects are only built against
+# one variant, which means this variant must be built first.
+SCALA_VERSIONS="2.11.7 2.10.5"
 
 ###
 ### Proactive Support
