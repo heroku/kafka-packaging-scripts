@@ -52,7 +52,7 @@ if [ -z "$BACKUP_TIMESTAMP" ]; then
   echo "ERROR: Could not create a valid backup timestamp."
   exit 1
 fi
-declare -r MAVEN_BUCKET_PRODUCTION_BACKUP="${MAVEN_BUCKET_PRODUCTION}-${BACKUP_TIMESTAMP}"
+declare -r MAVEN_BUCKET_PRODUCTION_BACKUP="${MAVEN_BUCKET_PRODUCTION}-${BACKUP_TIMESTAMP}-backup"
 declare -r MAVEN_BUCKET_PRODUCTION_BACKUP_URL="s3://${MAVEN_BUCKET_PRODUCTION_BACKUP}"
 
 # TODO: We can derive the same information by inspecting the version suffix in PACKAGES_BUCKET (or CONFLUENT_VERSION).
