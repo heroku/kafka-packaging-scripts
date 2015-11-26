@@ -146,7 +146,8 @@ fi
 set -e
 aws s3 sync "${MAVEN_BUCKET_PRODUCTION_URL}" "${MAVEN_BUCKET_PRODUCTION_BACKUP_URL}"
 
-# Create the staging bucket for maven artifacts (jars) of the new release
+# Create the staging bucket for maven artifacts (jars) of the new release.
+# We also copy all existing artifacts from the production maven bucket to the staging bucket.
 set +e
 aws s3 ls ${MAVEN_BUCKET_URL} &> /dev/null
 if [ $? -ne 0 ]; then
