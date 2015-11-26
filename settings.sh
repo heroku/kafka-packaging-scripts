@@ -236,6 +236,16 @@ PURGE_REPOS_DIRECTORY_BEFORE_PACKAGING="yes"
 ### Input validation of settings defined above
 ###
 
+if [ -z "$CONFLUENT_VERSION" ]; then
+  echo "ERROR: CONFLUENT_VERSION must be set"
+  exit 1
+fi
+declare -r CONFLUENT_VERSION_MIN_LENGTH=5 # 5 for "x.y.z"
+if [ ${#CONFLUENT_VERSION} -lt $CONFLUENT_VERSION_MIN_LENGTH ]; then
+  echo "ERROR: CONFLUENT_VERSION must have a length >= ${CONFLUENT_VERSION_MIN_LENGTH} (it currently has length ${#CONFLUENT_VERSION})"
+  exit 1
+fi
+
 # Ensure that buckets are configured.
 if [ -z "$PACKAGES_BUCKET" ]; then
   echo "ERROR: PACKAGES_BUCKET must be set"
