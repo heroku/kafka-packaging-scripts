@@ -116,9 +116,7 @@ BRANCH="origin/master"
 # ------------------
 # camus_BRANCH="origin/confluent-master" # branch
 # kafka_rest_BRANCH="v1.0" # tag
-camus_BRANCH="origin/2.x"
-kafka_rest_BRANCH="origin/2.x"
-schema_registry_BRANCH="origin/2.x"
+camus_BRANCH="origin/confluent-master"
 
 
 ###
