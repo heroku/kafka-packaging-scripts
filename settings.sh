@@ -8,8 +8,28 @@
 
 # Kafka has its own version and branch settings as it has a special requirements
 # in our build setup.  For example, we need to support multiple Scala versions.
+
+# The associated Apache Kafka version.  This variable is used mostly for version number parsing
+# in the build scripts (as sometimes the version information in the upstream Kafka branches are
+# not matching our desired build configuration) as well as for naming the generated package files.
+#
+# Examples
+# --------
+# KAFKA_VERSION="0.8.2.1"
+#
 KAFKA_VERSION="0.9.0.0"
+
+
+# Apache Kafka branch that will be used to CP Kafka.  Think: `upstream/<BRANCH>`.
+#
+# Note that the actual Kafka version(s) used by other CP projects such as `kafka-rest` depends on their respective
+# dependency settings defined in `pom.xml`.  It is your responsibility to ensure that the CP Kafka's version (cf.
+# `KAFKA_BRANCH`) works with the Kafka versions defined in the various `pom.xml` files of other CP projects, which
+# you control by setting `BRANCH` and per-project `*_BRANCH` overrides (see below for details).
+#
+# Example: `0.8.2`.
 KAFKA_BRANCH="0.9.0"
+
 # Build Kafka w/ Scala 2.11 first because of Proactive Support, which depends on the 2.11 variant.
 # We must build 2.11 before 2.10 because the Proactive Support projects are only built against
 # one variant, which means this variant must be built first.
@@ -44,7 +64,6 @@ PS_PACKAGES="support-metrics-common support-metrics-fullcollector $PS_CLIENT_PAC
 ###
 
 # Version of the CP release and also the version of the various CP projects.
-# Examples: `1.0.0`, `1.0.1-SNAPSHOT`
 #
 # *** IMPORTANT ***:
 # - This setting must work with the must work with BRANCH settings below.
@@ -52,6 +71,11 @@ PS_PACKAGES="support-metrics-common support-metrics-fullcollector $PS_CLIENT_PAC
 # - This setting must be aligned with the PACKAGES_BUCKET* and MAVEN_BUCKET
 #   settings below.  The S3 buckets we use follow a naming convention that
 #   must match CONFLUENT_VERSION.
+#
+# Examples
+# --------
+# CONFLUENT_VERSION=1.0.0
+# CONFLUENT_VERSION=1.0.1-SNAPSHOT
 #
 CONFLUENT_VERSION="2.0.0-SNAPSHOT"
 
