@@ -241,8 +241,11 @@ Specify any required build and release settings in [settings.sh](settings.sh), w
 * `CONFLUENT_VERSION`:  Version of Confluent's tools.  Examples: `1.0.0` (a release), `1.0.1-SNAPSHOT`.
   Note that we do not currently have per-project overrides for `CONFLUENT_VERSION`, so the assumption here is that all
   projects make version updates in lock-step.
-* `KAFKA_BRANCH`:  Apache Kafka branch to build (for CP Kafka) and to build against (for CP projects such as
-   `kafka-rest`).  Think: `upstream/<BRANCH>`.  Example: `0.8.2`.
+* `KAFKA_BRANCH`:  Apache Kafka branch that will be used to CP Kafka.  Think: `upstream/<BRANCH>`.  Example: `0.8.2`.
+    * Note that the actual Kafka version used by other CP projects such as `kafka-rest` depends on their respective
+      dependency settings defined in `pom.xml`.  It is your responsibility to ensure that the CP Kafka's version
+      (cf. `KAFKA_BRANCH`) works with the Kafka versions defined in the various `pom.xml` files of other CP projects,
+      which you control by setting `BRANCH` and per-project `*_BRANCH` overrides (see below for details).
 * `KAFKA_VERSION`:  The associated Apache Kafka version.  This variable is used mostly for version number parsing in
    the build scripts (as sometimes the version information in the upstream Kafka branches are not matching our
    desired build configuration) as well as for naming the generated package files.  Example: `0.8.2.1`.  (In the future
