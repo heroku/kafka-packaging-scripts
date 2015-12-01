@@ -247,6 +247,8 @@ Specify any required build and release settings in [settings.sh](settings.sh), w
    the build scripts (as sometimes the version information in the upstream Kafka branches are not matching our
    desired build configuration) as well as for naming the generated package files.  Example: `0.8.2.1`.  (In the future
    we might consider deriving `KAFKA_VERSION` automatically.)
+    * For example, see our usage of `VERSION` (yes, `KAFKA_VERSION` is passed as `VERSION` in this case) in the
+      `Makefile`'s of [kafka-packaging](https://github.com/confluentinc/kafka-packaging).
 * `SCALA_VERSIONS`:  Space-separated list of Scala versions to use for Scala-dependent projects.  These should just be
   extracted from the Kafka build scripts.  Examples: `2.10.4`, `2.9.1 2.9.2 2.10.4 2.11.5`
 * `REVISION`:  Packages go into yum/apt/... repositories organized by `CONFLUENT_VERSION`.  If we need to release any
