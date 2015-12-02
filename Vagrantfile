@@ -15,6 +15,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # http://auramo.github.io/2014/12/vagrant-performance-tuning/
     deb.vm.synced_folder ".", "/vagrant",
         :nfs => true,
+        # We cannot use NFSv4 because it is not supported on Mac OS X yet
+        # (at least as of OS X Yosemite aka 10.10), and we still need to run
+        # these VMs / this code project on Mac OS X.
         :mount_options => ['nolock,vers=3,tcp,noatime,clientaddr=10.20.30.11']
     deb.vm.network "private_network", ip: "10.20.30.11"
   end
@@ -27,6 +30,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     rpm.vm.provision "shell", path: "vagrant/rpm.sh"
     rpm.vm.synced_folder ".", "/vagrant",
         :nfs => true,
+        # We cannot use NFSv4 because it is not supported on Mac OS X yet
+        # (at least as of OS X Yosemite aka 10.10), and we still need to run
+        # these VMs / this code project on Mac OS X.
         :mount_options => ['nolock,vers=3,tcp,noatime,clientaddr=10.20.30.12']
     rpm.vm.network "private_network", ip: "10.20.30.12"
   end
