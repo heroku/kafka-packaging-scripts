@@ -170,6 +170,36 @@ test_camus() {
     echo "Skipping Camus test since Camus has nothing it can run standalone."
 }
 
+
+# Test librdkafka devel by compiling a tiny program and run it.
+test_librdkafka_dev() {
+    machine=$1
+
+    # C API
+    echo "#include <librdkafka/rdkafka.h>
+int main (void) {
+   return rd_kafka_version() ? 0 : 1;
+}
+" | vagrant ssh $machine -- "cat > /tmp/test_compile_librdkafka.c"
+
+    vagrant ssh $machine -- "gcc /tmp/test_compile_librdkafka.c -o /tmp/test_compile_librdkafka -lrdkafka -lrt"
+
+    vagrant ssh $machine -- "/tmp/test_compile_librdkafka  && rm -f /tmp/test_compile_librdkafka"
+
+    # C++ API
+    echo "#include <librdkafka/rdkafkacpp.h>
+int main (void) {
+   return RdKafka::version() ? 0 : 1;
+}
+" | vagrant ssh $machine -- "cat > /tmp/test_compile_librdkafka.cpp"
+
+    vagrant ssh $machine -- "g++ /tmp/test_compile_librdkafka.cpp -o /tmp/test_compile_librdkafka_cpp -lrdkafka++ -lrdkafka -lrt"
+
+    vagrant ssh $machine -- "/tmp/test_compile_librdkafka_cpp  && rm -f /tmp/test_compile_librdkafka_cpp"
+}
+
+
+
 # Note that this should really only be run with *a single version of packages in
 # output/*. This is because it's a pain to generate the actual package names
 # from the versions because of platform-specific version contortions. Instead,
@@ -188,6 +218,9 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     vagrant ssh rpm -- sudo rpm --erase confluent-schema-registry || true
     vagrant ssh rpm -- sudo rpm --erase confluent-rest-utils || true
     vagrant ssh rpm -- sudo rpm --erase confluent-common || true
+    vagrant ssh rpm -- sudo rpm --erase librdkafka-devel || true
+    vagrant ssh rpm -- sudo rpm --erase librdkafka1 || true
+
     for LOCAL_SCALA_VERSION in $SCALA_VERSIONS; do
         vagrant ssh rpm -- sudo rpm --erase confluent-kafka-${LOCAL_SCALA_VERSION} || true
     done
@@ -202,6 +235,8 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-kafka-connect-hdfs-*.rpm
     vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-kafka-connect-jdbc-*.rpm
     vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-camus-*.rpm
+    vagrant ssh rpm -- sudo rpm --install /vagrant/output/librdkafka1-*.rpm
+    vagrant ssh rpm -- sudo rpm --install /vagrant/output/librdkafka-devel-*.rpm
 
     test_zk_start rpm
     test_kafka_start rpm
@@ -210,6 +245,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     test_rest rpm
     test_kafka_connect_hdfs rpm
     test_kafka_connect_jdbc rpm
+    test_librdkafka_dev rpm
     test_camus rpm
     if [ "$PS_ENABLED" = "yes" ]; then
         test_proactive_support rpm
@@ -218,6 +254,8 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     test_zk_stop rpm
 
     # post-test sanitization
+    vagrant ssh rpm -- sudo rpm --erase librdkafka-devel
+    vagrant ssh rpm -- sudo rpm --erase librdkafka1
     vagrant ssh rpm -- sudo rpm --erase confluent-camus
     vagrant ssh rpm -- sudo rpm --erase confluent-kafka-connect-jdbc
     vagrant ssh rpm -- sudo rpm --erase confluent-kafka-connect-hdfs
@@ -239,6 +277,9 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     vagrant ssh deb -- sudo dpkg --purge confluent-schema-registry || true
     vagrant ssh deb -- sudo dpkg --purge confluent-rest-utils || true
     vagrant ssh deb -- sudo dpkg --purge confluent-common || true
+    vagrant ssh deb -- sudo dpkg --purge librdkafka-dev || true
+    vagrant ssh deb -- sudo dpkg --purge librdkafka1 || true
+
     for LOCAL_SCALA_VERSION in $SCALA_VERSIONS; do
         vagrant ssh deb -- sudo dpkg --remove confluent-kafka-${LOCAL_SCALA_VERSION} || true
     done
@@ -253,6 +294,8 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-kafka-connect-hdfs*_all.deb
     vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-kafka-connect-jdbc*_all.deb
     vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-camus*_all.deb
+    vagrant ssh deb -- sudo dpkg --install /vagrant/output/librdkafka1*.deb
+    vagrant ssh deb -- sudo dpkg --install /vagrant/output/librdkafka-dev*.deb
 
     test_zk_start deb
     test_kafka_start deb
@@ -261,6 +304,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     test_rest deb
     test_kafka_connect_hdfs deb
     test_kafka_connect_jdbc deb
+    test_librdkafka_dev deb
     test_camus deb
     if [ "$PS_ENABLED" = "yes" ]; then
         test_proactive_support deb
@@ -269,6 +313,8 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     test_zk_stop deb
 
     # post-test sanitization
+    vagrant ssh deb -- sudo dpkg --purge librdkafka-dev
+    vagrant ssh deb -- sudo dpkg --purge librdkafka1
     vagrant ssh deb -- sudo dpkg --purge confluent-camus
     vagrant ssh deb -- sudo dpkg --purge confluent-kafka-connect-jdbc
     vagrant ssh deb -- sudo dpkg --purge confluent-kafka-connect-hdfs

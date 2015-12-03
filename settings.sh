@@ -35,6 +35,16 @@ KAFKA_BRANCH="0.9.0"
 # one variant, which means this variant must be built first.
 SCALA_VERSIONS="2.11.7 2.10.5"
 
+# librdkafka follows its own version naming convention, which is different from CP's.
+#
+# Idea: `librdkafka-<librdkafkaversion>_<vendorversion>`
+#
+# This setting is important to pick up the correct librdkafka packages from `output/`,
+# but as of yet it does not affect the build in any other way, e.g. it is NOT used to
+# control which exact code version of librdkafka we are building.
+# NOTE: Make sure to synchronize this value with librdkafka_BRANCH below.
+LIBRDKAFKA_VERSION="0.9.0"
+
 ###
 ### Proactive Support
 ###
@@ -92,7 +102,7 @@ REVISION="1"
 # rest-utils must be listed before kafka-rest as the latter depends on the former.
 #
 # Important: the Proactive Support packages (PS_PACKAGES) MUST NOT be added here!
-CP_PACKAGES="common rest-utils schema-registry kafka-rest kafka-connect-hdfs kafka-connect-jdbc camus"
+CP_PACKAGES="common rest-utils schema-registry kafka-rest kafka-connect-hdfs kafka-connect-jdbc camus librdkafka"
 
 # `BRANCH` is the global setting for build branches of Confluent packages incl. Camus.
 #
@@ -117,6 +127,7 @@ BRANCH="origin/master"
 # camus_BRANCH="origin/confluent-master" # branch
 # kafka_rest_BRANCH="v1.0" # tag
 camus_BRANCH="origin/confluent-master"
+librdkafka_BRANCH="origin/0.9.0"
 
 
 ###
@@ -139,6 +150,7 @@ KAFKA_CONNECT_JDBC_REPO="git@github.com:confluentinc/kafka-connect-jdbc.git"
 SUPPORT_METRICS_COMMON_REPO="git@github.com:confluentinc/support-metrics-common.git"
 SUPPORT_METRICS_FULLCOLLECTOR_REPO="git@github.com:confluentinc/support-metrics-fullcollector.git"
 SUPPORT_METRICS_CLIENT_REPO="git@github.com:confluentinc/support-metrics-client.git"
+LIBRDKAFKA_REPO="git@github.com:edenhill/librdkafka.git"
 
 
 ###
@@ -226,6 +238,10 @@ SKIP_TESTS="no"
 
 # You may add overrides for specific projects, if needed.
 # Use project_name_using_underscores_SKIP_TESTS.
+#
+# Note: There are no build/package-time tests for librdkafka or libserdes,
+#       so the global SKIP_TESTS setting and any per-project *_SKIP_TESTS
+#       settings have no effect for these projects.
 #
 # Override examples:
 # ------------------

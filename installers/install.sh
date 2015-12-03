@@ -5,7 +5,7 @@ set -e
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 KAFKA_FILE=`ls ${DIR}/confluent-kafka-* | grep -P 'confluent-kafka-\d.*'`
-PACKAGES="common rest-utils schema-registry kafka-rest camus kafka-connect-hdfs kafka-connect-jdbc"
+PACKAGES="common rest-utils schema-registry kafka-rest camus kafka-connect-hdfs kafka-connect-jdbc librdkafka"
 DEB=`ls ${DIR}/*.deb || true`
 
 if [ -n "$DEB" ]; then
@@ -41,5 +41,10 @@ echo "$MESSAGE kafka"
 eval "${COMMAND} ${PATH_PREFIX}${KAFKA_PACKAGE}${COMMAND_EXT}"
 for PACKAGE in $PACKAGES; do
     echo "$MESSAGE $PACKAGE"
-    eval "${COMMAND} ${PATH_PREFIX}confluent-${PACKAGE}${COMMAND_EXT}"
+    # TODO: librdkafka (and possibly further C-based packages) requires special treatment.
+    if [ "$PACKAGE" = "librdkafka" ]; then
+      eval "${COMMAND} ${PATH_PREFIX}librdkafka1${COMMAND_EXT}"
+    else
+      eval "${COMMAND} ${PATH_PREFIX}confluent-${PACKAGE}${COMMAND_EXT}"
+    fi
 done

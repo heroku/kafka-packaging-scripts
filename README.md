@@ -261,6 +261,10 @@ Specify any required build and release settings in [settings.sh](settings.sh), w
       `Makefile`'s of [kafka-packaging](https://github.com/confluentinc/kafka-packaging).
 * `SCALA_VERSIONS`:  Space-separated list of Scala versions to use for Scala-dependent projects.  These should just be
   extracted from the Kafka build scripts.  Examples: `2.10.4`, `2.9.1 2.9.2 2.10.4 2.11.5`
+* `LIBRDKAFKA_VERSION`:  [librdkafka](https://github.com/edenhill/librdkafka) follows its own version naming
+  convention, which is different from other packages in the Confluent Platform.  This setting is important to pick
+  up the correct librdkafka packages (once generated/packaged) from `output/`, but as of yet it does not affect the
+  build in any other way, e.g. it is NOT used to control which exact code version of librdkafka we are building.
 * `REVISION`:  Packages go into yum/apt/... repositories organized by `CONFLUENT_VERSION`.  If we need to release any
   updates to packages *with the same version* (cf. `CONFLUENT_VERSION`), the `REVISION` needs to be bumped up so the
   packages go into the same repositories but are treated as updates to the existing packages.
