@@ -40,18 +40,7 @@ for remote_branch in rpm debian confluent-platform; do
 done
 
 pushd $REPOS_DIRECTORY
-for REPO in $KAFKA_REPO \
-    $KAFKA_PACKAGING_REPO \
-    $SUPPORT_METRICS_COMMON_REPO \
-    $SUPPORT_METRICS_FULLCOLLECTOR_REPO \
-    $SUPPORT_METRICS_CLIENT_REPO \
-    $COMMON_REPO \
-    $REST_UTILS_REPO \
-    $SCHEMA_REGISTRY_REPO \
-    $KAFKA_REST_REPO \
-    $KAFKA_CONNECT_HDFS_REPO \
-    $KAFKA_CONNECT_JDBC_REPO \
-    $CAMUS_REPO; do
+for REPO in $REPOS ; do
     REPO_DIR=`basename $REPO`
     if [ ! -e $REPO_DIR ]; then
         # Using mirror makes sure we get copies of all the branches. It also

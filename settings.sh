@@ -154,6 +154,24 @@ LIBRDKAFKA_REPO="git@github.com:edenhill/librdkafka.git"
 
 
 ###
+### Repos to build
+###
+REPOS="$KAFKA_REPO \
+    $KAFKA_PACKAGING_REPO \
+    $SUPPORT_METRICS_COMMON_REPO \
+    $SUPPORT_METRICS_FULLCOLLECTOR_REPO \
+    $SUPPORT_METRICS_CLIENT_REPO \
+    $COMMON_REPO \
+    $REST_UTILS_REPO \
+    $SCHEMA_REGISTRY_REPO \
+    $KAFKA_REST_REPO \
+    $KAFKA_CONNECT_HDFS_REPO \
+    $KAFKA_CONNECT_JDBC_REPO \
+    $CAMUS_REPO \
+    $LIBRDKAFKA_REPO"
+
+
+###
 ### Package signing
 ###
 SIGN="yes"
