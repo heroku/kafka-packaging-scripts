@@ -10,21 +10,25 @@ set -x
 yum -y update
 
 # Install Oracle JDK
-declare -r LOCAL_JDK_RPM="/tmp/jdk-7u79-linux-x64.rpm"
-curl -s -L --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/7u79-b15/jdk-7u79-linux-x64.rpm" -o $LOCAL_JDK_RPM
-yum -y install $LOCAL_JDK_RPM
+if ! yum list installed jdk ; then
+    declare -r LOCAL_JDK_RPM="/tmp/jdk-7u79-linux-x64.rpm"
+    curl -s -L --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/7u79-b15/jdk-7u79-linux-x64.rpm" -o $LOCAL_JDK_RPM
+    yum -y install $LOCAL_JDK_RPM
+fi
 
 # Install build tools
-yum -y install git rpm-build rpm-sign createrepo
+yum -y install git rpm-build rpm-sign createrepo mock
 
-# We need to install maven manually because the Fedora packages are generated
-# targeting Java 7.
-MAVEN_VERSION="3.2.5"
-pushd /tmp
-curl -s -o maven.tar.gz "https://s3-us-west-2.amazonaws.com/confluent-packaging-tools/apache-maven-${MAVEN_VERSION}-bin.tar.gz"
-tar -zxvf maven.tar.gz
-ln -s /tmp/apache-maven-${MAVEN_VERSION}/bin/mvn /usr/bin/mvn
-popd
+if [ ! -x /usr/bin/mvn ]; then
+    # We need to install maven manually because the Fedora packages are generated
+    # targeting Java 7.
+    MAVEN_VERSION="3.2.5"
+    pushd /tmp
+    curl -s -o maven.tar.gz "https://s3-us-west-2.amazonaws.com/confluent-packaging-tools/apache-maven-${MAVEN_VERSION}-bin.tar.gz"
+    tar -zxvf maven.tar.gz
+    ln -s /tmp/apache-maven-${MAVEN_VERSION}/bin/mvn /usr/bin/mvn
+    popd
+fi
 
 # These should not be leaking out anywhere with the build output so the values
 # don't matter, but we need to specify them or git commands will fail. These are
