@@ -158,6 +158,10 @@ $ aws configure
 
 You will also need your AWS credentials later for configuring [aws.sh](aws.sh).
 
+### Linux host prerequisites
+
+`sudo apt-get install vagrant virtualbox nfs-kernel-server zip aptly`
+
 
 ## NFS for synced folders
 
@@ -165,6 +169,9 @@ _If you're running on Mac OS X then you should be ready to go out of the box._
 
 > **OS X 10.11 (El Capitan) users**: There exists a known NFS-related issue that will require your intervention.
 > See the note on synced folders in the Troubleshooting section below.
+
+> **Linux users**: Make sure to install and start the `nfs-kernel-server` prior to `vagrant up`.
+> Newer Ubuntu and Debian systems dont support NFS version 3, if this is the case remove the 'vers=3' mount option from Vagrantfile and reprovision.
 
 
 Our [Vagrant setup](Vagrantfile) uses [NFS for synced folders](http://docs.vagrantup.com/v2/synced-folders/nfs.html)
@@ -797,6 +804,10 @@ enabled on your host machine:
 Apple changed the way the user interacts with system files.  If the NFS folders do not work, disable the System
 Integrity Protection (SIP) and add the `-N` parameter to `/System/Library/LaunchDaemons/com.apple.nfsd.plist` like
 shown below.  Afterwards you can re-enable SIP again.
+
+> **Note for Linux users:**
+> * Try restarting the nfs-kernel-server if experiencing mount hangs.
+> * NFS mounts may hang if the Vagrant host was suspended and resumed, in this case a reload of the Vagrant instances is required (`vagrant reload`)
 
     <array>
        <string>/sbin/nfsd</string>

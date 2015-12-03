@@ -9,7 +9,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     deb.vm.provision "shell", path: "vagrant/deb.sh"
     # NFS has better synced folder performance than Vagrant's default.
     # - This requires Mac OS X or Linux on the host machine.
-    # - The host must have nfsd installed (default on Mac OS X).
+    # - The host must have nfs-kernel-server or nfsd installed (default on Mac OS X).
+    # - Newer Ubuntu and Debian systems dont support NFS version 3, if that's
+    #   the case remove 'vers=3' from the mount_options below.
     # - The guest machine must have NFS support installed.
     # http://docs.vagrantup.com/v2/synced-folders/nfs.html and
     # http://auramo.github.io/2014/12/vagrant-performance-tuning/
