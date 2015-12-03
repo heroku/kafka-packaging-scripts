@@ -135,16 +135,17 @@ test_kafka_connect_hdfs() {
     machine=$1
     # Start one HDFS connector. There isn't currently a nice sample config that
     # would work for this, so we have to create one ourselves.
-    vagrant ssh $machine -- "echo -e 'name=hdfs-sink\nconnector.class=io.confluent.connect.hdfs.HdfsSinkConnector\ntasks.max=1\ntopics=test-topic\nhdfs.url=hdfs://fakehost:9000\nhadoop.conf.dir=/mnt\nhadoop.home=/opt/hadoop-cdh\nflush.size=100\nrotate.interval.ms=1000\n' > /tmp/hdfs-sink.properties"
-    vagrant ssh $machine -- "( connect-standalone /etc/schema-registry/connect-avro-standalone.properties /tmp/hdfs-sink.properties & echo $! >&3 ) 1>/tmp/connect-hdfs.log 2>&1 3> /tmp/connect-hdfs.pid"
+    vagrant ssh $machine -- "echo -e 'name=hdfs-sink\nconnector.class=io.confluent.connect.hdfs.HdfsSinkConnector\ntasks.max=1\ntopics=test-topic\nhdfs.url=hdfs://localhost:9000\nhadoop.conf.dir=/mnt\nhadoop.home=/opt/hadoop-cdh\nflush.size=100\nrotate.interval.ms=1000\n' > /tmp/hdfs-sink.properties"
+    vagrant ssh $machine -- "connect-standalone /etc/schema-registry/connect-avro-standalone.properties /tmp/hdfs-sink.properties 1>/tmp/connect-hdfs.log 2>&1 &"
     # Check that the REST server in Kafka Connect actually started. If not
     # packaged properly such that the HDFS connector includes Jetty/Jersey, it
     # will conflict with the version in Kafka Connect and cause connect to crash.
+    sleep 5
     vagrant ssh $machine -- "grep 'REST server listening' /tmp/connect-hdfs.log"
     # Also check that we saw the connector instantiated. This is
     vagrant ssh $machine -- "grep 'Created connector hdfs-sink' /tmp/connect-hdfs.log"
-    # Cleanup the task since this one doesn't exit on its own
-    vagrant ssh $machine -- "kill `cat /tmp/connect-hdfs.pid`"
+    # Clean up. The process will be doing nothing, but still running
+    vagrant ssh $machine -- "ps ax | grep java | grep -i standalone | grep -v grep | awk '{print \$1}' | xargs kill"
 }
 
 test_kafka_connect_jdbc() {
@@ -154,7 +155,10 @@ test_kafka_connect_jdbc() {
     # In this case, we expect it to start up the connector, manage to make the
     # "connection" to the database (which it would create if it didn't exist),
     # but then fail because there aren't actually any tables in the database.
+    sleep 5
     vagrant ssh $machine -- "grep 'Number of groups must be positive.' /tmp/connect-jdbc.log"
+    # No cleanup necessary, the process exits due to connection errors. Validate it isn't running anymore.
+    ! vagrant ssh $machine -- "ps ax | grep java | grep -i standalone | grep -v grep"
 }
 
 test_camus() {
