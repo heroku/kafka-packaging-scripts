@@ -4,7 +4,7 @@ set -e
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-KAFKA_FILE=`ls ${DIR}/confluent-kafka-* | grep -P 'confluent-kafka-\d.*'`
+KAFKA_FILE=`ls ${DIR}/confluent-kafka-* | grep -E 'confluent-kafka-[0-9].*'`
 PACKAGES="common rest-utils schema-registry kafka-rest camus kafka-connect-hdfs kafka-connect-jdbc librdkafka"
 DEB=`ls ${DIR}/*.deb || true`
 
