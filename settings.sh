@@ -19,7 +19,6 @@
 #
 KAFKA_VERSION="0.9.0.0"
 
-
 # Apache Kafka branch that will be used to CP Kafka.  Think: `upstream/<BRANCH>`.
 #
 # Note that the actual Kafka version(s) used by other CP projects such as `kafka-rest` depends on their respective

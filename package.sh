@@ -127,36 +127,60 @@ ABS_OUTPUT_DIRECTORY=${MY_DIR}/${OUTPUT_DIRECTORY}
 
 # zip/tar.gz
 for SCALA_VERSION in $SCALA_VERSIONS; do
-    mkdir "confluent-${CONFLUENT_VERSION}"
-    pushd "confluent-${CONFLUENT_VERSION}"
+    PACKAGE_ROOT="confluent-${CONFLUENT_VERSION}"
+    mkdir $PACKAGE_ROOT
+    pushd $PACKAGE_ROOT
     tar -xz --strip-components 1 -f "${ABS_OUTPUT_DIRECTORY}/confluent-kafka-${KAFKA_VERSION}-${SCALA_VERSION}.tar.gz"
     for PACKAGE in $CP_PACKAGES; do
+      if [ "$PACKAGE" = "librdkafka" ]; then
+        # TODO: librdkafka (and possibly further C-based packages) requires special treatment.
+        # Until we have identified a clear pattern for these "special" packages we hardcode
+        # this special-casing of librdkafka.
+        #
+        # Place the librdkafka tarball as-is (i.e. do not extract) under `src/`.
+        # The tarball contains the sources so there isn't a more appropriate place
+        # to handle the contents of this tarball.
+        LIBRDKAFKA_REL_DESTINATION_DIR="src/"
+        mkdir $LIBRDKAFKA_REL_DESTINATION_DIR
+        cp "${ABS_OUTPUT_DIRECTORY}/librdkafka-${LIBRDKAFKA_VERSION}_${CONFLUENT_VERSION}.tar.gz" $LIBRDKAFKA_REL_DESTINATION_DIR
+        cp "${ABS_OUTPUT_DIRECTORY}/librdkafka-${LIBRDKAFKA_VERSION}_${CONFLUENT_VERSION}.zip" $LIBRDKAFKA_REL_DESTINATION_DIR
+      else
+        # A "normal" CP packages like schema-registry.
         tar -xz --strip-components 1 -f "${ABS_OUTPUT_DIRECTORY}/confluent-${PACKAGE}-${CONFLUENT_VERSION}.tar.gz"
+      fi
     done
     cp ${MY_DIR}/installers/README.archive .
     popd
-    tar -czf "${ABS_OUTPUT_DIRECTORY}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.tar.gz" "confluent-${CONFLUENT_VERSION}"
-    zip -r "${ABS_OUTPUT_DIRECTORY}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.zip" "confluent-${CONFLUENT_VERSION}"
-    rm -rf "confluent-${CONFLUENT_VERSION}"
+    # TODO: the tar.gz should not contain the librdkafka zip file
+    tar -czf "${ABS_OUTPUT_DIRECTORY}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.tar.gz" $PACKAGE_ROOT
+    # TODO: the zip should not contain the librdkafka tar.gz file
+    zip -r "${ABS_OUTPUT_DIRECTORY}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.zip" $PACKAGE_ROOT
+    rm -rf $PACKAGE_ROOT
 done
 
 # deb/rpm
 for SCALA_VERSION in $SCALA_VERSIONS; do
     for PKG_TYPE in "deb" "rpm"; do
-        mkdir "confluent-${CONFLUENT_VERSION}"
-        pushd "confluent-${CONFLUENT_VERSION}"
+        PACKAGE_ROOT="confluent-${CONFLUENT_VERSION}"
+        mkdir $PACKAGE_ROOT
+        pushd $PACKAGE_ROOT
         # Getting the actual filenames is a pain because of the version number
         # mangling. We just use globs to find them instead, but this means you
         # *MUST* work with a clean output/ directory
         eval "cp ${ABS_OUTPUT_DIRECTORY}/confluent-kafka-${SCALA_VERSION}*.${PKG_TYPE} ."
         for PACKAGE in $CP_PACKAGES; do
+          if [ "$PACKAGE" = "librdkafka" ]; then
+            # TODO: librdkafka (and possibly further C-based packages) requires special treatment.
+            eval "cp ${ABS_OUTPUT_DIRECTORY}/librdkafka*${LIBRDKAFKA_VERSION}*.${PKG_TYPE} ."
+          else
             eval "cp ${ABS_OUTPUT_DIRECTORY}/confluent-${PACKAGE}*.${PKG_TYPE} ."
+          fi
         done
         cp ${MY_DIR}/installers/install.sh .
         cp ${MY_DIR}/installers/README .
         popd
-        tar -czf "${ABS_OUTPUT_DIRECTORY}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}-${PKG_TYPE}.tar.gz" "confluent-${CONFLUENT_VERSION}"
-        rm -rf "confluent-${CONFLUENT_VERSION}"
+        tar -czf "${ABS_OUTPUT_DIRECTORY}/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}-${PKG_TYPE}.tar.gz" $PACKAGE_ROOT
+        rm -rf $PACKAGE_ROOT
     done
 done
 
