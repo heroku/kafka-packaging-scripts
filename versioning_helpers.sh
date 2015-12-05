@@ -162,6 +162,27 @@ deb_version_field() {
   echo $version_field
 }
 
+# Generate the value of the Debian "Version" field for librdkafka, given
+# librdkafka's version, the Confluent full version (cf. CONFLUENT_VERSION in
+# settings.sh), and the desired revision (cf. REVISION in settings.sh), based
+# on our naming policy for Debian metadata.
+#
+# Usage
+# -----
+# deb_version_field_librdkafka <librdkafka_version> <cp_version> <revision>
+#
+# Examples
+# --------
+# deb_version_field_librdkafka "0.9.0" "2.0.0" "4" --> "0.9.0~1confluent2.0.0-4"
+# deb_version_field_librdkafka "0.9.0" "2.0.0-SNAPSHOT" "3" --> "0.9.0~1confluent2.0.0~SNAPSHOT-3"
+deb_version_field_librdkafka() {
+  local librdkafka_version="$1"
+  local cp_version="$2"
+  local revision="$3"
+  local librdkafka_cp_version_suffix=`deb_version_field $cp_version $revision`
+  echo "${librdkafka_version}~1confluent${librdkafka_cp_version_suffix}"
+}
+
 # Extracts the CP x.y.z release number from a version-indexed S3 bucket name.
 #
 # A version-indexed bucket name must follow the naming convention:
