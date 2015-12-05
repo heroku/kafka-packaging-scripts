@@ -218,6 +218,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     vagrant ssh rpm -- sudo rpm --erase confluent-schema-registry || true
     vagrant ssh rpm -- sudo rpm --erase confluent-rest-utils || true
     vagrant ssh rpm -- sudo rpm --erase confluent-common || true
+    vagrant ssh rpm -- sudo yum -y remove cyrus-sasl || true
     vagrant ssh rpm -- sudo rpm --erase librdkafka-devel || true
     vagrant ssh rpm -- sudo rpm --erase librdkafka1 || true
 
@@ -235,6 +236,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-kafka-connect-hdfs-*.rpm
     vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-kafka-connect-jdbc-*.rpm
     vagrant ssh rpm -- sudo rpm --install /vagrant/output/confluent-camus-*.rpm
+    vagrant ssh rpm -- sudo yum -y install cyrus-sasl
     vagrant ssh rpm -- sudo rpm --install /vagrant/output/librdkafka1-*.rpm
     vagrant ssh rpm -- sudo rpm --install /vagrant/output/librdkafka-devel-*.rpm
 
@@ -256,6 +258,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     # post-test sanitization
     vagrant ssh rpm -- sudo rpm --erase librdkafka-devel
     vagrant ssh rpm -- sudo rpm --erase librdkafka1
+    vagrant ssh rpm -- sudo yum -y remove cyrus-sasl
     vagrant ssh rpm -- sudo rpm --erase confluent-camus
     vagrant ssh rpm -- sudo rpm --erase confluent-kafka-connect-jdbc
     vagrant ssh rpm -- sudo rpm --erase confluent-kafka-connect-hdfs
@@ -277,11 +280,11 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     vagrant ssh deb -- sudo dpkg --purge confluent-schema-registry || true
     vagrant ssh deb -- sudo dpkg --purge confluent-rest-utils || true
     vagrant ssh deb -- sudo dpkg --purge confluent-common || true
-    vagrant ssh deb -- sudo dpkg --purge librdkafka-dev || true
-    vagrant ssh deb -- sudo dpkg --purge librdkafka1 || true
+    vagrant ssh deb -- sudo dpkg --purge librdkafka-dev librdkafka-dbg librdkafka1 || true
 
     for LOCAL_SCALA_VERSION in $SCALA_VERSIONS; do
-        vagrant ssh deb -- sudo dpkg --remove confluent-kafka-${LOCAL_SCALA_VERSION} || true
+        #        vagrant ssh deb -- sudo dpkg --remove confluent-kafka-${LOCAL_SCALA_VERSION} || true
+        echo hi
     done
     vagrant ssh deb -- sudo rm -rf $KAFKA_DATA_DIR
     vagrant ssh deb -- sudo rm -rf $ZOOKEEPER_DATA_DIR
@@ -294,6 +297,8 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-kafka-connect-hdfs*_all.deb
     vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-kafka-connect-jdbc*_all.deb
     vagrant ssh deb -- sudo dpkg --install /vagrant/output/confluent-camus*_all.deb
+    # libsasl2-2 is used by a lot of other programs so we will not try to remove it, just install.
+    vagrant ssh deb -- sudo apt-get install -y libsasl2-2 || true
     vagrant ssh deb -- sudo dpkg --install /vagrant/output/librdkafka1*.deb
     vagrant ssh deb -- sudo dpkg --install /vagrant/output/librdkafka-dev*.deb
 
@@ -313,8 +318,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     test_zk_stop deb
 
     # post-test sanitization
-    vagrant ssh deb -- sudo dpkg --purge librdkafka-dev
-    vagrant ssh deb -- sudo dpkg --purge librdkafka1
+    vagrant ssh deb -- sudo dpkg --purge librdkafka-dev librdkafka1-dbg librdkafka1
     vagrant ssh deb -- sudo dpkg --purge confluent-camus
     vagrant ssh deb -- sudo dpkg --purge confluent-kafka-connect-jdbc
     vagrant ssh deb -- sudo dpkg --purge confluent-kafka-connect-hdfs
