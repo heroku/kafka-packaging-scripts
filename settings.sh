@@ -93,15 +93,34 @@ CONFLUENT_VERSION="2.0.0-SNAPSHOT"
 # REVISION should be reset to `1` whenever we bump CONFLUENT_VERSION.
 REVISION="1"
 
-# Space-separated list of all the packages except for Kafka, without the
+# Space-separated list of our C client packages (e.g. librdkafka).
+#
+# We track these packages separately because they are quite different from our
+# Java packages in terms of build process, package names, version naming scheme,
+# etc.
+#
+# IMPORTANT: This variable is quite different from `CP_PACKAGES` below!
+#
+C_PACKAGES="librdkafka"
+
+# Space-separated list of all the Java packages except for Kafka, without the
 # `confluent-` prefix.  These all need to have the same version number
 # currently (cf. CONFLUENT_VERSION).
+# Space-separated list of our Java packages (e.g. schema-registry)
 #
 # The packages must be listed in the order of their dependencies.  For example,
 # rest-utils must be listed before kafka-rest as the latter depends on the former.
 #
-# Important: the Proactive Support packages (PS_PACKAGES) MUST NOT be added here!
-CP_PACKAGES="common rest-utils schema-registry kafka-rest kafka-connect-hdfs kafka-connect-jdbc camus librdkafka"
+# IMPORTANT: The Proactive Support packages (PS_PACKAGES) MUST NOT be added here!
+#
+JAVA_PACKAGES="common rest-utils schema-registry kafka-rest kafka-connect-hdfs kafka-connect-jdbc camus"
+
+# Space-separated list of all the CP packages except for Kafka.
+#
+# IMPORTANT: This variable is quite different from `C_PACKAGES` above!
+# IMPORTANT: The Proactive Support packages (PS_PACKAGES) MUST NOT be added here!
+#
+CP_PACKAGES="$JAVA_PACKAGES $C_PACKAGES"
 
 # `BRANCH` is the global setting for build branches of Confluent packages incl. Camus.
 #
@@ -126,7 +145,7 @@ BRANCH="origin/master"
 # camus_BRANCH="origin/confluent-master" # branch
 # kafka_rest_BRANCH="v1.0" # tag
 camus_BRANCH="origin/confluent-master"
-librdkafka_BRANCH="origin/0.9.0"
+librdkafka_BRANCH="origin/0.9.0" # librdkafka uses its own versioning scheme, it's NOT tied to Apache Kafka's!
 
 
 ###
