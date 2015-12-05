@@ -10,6 +10,7 @@ pushd `pwd`
 pushd $MY_DIR
 
 . $MY_DIR/settings.sh
+. $MY_DIR/versioning_helpers.sh
 
 # Ensure that important local directories are in good shape.
 if [ ! -d $OUTPUT_DIRECTORY ]; then
@@ -120,11 +121,14 @@ done
 # install. Finally, note that the BRANCH env variable isn't set for these --
 # there is no point since they have one fixed branch that they build from (rpm
 # or debian, stored in this repository).
+LIBRDKAFKA_RPM_VERSION=`rpm_version_field_librdkafka $LIBRDKAFKA_VERSION $CONFLUENT_VERSION`
+LIBRDKAFKA_RPM_RELEASE=`rpm_release_field_librdkafka $CONFLUENT_VERSION $REVISION`
 vagrant ssh rpm -- cp /vagrant/build/platform-rpm.sh /tmp/platform-rpm.sh
-vagrant ssh rpm -- -t sudo VERSION=$CONFLUENT_VERSION REVISION=$REVISION "SCALA_VERSIONS=\"$SCALA_VERSIONS\"" KAFKA_VERSION=$KAFKA_VERSION SIGN=$SIGN /tmp/platform-rpm.sh
-vagrant ssh deb -- cp /vagrant/build/platform-deb.sh /tmp/platform-deb.sh
-vagrant ssh deb -- -t sudo VERSION=$CONFLUENT_VERSION REVISION=$REVISION "SCALA_VERSIONS=\"$SCALA_VERSIONS\""  KAFKA_VERSION=$KAFKA_VERSION SIGN=$SIGN /tmp/platform-deb.sh
+vagrant ssh rpm -- -t sudo VERSION=$CONFLUENT_VERSION REVISION=$REVISION "SCALA_VERSIONS=\"$SCALA_VERSIONS\"" KAFKA_VERSION=$KAFKA_VERSION LIBRDKAFKA_RPM_VERSION=$LIBRDKAFKA_RPM_VERSION LIBRDKAFKA_RPM_RELEASE=$LIBRDKAFKA_RPM_RELEASE SIGN=$SIGN /tmp/platform-rpm.sh
 
+LIBRDKAFKA_DEB_VERSION=`deb_version_field_librdkafka $LIBRDKAFKA_VERSION $CONFLUENT_VERSION $REVISION`
+vagrant ssh deb -- cp /vagrant/build/platform-deb.sh /tmp/platform-deb.sh
+vagrant ssh deb -- -t sudo VERSION=$CONFLUENT_VERSION REVISION=$REVISION "SCALA_VERSIONS=\"$SCALA_VERSIONS\""  KAFKA_VERSION=$KAFKA_VERSION LIBRDKAFKA_DEB_VERSION=$LIBRDKAFKA_DEB_VERSION SIGN=$SIGN /tmp/platform-deb.sh
 
 
 ## COMPILED PACKAGES ##
