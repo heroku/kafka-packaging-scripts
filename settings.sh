@@ -256,6 +256,11 @@ SKIP_TESTS="no"
 # You may add overrides for specific projects, if needed.
 # Use project_name_using_underscores_SKIP_TESTS.
 #
+# You can also define the special `kafka_SKIP_TESTS`, which will skip the tests for any project we are building as part
+# of the Kafka build.  As of Dec 2015, this includes: Kafka itself (note that the build targets we use for Kafka
+# actually don't run Kafka's test suite anyways, so we haven't included a SKIP_TESTS switch for Kafka's gradle build)
+# plus the Proactive Support components aka `support-metrics-{common,fullcollector,client}`.
+#
 # Note: There are no build/package-time tests for librdkafka or libserdes,
 #       so the global SKIP_TESTS setting and any per-project *_SKIP_TESTS
 #       settings have no effect for these projects.
