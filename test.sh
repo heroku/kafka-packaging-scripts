@@ -283,8 +283,7 @@ for SCALA_VERSION in $SCALA_VERSIONS; do
     vagrant ssh deb -- sudo dpkg --purge librdkafka-dev librdkafka-dbg librdkafka1 || true
 
     for LOCAL_SCALA_VERSION in $SCALA_VERSIONS; do
-        #        vagrant ssh deb -- sudo dpkg --remove confluent-kafka-${LOCAL_SCALA_VERSION} || true
-        echo hi
+        vagrant ssh deb -- sudo dpkg --remove confluent-kafka-${LOCAL_SCALA_VERSION} || true
     done
     vagrant ssh deb -- sudo rm -rf $KAFKA_DATA_DIR
     vagrant ssh deb -- sudo rm -rf $ZOOKEEPER_DATA_DIR
