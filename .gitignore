@@ -5,3 +5,4 @@ _temp
 .aptly
 aptly.conf
 bucket-policy-public-read.json
+*~
