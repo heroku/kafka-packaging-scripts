@@ -215,7 +215,7 @@ is_c_package() {
         # e.g. librdkafka1
         local found=0
         for path in $paths; do
-          if [[ "$path" == */${pkg}1-*_confluent${full_token}.fc[0-9][0-9].x86_64.rpm ]]; then
+          if [[ "$path" == */${pkg}1-*_confluent${full_token}.fc20.x86_64.rpm ]]; then
             found=1
             break
           fi
@@ -224,7 +224,7 @@ is_c_package() {
         # e.g. librdkafka (src)
         local found=0
         for path in $paths; do
-          if [[ "$path" == */${pkg}-*_confluent${full_token}.fc[0-9][0-9].src.rpm ]]; then
+          if [[ "$path" == */${pkg}-*_confluent${full_token}.fc20.src.rpm ]]; then
             found=1
             break
           fi
@@ -233,7 +233,7 @@ is_c_package() {
         # e.g. librdkafka-devel
         local found=0
         for path in $paths; do
-          if [[ "$path" == */${pkg}-devel-*_confluent${full_token}.fc[0-9][0-9].x86_64.rpm ]]; then
+          if [[ "$path" == */${pkg}-devel-*_confluent${full_token}.fc20.x86_64.rpm ]]; then
             found=1
             break
           fi
@@ -242,7 +242,7 @@ is_c_package() {
         # e.g. librdkafka-debuginfo
         local found=0
         for path in $paths; do
-          if [[ "$path" == */${pkg}-debuginfo-*_confluent${full_token}.fc[0-9][0-9].x86_64.rpm ]]; then
+          if [[ "$path" == */${pkg}-debuginfo-*_confluent${full_token}.fc20.x86_64.rpm ]]; then
             found=1
             break
           fi
@@ -416,16 +416,16 @@ is_c_package() {
 
   for pkg in $C_PACKAGES; do
     # e.g. librdkafka1
-    run bash -c "ls $OUTPUT_DIRECTORY/ | egrep \"^${pkg}1-[0-9\.]+_confluent${full_token}\.fc[0-9]+\.x86_64\.rpm$\""
+    run bash -c "ls $OUTPUT_DIRECTORY/ | egrep \"^${pkg}1-[0-9\.]+_confluent${full_token}\.fc20\.x86_64\.rpm$\""
     [ "$status" -eq 0 ]
     # e.g. librdkafka1 (src)
-    run bash -c "ls $OUTPUT_DIRECTORY/ | egrep \"^${pkg}-[0-9\.]+_confluent${full_token}\.fc[0-9]+\.src\.rpm$\""
+    run bash -c "ls $OUTPUT_DIRECTORY/ | egrep \"^${pkg}-[0-9\.]+_confluent${full_token}\.fc20\.src\.rpm$\""
     [ "$status" -eq 0 ]
     # e.g. librdkafka-devel
-    run bash -c "ls $OUTPUT_DIRECTORY/ | egrep \"^${pkg}-devel-[0-9\.]+_confluent${full_token}\.fc[0-9]+\.x86_64\.rpm$\""
+    run bash -c "ls $OUTPUT_DIRECTORY/ | egrep \"^${pkg}-devel-[0-9\.]+_confluent${full_token}\.fc20\.x86_64\.rpm$\""
     [ "$status" -eq 0 ]
     # e.g. librdkafka1-debuginfo
-    run bash -c "ls $OUTPUT_DIRECTORY/ | egrep \"^${pkg}-debuginfo-[0-9\.]+_confluent${full_token}\.fc[0-9]+\.x86_64\.rpm$\""
+    run bash -c "ls $OUTPUT_DIRECTORY/ | egrep \"^${pkg}-debuginfo-[0-9\.]+_confluent${full_token}\.fc20\.x86_64\.rpm$\""
     [ "$status" -eq 0 ]
   done
 }
@@ -447,13 +447,13 @@ is_c_package() {
 
   for pkg in $C_PACKAGES; do
     local num_variants=0
-    for file in `ls $OUTPUT_DIRECTORY/ | egrep "^${pkg}(1|-debuginfo|-devel|\b)-[0-9\.]+_confluent${full_token}\.fc[0-9]+\.(x86_64|src)\.rpm$"`; do
+    for file in `ls $OUTPUT_DIRECTORY/ | egrep "^${pkg}(1|-debuginfo|-devel|\b)-[0-9\.]+_confluent${full_token}\.fc20\.(x86_64|src)\.rpm$"`; do
       num_variants=$((num_variants + 1))
       actual_version_field="$(rpm -qpi $OUTPUT_DIRECTORY/$file | grep '^Version' | sed -E 's/^Version[[:space:]]+: (.+)[[:space:]]+Vendor:.*$/\1/' | sed -e 's/[[:space:]]*$//')"
       [ $(expr "$actual_version_field" : "^[0-9][0-9\.]*_confluent${version_token}$") -ne 0 ]
 
       actual_release_field="$(rpm -qpi $OUTPUT_DIRECTORY/$file | grep '^Release' | sed -E 's/^Release[[:space:]]+: (.+)[[:space:]]+Build Date:.*$/\1/' | sed -e 's/[[:space:]]*$//')"
-      [ $(expr "$actual_release_field" : "^${revision_token}\.fc[0-9][0-9]$") -ne 0 ]
+      [ $(expr "$actual_release_field" : "^${revision_token}\.fc20$") -ne 0 ]
     done
     [ "$num_variants" -eq 4 ]
   done
@@ -496,7 +496,7 @@ is_c_package() {
   done
 
   for pkg in $C_PACKAGES; do
-    for file in `ls $OUTPUT_DIRECTORY/ | egrep "^${pkg}(1|-debuginfo|-devel|\b)-[0-9\.]+_confluent${full_token}\.fc[0-9]+\.(x86_64|src)\.rpm$"`; do
+    for file in `ls $OUTPUT_DIRECTORY/ | egrep "^${pkg}(1|-debuginfo|-devel|\b)-[0-9\.]+_confluent${full_token}\.fc20\.(x86_64|src)\.rpm$"`; do
       run stat $STAT_MAC_OPTS_FOR_FILESIZE $OUTPUT_DIRECTORY/$file
       local filesize=$(($output + 0))
       [ "$filesize" -ge $PACKAGE_MIN_FILE_SIZE_BYTES ]
