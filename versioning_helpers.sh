@@ -104,8 +104,8 @@ rpm_version_field() {
   echo $version_field
 }
 
-# Generate the value of the RPM "Release" field, given the full version,
-# based on our naming policy for RPM metadata.
+# Generate the value of the RPM "Release" field, given the full version
+# and the revision, based on our naming policy for RPM metadata.
 #
 # Usage
 # -----
@@ -132,6 +132,42 @@ rpm_release_field() {
   echo $release_field
 }
 
+# Generate the value of the RPM "Version" field for librdkafka, given
+# librdkafka's version and the Confluent full version (cf. CONFLUENT_VERSION in
+# settings.sh), based on our naming policy for RPM metadata.
+#
+# Usage
+# -----
+# rpm_version_field_librdkafka <librdkafka_version> <cp_version>
+#
+# Examples
+# --------
+# rpm_version_field_librdkafka "0.9.0" "2.0.0" --> "0.9.0_confluent2.0.0"
+# rpm_version_field_librdkafka "0.9.0" "2.0.0-SNAPSHOT" --> "0.9.0_confluent2.0.0"
+rpm_version_field_librdkafka() {
+  local librdkafka_version="$1"
+  local cp_version="$2"
+  local librdkafka_cp_version_suffix=`rpm_version_field $cp_version`
+  echo "${librdkafka_version}_confluent${librdkafka_cp_version_suffix}"
+}
+
+# Generate the value of the RPM "Release" field for librdkafka, given
+# the Confluent full version (cf. CONFLUENT_VERSION in settings.sh), based on our naming policy for RPM metadata.
+#
+# Usage
+# -----
+# rpm_release_field_librdkafka <cp_version> <revision>
+#
+# Examples
+# --------
+# rpm_release_field_librdkafka "2.0.0" "3" --> "3.fc20"
+# rpm_release_field_librdkafka "2.0.0-SNAPSHOT" "3" --> "0.3.SNAPSHOT.fc20"
+rpm_release_field_librdkafka() {
+  local cp_version="$1"
+  local revision="$2"
+  local prefix=`rpm_release_field $cp_version $revision`
+  echo "${prefix}.fc20"
+}
 
 # Generate the value of the Debian "Version" field, given the full version and
 # the desired revision (cf. REVISION in settings.sh), based on our naming policy
@@ -160,6 +196,27 @@ deb_version_field() {
     local version_field="${version_prefix}~${version_suffix}-${iteration}"
   fi
   echo $version_field
+}
+
+# Generate the value of the Debian "Version" field for librdkafka, given
+# librdkafka's version, the Confluent full version (cf. CONFLUENT_VERSION in
+# settings.sh), and the desired revision (cf. REVISION in settings.sh), based
+# on our naming policy for Debian metadata.
+#
+# Usage
+# -----
+# deb_version_field_librdkafka <librdkafka_version> <cp_version> <revision>
+#
+# Examples
+# --------
+# deb_version_field_librdkafka "0.9.0" "2.0.0" "4" --> "0.9.0~1confluent2.0.0-4"
+# deb_version_field_librdkafka "0.9.0" "2.0.0-SNAPSHOT" "3" --> "0.9.0~1confluent2.0.0~SNAPSHOT-3"
+deb_version_field_librdkafka() {
+  local librdkafka_version="$1"
+  local cp_version="$2"
+  local revision="$3"
+  local librdkafka_cp_version_suffix=`deb_version_field $cp_version $revision`
+  echo "${librdkafka_version}~1confluent${librdkafka_cp_version_suffix}"
 }
 
 # Extracts the CP x.y.z release number from a version-indexed S3 bucket name.
