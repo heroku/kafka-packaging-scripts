@@ -92,12 +92,23 @@
 }
 
 @test "generate debian Version field for librdkafka" {
+  result="$(deb_version_field_librdkafka 0.9.0 2.0.0 1)"
+  [ "$result" = "0.9.0~1confluent2.0.0-1" ]
   result="$(deb_version_field_librdkafka 0.9.0 2.0.0-SNAPSHOT 1)"
   [ "$result" = "0.9.0~1confluent2.0.0~SNAPSHOT-1" ]
   result="$(deb_version_field_librdkafka 0.9.0 2.0.0-SNAPSHOT 3)"
   [ "$result" = "0.9.0~1confluent2.0.0~SNAPSHOT-3" ]
-  result="$(deb_version_field_librdkafka 0.9.0 2.0.0 1)"
-  [ "$result" = "0.9.0~1confluent2.0.0-1" ]
-  result="$(deb_version_field_librdkafka 0.9.0 2.0.0 4)"
-  [ "$result" = "0.9.0~1confluent2.0.0-4" ]
+  result="$(deb_version_field_librdkafka 7.8.9 1.2.3 1)"
+  [ "$result" = "7.8.9~1confluent1.2.3-1" ]
+  result="$(deb_version_field_librdkafka 7.8.9 1.2.3 4)"
+  [ "$result" = "7.8.9~1confluent1.2.3-4" ]
+}
+
+@test "generate rpm Version field for librdkafka" {
+  result="$(rpm_version_field_librdkafka 0.9.0 2.0.0)"
+  [ "$result" = "0.9.0_confluent2.0.0" ]
+  result="$(rpm_version_field_librdkafka 0.9.0 2.0.0-SNAPSHOT)"
+  [ "$result" = "0.9.0_confluent2.0.0" ]
+  result="$(rpm_version_field_librdkafka 7.8.9 1.2.3)"
+  [ "$result" = "7.8.9_confluent1.2.3" ]
 }
