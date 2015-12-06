@@ -56,7 +56,11 @@ LIBRDKAFKA_VERSION="0.9.0"
 # If "yes" (default), then we integrate Proactive Support into our CP Kafka package.
 # This means, for example, that the command line to start/stop a Kafka broker will change
 # compared to stock Kafka (cf. Kafka's `bin/kafka-server-{start,stop}.sh`).
+#
 # Set to "no" to disable PS integration.
+# TODO: We have not had the time to test the build when `PS_ENABLED=no` although we are
+# confident that it works.  If you plan on building/releasing a version with PS disabled
+# you may want to account for some buffer/safety time during release planning.
 PS_ENABLED="yes"
 
 # The package that contains the (fully assembled) proactive support client.
