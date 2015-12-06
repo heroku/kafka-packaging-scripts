@@ -297,7 +297,7 @@ PACKAGE_MIN_FILE_SIZE_BYTES=10000
 ###
 ### Misc settings
 ###
-OUTPUT_DIRECTORY="output" # local directory; stores generated packages
+OUTPUT_DIRECTORY="output" # local directory; stores generated packages; note: build/*.sh scripts still hardcode this (`/vagrant/output`)
 DEPLOYED_DIRECTORY="_deployed" # local directory; contains directory tree for S3 deployment uploads
 TEMP_DIRECTORY="_temp" # local directory; used for extracting deb/rpm packages of a previous release from an S3 bucket
 REPOS_DIRECTORY="repos" # local directory; stores local checkout of git repos such as KAFKA_REPO
