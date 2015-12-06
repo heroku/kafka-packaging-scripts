@@ -92,7 +92,7 @@ sed -e "s%PWD%${MY_DIR}%" -e "s%BUCKET%${PACKAGES_BUCKET}%" -e "s%PREFIX%${PACKA
 REPO="confluent-${REPO_RELEASE_SUBDIR}"
 REPO_DISTRIBUTION="stable"
 APTLY_OPTS="-config=aptly.conf"
-APTLY_REPO_OPTS="-distribution=${REPO_DISTRIBUTION} -component=main -architectures=all"
+APTLY_REPO_OPTS="-distribution=${REPO_DISTRIBUTION} -component=main"
 
 # Remove any prior aptly pool etc. so that we don't accidentally include "other" packages,
 # which may have slipped into the pool because of e.g. previous manual testing.
