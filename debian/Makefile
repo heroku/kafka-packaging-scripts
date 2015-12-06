@@ -1,4 +1,4 @@
-# This makefile assumes you have specified VERSION, DEB_VERSION, SCALA_VERSION,
+# This makefile assumes you have specified VERSION, DEB_VERSION, SCALA_VERSIONS,
 # KAFKA_DEB_VERSION, and LIBRDKAFKA_DEB_VERSION.
 # Since the package is for dependencies only and contains no contents,
 # this script can be kept pretty simple.
