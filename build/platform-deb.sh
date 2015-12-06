@@ -26,7 +26,7 @@ git commit -a -m "Tag Debian release."
 DUMMY_SOURCE_BRANCH=origin/confluent-platform
 git merge --no-edit -m "deb-$VERSION" $DUMMY_SOURCE_BRANCH
 
-git-buildpackage -us -uc --git-debian-branch=debian-$VERSION --git-upstream-tree=$DUMMY_SOURCE_BRANCH --git-verbose --git-builder="debuild --set-envvar=APPLY_PATCHES=$APPLY_PATCHES --set-envvar=VERSION=$VERSION --set-envvar=DESTDIR=$DESTDIR --set-envvar=PREFIX=$PREFIX --set-envvar=SYSCONFDIR=$SYSCONFDIR --set-envvar=SKIP_TESTS=$SKIP_TESTS -i -I"
+git-buildpackage -us -uc --git-debian-branch=debian-$VERSION --git-upstream-tree=$DUMMY_SOURCE_BRANCH --git-verbose --git-builder="debuild --set-envvar=APPLY_PATCHES=$APPLY_PATCHES --set-envvar=VERSION=$VERSION --set-envvar=SCALA_VERSIONS=\"$SCALA_VERSIONS\" --set-envvar=DEB_VERSION=$DEB_VERSION --set-envvar=KAFKA_DEB_VERSION=$KAFKA_DEB_VERSION --set-envvar=LIBRDKAFKA_DEB_VERSION=$LIBRDKAFKA_DEB_VERSION --set-envvar=DESTDIR=$DESTDIR --set-envvar=PREFIX=$PREFIX --set-envvar=SYSCONFDIR=$SYSCONFDIR --set-envvar=SKIP_TESTS=$SKIP_TESTS -i -I"
 popd
 
 # Debian packaging dumps packages one level up. We try to save all the build
