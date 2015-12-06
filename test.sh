@@ -151,7 +151,7 @@ test_kafka_connect_hdfs() {
 test_kafka_connect_jdbc() {
     machine=$1
     # Start a connector that uses simple SQLite settings.
-    vagrant ssh $machine -- "connect-standalone /etc/schema-registry/connect-avro-standalone.properties /etc/kafka-connect-jdbc/sqlite-test.properties > /tmp/connect-jdbc.log"
+    vagrant ssh $machine -- "connect-standalone /etc/schema-registry/connect-avro-standalone.properties /etc/kafka-connect-jdbc/quickstart-sqlite.properties > /tmp/connect-jdbc.log"
     # In this case, we expect it to start up the connector, manage to make the
     # "connection" to the database (which it would create if it didn't exist),
     # but then fail because there aren't actually any tables in the database.
