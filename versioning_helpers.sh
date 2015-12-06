@@ -13,7 +13,7 @@
 #
 rpm_version() {
   local full_version=$1
-  local rpm_ver=`echo $full_version | sed -e 's/-alpha[0-9]*//' -e 's/-beta[0-9]*//' -e 's/-rc[0-9]*//' -e 's/-SNAPSHOT//'`
+  local rpm_ver=`echo $full_version | sed -e 's/-alpha[0-9]*//' -e 's/-beta[0-9]*//' -e 's/-rc[0-9]*//' -e 's/-SNAPSHOT//' -e 's/-cp[0-9]*//'`
   echo $rpm_ver
 }
 

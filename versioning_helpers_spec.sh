@@ -91,6 +91,24 @@
   [ "$result" = "2" ]
 }
 
+@test "remove -cp* suffix from CP-tagged Kafka version" {
+  result="$(rpm_version_field "0.9.0.0-cp")"
+  [ "$result" = "0.9.0.0" ]
+  result="$(rpm_version_field "0.9.0.0-cp1")"
+  [ "$result" = "0.9.0.0" ]
+  result="$(rpm_version_field "0.9.0.0-cp2")"
+  [ "$result" = "0.9.0.0" ]
+}
+
+@test "extract -cp* suffix from CP-tagged Kafka version" {
+  result="$(rpm_release_postfix "0.9.0.0-cp")"
+  [ "$result" = "cp" ]
+  result="$(rpm_release_postfix "0.9.0.0-cp1")"
+  [ "$result" = "cp1" ]
+  result="$(rpm_release_postfix "0.9.0.0-cp2")"
+  [ "$result" = "cp2" ]
+}
+
 @test "generate debian Version field for normal CP packages" {
   result="$(deb_version_field 2.0.0 1)"
   [ "$result" = "2.0.0-1" ]
