@@ -91,6 +91,21 @@
   [ "$result" = "2" ]
 }
 
+@test "generate debian Version field for normal CP packages" {
+  result="$(deb_version_field 2.0.0 1)"
+  [ "$result" = "2.0.0-1" ]
+  result="$(deb_version_field 2.0.0 3)"
+  [ "$result" = "2.0.0-3" ]
+  result="$(deb_version_field 2.0.0-SNAPSHOT 1)"
+  [ "$result" = "2.0.0~SNAPSHOT-1" ]
+  result="$(deb_version_field 2.0.0-SNAPSHOT 3)"
+  [ "$result" = "2.0.0~SNAPSHOT-3" ]
+  result="$(deb_version_field 1.2.3 1)"
+  [ "$result" = "1.2.3-1" ]
+  result="$(deb_version_field 1.2.3 4)"
+  [ "$result" = "1.2.3-4" ]
+}
+
 @test "generate debian Version field for librdkafka" {
   result="$(deb_version_field_librdkafka 0.9.0 2.0.0 1)"
   [ "$result" = "0.9.0~1confluent2.0.0-1" ]
