@@ -121,13 +121,19 @@ done
 # install. Finally, note that the BRANCH env variable isn't set for these --
 # there is no point since they have one fixed branch that they build from (rpm
 # or debian, stored in this repository).
+RPM_VERSION=`rpm_version_field $CONFLUENT_VERSION`
+RPM_RELEASE=`rpm_release_field $CONFLUENT_VERSION $REVISION`
+RPM_RELEASE_POSTFIX=`rpm_release_postfix $CONFLUENT_VERSION`
+KAFKA_RPM_VERSION=`rpm_version_field $KAFKA_VERSION`
 LIBRDKAFKA_RPM_VERSION=`rpm_version_field_librdkafka $LIBRDKAFKA_VERSION $CONFLUENT_VERSION`
 vagrant ssh rpm -- cp /vagrant/build/platform-rpm.sh /tmp/platform-rpm.sh
-vagrant ssh rpm -- -t sudo VERSION=$CONFLUENT_VERSION REVISION=$REVISION "SCALA_VERSIONS=\"$SCALA_VERSIONS\"" KAFKA_VERSION=$KAFKA_VERSION LIBRDKAFKA_RPM_VERSION=$LIBRDKAFKA_RPM_VERSION SIGN=$SIGN /tmp/platform-rpm.sh
+vagrant ssh rpm -- -t sudo VERSION=$RPM_VERSION RELEASE=$RPM_RELEASE RPM_RELEASE_POSTFIX=$RPM_RELEASE_POSTFIX "SCALA_VERSIONS=\"$SCALA_VERSIONS\"" KAFKA_RPM_VERSION=$KAFKA_RPM_VERSION LIBRDKAFKA_RPM_VERSION=$LIBRDKAFKA_RPM_VERSION SIGN=$SIGN /tmp/platform-rpm.sh
 
+DEB_VERSION=`deb_version_field $CONFLUENT_VERSION $REVISION`
+KAFKA_DEB_VERSION=`deb_version_field $KAFKA_VERSION $REVISION`
 LIBRDKAFKA_DEB_VERSION=`deb_version_field_librdkafka $LIBRDKAFKA_VERSION $CONFLUENT_VERSION $REVISION`
 vagrant ssh deb -- cp /vagrant/build/platform-deb.sh /tmp/platform-deb.sh
-vagrant ssh deb -- -t sudo VERSION=$CONFLUENT_VERSION REVISION=$REVISION "SCALA_VERSIONS=\"$SCALA_VERSIONS\""  KAFKA_VERSION=$KAFKA_VERSION LIBRDKAFKA_DEB_VERSION=$LIBRDKAFKA_DEB_VERSION SIGN=$SIGN /tmp/platform-deb.sh
+vagrant ssh deb -- -t sudo VERSION=$DEB_VERSION "SCALA_VERSIONS=\"$SCALA_VERSIONS\""  KAFKA_VERSION=$KAFKA_DEB_VERSION LIBRDKAFKA_DEB_VERSION=$LIBRDKAFKA_DEB_VERSION SIGN=$SIGN /tmp/platform-deb.sh
 
 
 ## COMPILED PACKAGES ##
