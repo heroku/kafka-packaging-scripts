@@ -23,7 +23,7 @@ test:
 debian-control:
 	cp debian/control.in debian/control
 	for SVERSION in $(SCALA_VERSIONS); do \
-		cat debian/control.binary.in | sed -e s@##SCALAVERSION##@$$SVERSION@g -e s@##VERSION##@$$VERSION@g -e s@##KAFKAVERSION##@$$KAFKA_VERSION@g s@##LIBRDKAFKAVERSION##@$$LIBRDKAFKA_DEB_VERSION@g >> debian/control; \
+		cat debian/control.binary.in | sed -e s@##SCALAVERSION##@$$SVERSION@g -e s@##VERSION##@$$VERSION@g -e s@##KAFKAVERSION##@$$KAFKA_VERSION@g -e s@##LIBRDKAFKAVERSION##@$$LIBRDKAFKA_DEB_VERSION@g >> debian/control; \
 	done
 	git add debian/control
 	git commit -m "Add control file."
