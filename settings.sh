@@ -26,8 +26,11 @@ KAFKA_VERSION="0.9.0.0"
 # `KAFKA_BRANCH`) works with the Kafka versions defined in the various `pom.xml` files of other CP projects, which
 # you control by setting `BRANCH` and per-project `*_BRANCH` overrides (see below for details).
 #
-# Example: `0.8.2`.
-KAFKA_BRANCH="0.9.0"
+# Examples
+# --------
+# KAFKA_BRANCH="0.8.2"
+#
+KAFKA_BRANCH="0.9.0-cp-2.0.0" # based on Apache Kafka's branch "0.9.0" but with version set to "0.9.0.0-cp1"
 
 # Build Kafka w/ Scala 2.11 first because of Proactive Support, which depends on the 2.11 variant.
 # We must build 2.11 before 2.10 because the Proactive Support projects are only built against
@@ -90,7 +93,7 @@ PS_PACKAGES="support-metrics-common support-metrics-fullcollector $PS_CLIENT_PAC
 # CONFLUENT_VERSION=1.0.0
 # CONFLUENT_VERSION=1.0.1-SNAPSHOT
 #
-CONFLUENT_VERSION="2.0.0-SNAPSHOT"
+CONFLUENT_VERSION="2.0.0"
 
 # Used for "Revision" field of deb packages and "Release" field of rpm packages.
 #
@@ -139,7 +142,7 @@ CP_PACKAGES="$JAVA_PACKAGES $C_PACKAGES"
 # BRANCH="origin/1.x" # for development/maintenance branches
 # BRANCH="v1.0.1" # tag
 #
-BRANCH="origin/master"
+BRANCH="origin/2.x"
 
 # You may add branch overrides for specific projects, if needed.
 # Use project_name_using_underscores_BRANCH.
@@ -148,7 +151,6 @@ BRANCH="origin/master"
 # ------------------
 # camus_BRANCH="origin/confluent-master" # branch
 # kafka_rest_BRANCH="v1.0" # tag
-camus_BRANCH="origin/confluent-master"
 librdkafka_BRANCH="origin/0.9.0" # librdkafka uses its own versioning scheme, it's NOT tied to Apache Kafka's!
 
 
@@ -160,7 +162,7 @@ librdkafka_BRANCH="origin/0.9.0" # librdkafka uses its own versioning scheme, it
 ###         So when you actually rename a project/repository on GitHub you need
 ###         to update the repository's URL here but also in the corresponding
 ###         `build/*-{archive,deb,rpm}.sh` scripts of the project..
-KAFKA_REPO="http://git-wip-us.apache.org/repos/asf/kafka.git"
+KAFKA_REPO="git@github.com:confluentinc/kafka.git"
 CAMUS_REPO="git@github.com:confluentinc/camus.git"
 COMMON_REPO="git@github.com:confluentinc/common.git"
 KAFKA_PACKAGING_REPO="git@github.com:confluentinc/kafka-packaging.git"
@@ -291,6 +293,7 @@ SKIP_TESTS="no"
 # Override examples:
 # ------------------
 # kafka_rest_SKIP_TESTS="yes"
+rest_utils_SKIP_TESTS="yes"
 
 
 ###
