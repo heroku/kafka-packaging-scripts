@@ -1,6 +1,9 @@
 #!/bin/bash
 #
 # Builds all Java maven artifacts of CP and deploys them as a maven repository to a staging S3 bucket.
+#
+# NOTE: This script is run directly on the host machine.  That is, unlike `package.sh`
+#       this script will NOT run in the build VMs.
 
 set -e
 set -x
