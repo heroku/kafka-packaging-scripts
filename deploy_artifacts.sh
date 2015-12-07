@@ -29,7 +29,7 @@ fi
 # (cf. https://github.com/jcaddel/maven-s3-wagon/wiki/Authentication)
 export AWS_SECRET_KEY="$AWS_SECRET_ACCESS_KEY"
 
-declare -r BUILD_ROOT="/tmp/confluent"
+declare -r BUILD_ROOT="/tmp/confluent-artifacts"
 declare -r KAFKA_BUILD_ROOT="$BUILD_ROOT/kafka-packaging"
 
 ###
