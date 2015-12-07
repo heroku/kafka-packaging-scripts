@@ -34,6 +34,8 @@ export AWS_SECRET_KEY="$AWS_SECRET_ACCESS_KEY"
 declare -r BUILD_ROOT="/tmp/confluent-artifacts"
 declare -r KAFKA_BUILD_ROOT="$BUILD_ROOT/kafka-packaging"
 
+declare -r MAVEN_REPOSITORY_RELEASE_S3_URL="s3://${MAVEN_BUCKET}${MAVEN_BUCKET_PREFIX}/maven"
+
 ###
 ### Kafka
 ###
@@ -63,8 +65,8 @@ git checkout -b "deploy-$KAFKA_VERSION" origin/archive
 git merge --no-edit -m "deploy-$KAFKA_VERSION" upstream/$KAFKA_BRANCH
 make apply-patches # Note that this should also include the confluent-specific version # patch
 patch -p1 < ${MY_DIR}/patches/kafka-deploy.patch
-sed -i '' -e "s%REPOSITORY%s3://${MAVEN_BUCKET}${MAVEN_BUCKET_PREFIX}/maven%" \
-    -e "s%SNAPSHOT_REPOSITORY%s3://${MAVEN_BUCKET}${MAVEN_BUCKET_PREFIX}/maven%" build.gradle
+sed -i '' -e "s%REPOSITORY%${MAVEN_REPOSITORY_RELEASE_S3_URL}%" \
+    -e "s%SNAPSHOT_REPOSITORY%${MAVEN_REPOSITORY_RELEASE_S3_URL}%" build.gradle
 gradle --gradle-user-home $FAKE_GRADLE_HOME
 ./gradlew --gradle-user-home $FAKE_GRADLE_HOME uploadArchivesAll
 popd
@@ -102,7 +104,11 @@ for PACKAGE in $JAVA_PACKAGES; do
     if [ "$PACKAGE_SKIP_TESTS" = "yes" ]; then
       MAVEN_OPTS="$MAVEN_OPTS -DskipTests=true"
     fi
-    mvn $MAVEN_OPTS "-Dconfluent.release.repo=s3://${MAVEN_BUCKET}${MAVEN_BUCKET_PREFIX}/maven" "-Dconfluent.snapshot.repo=s3://${MAVEN_BUCKET}${MAVEN_BUCKET_PREFIX}/maven" clean deploy
+
+    mvn $MAVEN_OPTS \
+      "-Dconfluent.release.repo=${MAVEN_REPOSITORY_RELEASE_S3_URL}" \
+      "-Dconfluent.snapshot.repo=${MAVEN_REPOSITORY_RELEASE_S3_URL}" \
+      clean deploy
     popd
     rm -rf $BUILD_ROOT/$PACKAGE
 done
