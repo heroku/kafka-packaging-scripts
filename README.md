@@ -316,6 +316,11 @@ Running the packaging takes care of all projects and package types, based on the
 [settings.sh] (see previous section).  Assuming everything works, you'll find the generated packages in `output/`.
 
 ```shell
+# Make sure to remove any previous build output so we can start
+# the packaging build from a clean state.
+#
+$ rm -rf output/
+
 # For comparison, on a 2015 MacBook Pro 15" (2.5GHz Intel Core i7)
 # the packaging of components as of August 2015 takes about one hour.
 $ ./package.sh
