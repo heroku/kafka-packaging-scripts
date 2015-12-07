@@ -35,6 +35,7 @@ declare -r BUILD_ROOT="/tmp/confluent-artifacts"
 declare -r KAFKA_BUILD_ROOT="$BUILD_ROOT/kafka-packaging"
 
 declare -r MAVEN_REPOSITORY_RELEASE_S3_URL="s3://${MAVEN_BUCKET}${MAVEN_BUCKET_PREFIX}/maven"
+declare -r CONFLUENT_STAGING_MAVEN_REPOSITORY_URL="http://${MAVEN_BUCKET}${MAVEN_BUCKET_PREFIX}.s3.amazonaws.com/maven"
 
 ###
 ### Kafka
@@ -108,6 +109,7 @@ for PACKAGE in $JAVA_PACKAGES; do
     mvn $MAVEN_OPTS \
       "-Dconfluent.release.repo=${MAVEN_REPOSITORY_RELEASE_S3_URL}" \
       "-Dconfluent.snapshot.repo=${MAVEN_REPOSITORY_RELEASE_S3_URL}" \
+      "-Dconfluent.maven.repo=${CONFLUENT_STAGING_MAVEN_REPOSITORY_URL}" \
       clean deploy
     popd
     rm -rf $BUILD_ROOT/$PACKAGE
