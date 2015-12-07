@@ -17,7 +17,7 @@ jdk=`javac -version 2>&1 | cut -d ' ' -f 2`
 ver=`echo $jdk | cut -d '.' -f 2`
 if (( $ver < 7 )); then
     echo "Found jdk version $jdk"
-    echo "Despite the fact that we support Java 1.6+, you need to run this deploy script with JDK 1.7+. This is required because the Maven S3 Wagon requires 1.7+. It's safe at this point because the specs in the projects target 1.6 and other testing validates our builds against earlier version."
+    echo "We do not support Java versions < 1.7 anymore.  Also, you must run this deploy script with JDK 1.7+ because the Maven S3 Wagon requires 1.7+."
     exit 1
 fi
 
