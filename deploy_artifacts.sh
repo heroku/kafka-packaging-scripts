@@ -1,4 +1,6 @@
 #!/bin/bash
+#
+# Builds all Java maven artifacts of CP and deploys them as a maven repository to a staging S3 bucket.
 
 set -e
 set -x
