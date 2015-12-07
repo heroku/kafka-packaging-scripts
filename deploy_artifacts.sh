@@ -68,7 +68,7 @@ rm -rf /tmp/fakegradlehome
 if [ -z "$BRANCH" ]; then
     BRANCH="$CONFLUENT_VERSION"
 fi
-for PACKAGE in $CP_PACKAGES; do
+for PACKAGE in $JAVA_PACKAGES; do
     PACKAGE_BRANCH_VAR="${PACKAGE//-/_}_BRANCH"
     PACKAGE_BRANCH="${!PACKAGE_BRANCH_VAR}"
     if [ -z "$PACKAGE_BRANCH" ]; then
