@@ -35,7 +35,6 @@ fi
 export AWS_SECRET_KEY="$AWS_SECRET_ACCESS_KEY"
 
 declare -r BUILD_ROOT="/tmp/confluent-artifacts"
-declare -r KAFKA_BUILD_ROOT="$BUILD_ROOT/kafka-packaging"
 
 declare -r MAVEN_REPOSITORY_RELEASE_S3_URL="s3://${MAVEN_BUCKET}${MAVEN_BUCKET_PREFIX}/maven"
 declare -r CONFLUENT_STAGING_MAVEN_REPOSITORY_URL="http://${MAVEN_BUCKET}${MAVEN_BUCKET_PREFIX}.s3.amazonaws.com/maven"
@@ -59,6 +58,7 @@ signing.password=$PASSWORD
 signing.secretKeyRingFile=${HOME}/.gnupg/secring.gpg
 EOF
 
+declare -r KAFKA_BUILD_ROOT="$BUILD_ROOT/kafka-packaging"
 rm -rf $KAFKA_BUILD_ROOT
 mkdir -p $BUILD_ROOT
 git clone $MY_DIR/$REPOS_DIRECTORY/kafka-packaging.git $KAFKA_BUILD_ROOT
