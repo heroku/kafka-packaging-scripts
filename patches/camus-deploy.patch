@@ -1,32 +1,30 @@
 diff --git a/pom.xml b/pom.xml
-index 0f6534d..1b2b6cd 100644
+index f0bb748..ab94b00 100644
 --- a/pom.xml
 +++ b/pom.xml
-@@ -259,5 +259,27 @@
-                 </configuration>
-             </plugin>
-         </plugins>
-+
-+        <extensions>
-+          <extension>
-+            <groupId>org.springframework.build</groupId>
-+            <artifactId>aws-maven</artifactId>
-+            <version>5.0.0.RELEASE</version>
-+          </extension>
-+        </extensions>
-     </build>
-+
-+    <distributionManagement>
-+      <repository>
-+        <id>aws-release</id>
-+        <name>AWS Release Repository</name>
-+        <url>${confluent.release.repo}</url>
-+      </repository>
-+      <snapshotRepository>
-+        <id>aws-snapshot</id>
-+        <name>AWS Snapshot Repository</name>
-+        <url>${confluent.snapshot.repo}</url>
-+      </snapshotRepository>
-+    </distributionManagement>
-+
+@@ -247,6 +247,24 @@
+ 				</configuration>
+ 			</plugin>
+ 		</plugins>
++		<extensions>
++			<extension>
++				<groupId>org.springframework.build</groupId>
++				<artifactId>aws-maven</artifactId>
++				<version>5.0.0.RELEASE</version>
++			</extension>
++		</extensions>
+ 	</build>
+-
++	<distributionManagement>
++		<repository>
++			<id>aws-release</id>
++			<name>AWS Release Repository</name>
++			<url>${confluent.release.repo}</url>
++		</repository>
++		<snapshotRepository>
++			<id>aws-snapshot</id>
++			<name>AWS Snapshot Repository</name>
++			<url>${confluent.snapshot.repo}</url>
++		</snapshotRepository>
++	</distributionManagement>
  </project>
