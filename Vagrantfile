@@ -19,18 +19,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     deb.vm.network "private_network", ip: "10.20.30.11"
   end
 
-  config.vm.define "rpm" do |rpm|
-    # FIXME: Use bento/fedora-21 (https://atlas.hashicorp.com/bento/boxes/fedora-21)
-    # or boxcutter/fedora20 (https://atlas.hashicorp.com/boxcutter/boxes/fedora20)
-    # now that chef/fedora20 is not available anymore since Sep 2015?
-    rpm.vm.box = "rafacas/fedora20-plain"
-    rpm.vm.provision "shell", path: "vagrant/rpm.sh"
-    rpm.vm.synced_folder ".", "/vagrant",
-        :nfs => true,
-        :mount_options => ['nolock,vers=3,tcp,noatime,clientaddr=10.20.30.12']
-    rpm.vm.network "private_network", ip: "10.20.30.12"
-  end
-
   config.vm.synced_folder "~/.gnupg", "/root/.gnupg", owner: "root", group: "root"
 
   config.vm.provider "virtualbox" do |vb|
