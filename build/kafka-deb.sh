@@ -21,7 +21,7 @@ pushd kafka-packaging
 git remote add upstream /vagrant/repos/kafka.git
 git fetch --tags upstream
 
-git checkout -b debian-$VERSION origin/debian-heroku
+git checkout -b debian-$VERSION origin/debian-heroku-0-8-2
 make -f debian/Makefile debian-control
 # Update the release info
 export DEBEMAIL="Heroku Kafka Packaging <dod-kcz@heroku.com>"
