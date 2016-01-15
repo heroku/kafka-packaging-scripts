@@ -10,7 +10,7 @@
 # in our build setup.  For example, we need to support multiple Scala versions.
 KAFKA_VERSION="0.8.2.2"
 KAFKA_BRANCH="0.8.2"
-SCALA_VERSIONS="2.9.1 2.9.2 2.10.4 2.11.5"
+SCALA_VERSIONS="2.10.4"
 
 
 ###
