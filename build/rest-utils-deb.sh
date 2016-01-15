@@ -16,7 +16,7 @@ pushd rest-utils
 git checkout -b debian-$VERSION origin/debian
 
 # Update the release info
-export DEBEMAIL="Confluent Packaging <packages@confluent.io>"
+export DEBEMAIL="Heroku Kafka Packaging <dod-kcz@heroku.com>"
 dch --newversion ${VERSION/-/\~}-${REVISION} "Release version $VERSION" --urgency low && dch --release --distribution unstable ""
 git commit -a -m "Tag Debian release."
 
