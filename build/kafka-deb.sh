@@ -43,7 +43,7 @@ pushd kafka-packaging
 git remote add upstream /vagrant/repos/kafka.git
 git fetch --tags upstream
 
-git checkout -b debian-$VERSION origin/debian
+git checkout -b debian-$VERSION origin/debian-heroku-0-9-0
 make -f debian/Makefile debian-control
 # We use this custom make target to create the desired [debian/]patches/series
 # file depending on whether Proactive Support integration is enabled or not.
