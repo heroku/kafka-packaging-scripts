@@ -64,7 +64,7 @@ LIBRDKAFKA_VERSION="0.9.0"
 # TODO: We have not had the time to test the build when `PS_ENABLED=no` although we are
 # confident that it works.  If you plan on building/releasing a version with PS disabled
 # you may want to account for some buffer/safety time during release planning.
-PS_ENABLED="yes"
+PS_ENABLED="no"
 
 # The package that contains the (fully assembled) proactive support client.
 PS_CLIENT_PACKAGE="support-metrics-client"
