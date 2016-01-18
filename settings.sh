@@ -108,7 +108,7 @@ REVISION="1"
 #
 # IMPORTANT: This variable is quite different from `CP_PACKAGES` below!
 #
-C_PACKAGES="librdkafka"
+C_PACKAGES=""
 
 # Space-separated list of all the Java packages except for Kafka, without the
 # `confluent-` prefix.  These all need to have the same version number
@@ -120,7 +120,7 @@ C_PACKAGES="librdkafka"
 #
 # IMPORTANT: The Proactive Support packages (PS_PACKAGES) MUST NOT be added here!
 #
-JAVA_PACKAGES="common rest-utils schema-registry kafka-rest kafka-connect-hdfs kafka-connect-jdbc camus"
+JAVA_PACKAGES="common"
 
 # Space-separated list of all the CP packages except for Kafka.
 #
