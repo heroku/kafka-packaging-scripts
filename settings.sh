@@ -35,7 +35,7 @@ KAFKA_BRANCH="0.9.0-cp-2.0.0" # based on Apache Kafka's branch "0.9.0" but with 
 # Build Kafka w/ Scala 2.11 first because of Proactive Support, which depends on the 2.11 variant.
 # We must build 2.11 before 2.10 because the Proactive Support projects are only built against
 # one variant, which means this variant must be built first.
-SCALA_VERSIONS="2.11.7 2.10.5"
+SCALA_VERSIONS="2.11.7"
 
 # librdkafka follows its own version naming convention, which is different from CP's.
 #
