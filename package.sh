@@ -62,6 +62,7 @@ if [ "x$SIGN" == "xyes" ]; then
     if [ "x$SIGN_KEY" == "x" ]; then
         SIGN_KEY=`gpg --list-secret-keys | grep uid | sed -e s/uid// -e 's/^ *//' -e 's/ *$//'`
     fi
+fi
 
 ## KAFKA ##
 KAFKA_BUILD_SKIP_TESTS="yes"
