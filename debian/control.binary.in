@@ -1,6 +1,6 @@
-Package: confluent-platform-##SCALAVERSION##
+Package: confluent-platform-##KAFKAVERSION##
 Architecture: all
-Depends: confluent-kafka-##SCALAVERSION## (>= ##KAFKAVERSION##),
+Depends: confluent-kafka-##KAFKAVERSION##
          confluent-schema-registry (>= ##VERSION##),
          confluent-kafka-rest (>= ##VERSION##),
          confluent-kafka-connect-hdfs (>= ##VERSION##),
