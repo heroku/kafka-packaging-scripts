@@ -49,7 +49,7 @@ make -f debian/Makefile debian-control
 # file depending on whether Proactive Support integration is enabled or not.
 make -f debian/Makefile patch-series
 # Update the release info
-export DEBEMAIL="Confluent Packaging <packages@confluent.io>"
+export DEBEMAIL="Heroku Kafka Packaging <dod-kcz@heroku.com>"
 dch --newversion ${VERSION/-/\~}-${REVISION} "Release version $VERSION" --urgency low && dch --release --distribution unstable ""
 git commit -a -m "Tag Debian release."
 
