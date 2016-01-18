@@ -198,7 +198,7 @@ REPOS="$KAFKA_REPO \
 ###
 ### Package signing
 ###
-SIGN="yes"
+SIGN="no"
 SIGN_KEY="41468433" # packages@confluent.io
 
 
