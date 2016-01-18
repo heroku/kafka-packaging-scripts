@@ -24,8 +24,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     deb.vm.network "private_network", ip: "10.20.30.11"
   end
 
-  config.vm.synced_folder "~/.gnupg", "/root/.gnupg", owner: "root", group: "root"
-
   config.vm.provider "virtualbox" do |vb|
     # We need 2GB+ memory because some build commands (e.g. for Kafka) run JVMs
     # with 1GB heap space each.
