@@ -30,7 +30,7 @@ KAFKA_VERSION="0.9.0.0"
 # --------
 # KAFKA_BRANCH="0.8.2"
 #
-KAFKA_BRANCH="0.9.0" # based on Apache Kafka's branch "0.9.0" but with version set to "0.9.0.0-cp1"
+KAFKA_BRANCH="0.9.0.0-heroku" # Kafka's 0.9.0.0 release, because this packaging doesn't support building from tags, only branches.
 
 # Build Kafka w/ Scala 2.11 first because of Proactive Support, which depends on the 2.11 variant.
 # We must build 2.11 before 2.10 because the Proactive Support projects are only built against
@@ -162,7 +162,7 @@ librdkafka_BRANCH="origin/0.9.0" # librdkafka uses its own versioning scheme, it
 ###         So when you actually rename a project/repository on GitHub you need
 ###         to update the repository's URL here but also in the corresponding
 ###         `build/*-{archive,deb,rpm}.sh` scripts of the project..
-KAFKA_REPO="git@github.com:confluentinc/kafka.git"
+KAFKA_REPO="git@github.com:heroku/kafka.git"
 CAMUS_REPO="git@github.com:confluentinc/camus.git"
 COMMON_REPO="git@github.com:confluentinc/common.git"
 KAFKA_PACKAGING_REPO="git@github.com:heroku/kafka-packaging.git"
