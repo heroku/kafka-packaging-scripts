@@ -9,7 +9,7 @@
 # Kafka has its own version and branch settings as it has a special requirements
 # in our build setup.  For example, we need to support multiple Scala versions.
 KAFKA_VERSION="0.8.2.2"
-KAFKA_BRANCH="0.8.2"
+KAFKA_BRANCH="0.8.2-hotfix-3"
 SCALA_VERSIONS="2.10.4"
 
 
@@ -69,7 +69,7 @@ BRANCH="v1.0.1"
 ###
 ### Git repositories
 ###
-KAFKA_REPO="http://git-wip-us.apache.org/repos/asf/kafka.git"
+KAFKA_REPO="git@github.com:confluentinc/kafka.git"
 CAMUS_REPO="git@github.com:confluentinc/camus.git"
 COMMON_REPO="git@github.com:confluentinc/common.git"
 KAFKA_PACKAGING_REPO="git@github.com:heroku/kafka-packaging.git"

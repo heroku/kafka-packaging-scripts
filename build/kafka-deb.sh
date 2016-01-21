@@ -25,7 +25,7 @@ git checkout -b debian-$VERSION origin/debian-heroku-0-8-2
 make -f debian/Makefile debian-control
 # Update the release info
 export DEBEMAIL="Heroku Kafka Packaging <dod-kcz@heroku.com>"
-dch --newversion "${VERSION/-/\~}-${REVISION}-heroku1" "Release version $VERSION" --urgency low && dch --release --distribution unstable ""
+dch --newversion "${VERSION/-/\~}-${REVISION}-heroku2" "Release version $VERSION" --urgency low && dch --release --distribution unstable ""
 git commit -a -m "Tag Debian release."
 
 git merge --no-edit -m "deb-$VERSION" upstream/$BRANCH
