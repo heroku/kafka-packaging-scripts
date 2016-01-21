@@ -50,7 +50,7 @@ make -f debian/Makefile debian-control
 make -f debian/Makefile patch-series
 # Update the release info
 export DEBEMAIL="Heroku Kafka Packaging <dod-kcz@heroku.com>"
-dch --newversion "${VERSION/-/\~}-${REVISION}-heroku1" "Release version $VERSION" --urgency low && dch --release --distribution unstable ""
+dch --newversion "${VERSION/-/\~}-${REVISION}-heroku2" "Release version $VERSION" --urgency low && dch --release --distribution unstable ""
 git commit -a -m "Tag Debian release."
 
 git merge --no-edit -m "deb-$VERSION" upstream/$BRANCH

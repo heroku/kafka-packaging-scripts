@@ -29,8 +29,11 @@ KAFKA_VERSION="0.9.0.0"
 # Examples
 # --------
 # KAFKA_BRANCH="0.8.2"
-#
-KAFKA_BRANCH="0.9.0.0-heroku" # Kafka's 0.9.0.0 release, because this packaging doesn't support building from tags, only branches.
+
+# the confluent platform v2 release of kafka from github.com/confluentinc/kafka, on the tag v2.0.0.
+# forked to heroku's github repo in case confluent ever decide to remove these and we need to rebuild
+# packages for some reason
+KAFKA_BRANCH="0.9.0.0-heroku-from-confluent-platform-v2-release"
 
 # Build Kafka w/ Scala 2.11 first because of Proactive Support, which depends on the 2.11 variant.
 # We must build 2.11 before 2.10 because the Proactive Support projects are only built against
