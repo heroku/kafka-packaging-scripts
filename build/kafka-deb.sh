@@ -23,6 +23,9 @@ git fetch --tags upstream
 
 git checkout -b debian-$VERSION origin/debian-heroku-0-8-2
 make -f debian/Makefile debian-control
+
+# generate patch series
+make -f debian/Makefile patch-series
 # Update the release info
 export DEBEMAIL="Heroku Kafka Packaging <dod-kcz@heroku.com>"
 dch --newversion "${VERSION/-/\~}-${REVISION}-heroku2" "Release version $VERSION" --urgency low && dch --release --distribution unstable ""
