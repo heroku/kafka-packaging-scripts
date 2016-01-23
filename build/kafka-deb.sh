@@ -45,15 +45,17 @@ git fetch --tags upstream
 
 git checkout -b debian-$VERSION origin/debian-heroku-0-9-0
 make -f debian/Makefile debian-control
-# We use this custom make target to create the desired [debian/]patches/series
-# file depending on whether Proactive Support integration is enabled or not.
-make -f debian/Makefile patch-series
 # Update the release info
 export DEBEMAIL="Heroku Kafka Packaging <dod-kcz@heroku.com>"
 dch --newversion "${VERSION/-/\~}-${REVISION}-heroku4" "Release version $VERSION" --urgency low && dch --release --distribution unstable ""
 git commit -a -m "Tag Debian release."
 
 git merge --no-edit -m "deb-$VERSION" upstream/$BRANCH
+
+# We use this custom make target to create the desired [debian/]patches/series
+# file depending on whether Proactive Support integration is enabled or not.
+# heroku note: this has to be done *after* merging in upstream so we know what version we're building
+make -f debian/Makefile patch-series
 
 git-buildpackage -us -uc --git-debian-branch=debian-$VERSION --git-upstream-tree=upstream/$BRANCH --git-verbose --git-builder="debuild --set-envvar=APPLY_PATCHES=$APPLY_PATCHES --set-envvar=VERSION=$VERSION --set-envvar=SCALA_VERSIONS=\"$SCALA_VERSIONS\" --set-envvar=DESTDIR=$DESTDIR --set-envvar=PREFIX=$PREFIX --set-envvar=SYSCONFDIR=$SYSCONFDIR --set-envvar=INCLUDE_WINDOWS_BIN=$INCLUDE_WINDOWS_BIN --set-envvar=PS_ENABLED=$PS_ENABLED --set-envvar=PS_PACKAGES=\"$PS_PACKAGES\" --set-envvar=PS_CLIENT_PACKAGE=$PS_CLIENT_PACKAGE --set-envvar=CONFLUENT_VERSION=$CONFLUENT_VERSION --set-envvar=SKIP_TESTS=$SKIP_TESTS -i -I"
 popd
