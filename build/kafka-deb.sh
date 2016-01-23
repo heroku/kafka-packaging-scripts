@@ -24,14 +24,15 @@ git fetch --tags upstream
 git checkout -b debian-$VERSION origin/debian-heroku-0-8-2
 make -f debian/Makefile debian-control
 
-# generate patch series
-make -f debian/Makefile patch-series
 # Update the release info
 export DEBEMAIL="Heroku Kafka Packaging <dod-kcz@heroku.com>"
 dch --newversion "${VERSION/-/\~}-${REVISION}-heroku4" "Release version $VERSION" --urgency low && dch --release --distribution unstable ""
 git commit -a -m "Tag Debian release."
 
 git merge --no-edit -m "deb-$VERSION" upstream/$BRANCH
+
+# generate patch series
+make -f debian/Makefile patch-series
 
 git-buildpackage -us -uc --git-debian-branch=debian-$VERSION --git-upstream-tree=upstream/$BRANCH --git-verbose --git-builder="debuild --set-envvar=APPLY_PATCHES=$APPLY_PATCHES --set-envvar=VERSION=$VERSION --set-envvar=DESTDIR=$DESTDIR --set-envvar=PREFIX=$PREFIX --set-envvar=SYSCONFDIR=$SYSCONFDIR --set-envvar=INCLUDE_WINDOWS_BIN=$INCLUDE_WINDOWS_BIN -i -I"
 popd
