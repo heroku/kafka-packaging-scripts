@@ -38,7 +38,7 @@ KAFKA_BRANCH="0.10.0.RC-heroku-from-confluent-platform-unreleased"
 # Build Kafka w/ Scala 2.11 first because of Proactive Support, which depends on the 2.11 variant.
 # We must build 2.11 before 2.10 because the Proactive Support projects are only built against
 # one variant, which means this variant must be built first.
-SCALA_VERSIONS="2.11.7"
+SCALA_VERSIONS="2.11"
 
 # librdkafka follows its own version naming convention, which is different from CP's.
 #
