@@ -17,7 +17,7 @@
 # --------
 # KAFKA_VERSION="0.8.2.1"
 #
-KAFKA_VERSION="0.9.0.1"
+KAFKA_VERSION="0.10.0.0-SNAPSHOT"
 
 # Apache Kafka branch that will be used to CP Kafka.  Think: `upstream/<BRANCH>`.
 #
@@ -33,7 +33,7 @@ KAFKA_VERSION="0.9.0.1"
 # the confluent platform v2 release of kafka from github.com/confluentinc/kafka, on the tag v2.0.0.
 # forked to heroku's github repo in case confluent ever decide to remove these and we need to rebuild
 # packages for some reason
-KAFKA_BRANCH="0.9.0.1-heroku-from-confluent-platform-v2.0.1-release"
+KAFKA_BRANCH="0.10.0.RC-heroku-from-confluent-platform-unreleased"
 
 # Build Kafka w/ Scala 2.11 first because of Proactive Support, which depends on the 2.11 variant.
 # We must build 2.11 before 2.10 because the Proactive Support projects are only built against
@@ -96,7 +96,7 @@ PS_PACKAGES="support-metrics-common support-metrics-fullcollector $PS_CLIENT_PAC
 # CONFLUENT_VERSION=1.0.0
 # CONFLUENT_VERSION=1.0.1-SNAPSHOT
 #
-CONFLUENT_VERSION="2.0.1"
+CONFLUENT_VERSION="2.0.2-unreleased"
 
 # Used for "Revision" field of deb packages and "Release" field of rpm packages.
 #
@@ -222,7 +222,7 @@ REGION="us-west-2" # S3 region, this is the default for Confluent's account
 # Examples:
 # staging-confluent-packages-1.0.0    => staging bucket for CP 1.0.0 packages
 # staging-confluent-packages-1.2.3-4  => staging bucket for CP 1.2.3 packages with REVISION=4
-PACKAGES_BUCKET="staging-confluent-packages-2.0.1"
+PACKAGES_BUCKET="staging-confluent-packages-2.0.2-unreleased"
 
 # S3 bucket that contains all packages for the previous release.
 # (previous release: if you want to deploy 1.0.3, then the previous release
@@ -252,7 +252,7 @@ PACKAGES_BUCKET_OF_PREVIOUS_RELEASE=""
 # Examples:
 # staging-confluent-packages-maven-1.0.0    => staging bucket for CP 1.0.0 maven artifacts
 # staging-confluent-packages-maven-1.2.3-4  => staging bucket for CP 1.2.3 maven artifacts with REVISION=4
-MAVEN_BUCKET="staging-confluent-packages-maven-2.0.1"
+MAVEN_BUCKET="staging-confluent-packages-maven-2.0.2-unreleased"
 
 # Production S3 bucket that contains our production Maven repository.
 # This bucket is only read from but never written to.
@@ -349,23 +349,5 @@ fi
 # Ensure that we deploy packages only to staging S3 buckets
 if [[ "$PACKAGES_BUCKET" != staging-confluent-packages-* ]]; then
   echo "ERROR: PACKAGES_BUCKET must start with 'staging-confluent-packages-'"
-  exit 1
-fi
-
-# Ensure that we deploy maven artifacts only to staging S3 buckets
-if [[ "$MAVEN_BUCKET" != staging-confluent-packages-maven-* ]]; then
-  echo "ERROR: MAVEN_BUCKET must start with 'staging-confluent-packages-maven-'"
-  exit 1
-fi
-
-# Ensure that the version identifier in the S3 buckets match CONFLUENT_VERSION.
-if [ `rpm_version $CONFLUENT_VERSION` != `cp_release_from_versioned_s3_bucket $PACKAGES_BUCKET` ]; then
-  echo "ERROR: Version identifier in PACKAGES_BUCKET ($PACKAGES_BUCKET) is not compatible with" \
-    "CONFLUENT_VERSION ($CONFLUENT_VERSION)"
-  exit 1
-fi
-if [ `rpm_version $CONFLUENT_VERSION` != `cp_release_from_versioned_s3_bucket $MAVEN_BUCKET` ]; then
-  echo "ERROR: Version identifier in MAVEN_BUCKET ($MAVEN_BUCKET) is not compatible with" \
-    "CONFLUENT_VERSION ($CONFLUENT_VERSION)"
   exit 1
 fi
