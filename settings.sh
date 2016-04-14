@@ -17,7 +17,7 @@
 # --------
 # KAFKA_VERSION="0.8.2.1"
 #
-KAFKA_VERSION="0.9.0.0"
+KAFKA_VERSION="0.9.0.1"
 
 # Apache Kafka branch that will be used to CP Kafka.  Think: `upstream/<BRANCH>`.
 #
@@ -33,7 +33,7 @@ KAFKA_VERSION="0.9.0.0"
 # the confluent platform v2 release of kafka from github.com/confluentinc/kafka, on the tag v2.0.0.
 # forked to heroku's github repo in case confluent ever decide to remove these and we need to rebuild
 # packages for some reason
-KAFKA_BRANCH="0.9.0.0-heroku-from-confluent-platform-v2-release"
+KAFKA_BRANCH="0.9.0.1-heroku-from-confluent-platform-v2.0.1-release"
 
 # Build Kafka w/ Scala 2.11 first because of Proactive Support, which depends on the 2.11 variant.
 # We must build 2.11 before 2.10 because the Proactive Support projects are only built against
@@ -96,7 +96,7 @@ PS_PACKAGES="support-metrics-common support-metrics-fullcollector $PS_CLIENT_PAC
 # CONFLUENT_VERSION=1.0.0
 # CONFLUENT_VERSION=1.0.1-SNAPSHOT
 #
-CONFLUENT_VERSION="2.0.0"
+CONFLUENT_VERSION="2.0.1"
 
 # Used for "Revision" field of deb packages and "Release" field of rpm packages.
 #
