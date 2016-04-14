@@ -222,7 +222,7 @@ REGION="us-west-2" # S3 region, this is the default for Confluent's account
 # Examples:
 # staging-confluent-packages-1.0.0    => staging bucket for CP 1.0.0 packages
 # staging-confluent-packages-1.2.3-4  => staging bucket for CP 1.2.3 packages with REVISION=4
-PACKAGES_BUCKET="staging-confluent-packages-2.0.0"
+PACKAGES_BUCKET="staging-confluent-packages-2.0.1"
 
 # S3 bucket that contains all packages for the previous release.
 # (previous release: if you want to deploy 1.0.3, then the previous release
@@ -252,7 +252,7 @@ PACKAGES_BUCKET_OF_PREVIOUS_RELEASE=""
 # Examples:
 # staging-confluent-packages-maven-1.0.0    => staging bucket for CP 1.0.0 maven artifacts
 # staging-confluent-packages-maven-1.2.3-4  => staging bucket for CP 1.2.3 maven artifacts with REVISION=4
-MAVEN_BUCKET="staging-confluent-packages-maven-2.0.0"
+MAVEN_BUCKET="staging-confluent-packages-maven-2.0.1"
 
 # Production S3 bucket that contains our production Maven repository.
 # This bucket is only read from but never written to.
