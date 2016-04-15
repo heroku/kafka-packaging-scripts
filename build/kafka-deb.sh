@@ -47,7 +47,8 @@ git checkout -b debian-$VERSION origin/debian-heroku-0-10-RC
 make -f debian/Makefile debian-control
 # Update the release info
 export DEBEMAIL="Heroku Kafka Packaging <dod-kcz@heroku.com>"
-dch --newversion "${VERSION/-/\~}-${REVISION}-heroku5" "Release version $VERSION" --urgency low && dch --release --distribution unstable ""
+rm -f debian/changelog
+VISUAL='sh -c echo' dch --newversion "${VERSION/-/\~}-${REVISION}-heroku5" "Release version $VERSION" --urgency low --create --package "confluent-kafka-$VERSION" && dch --release --distribution unstable ""
 git commit -a -m "Tag Debian release."
 
 git merge --no-edit -m "deb-$VERSION" upstream/$BRANCH

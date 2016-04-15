@@ -17,7 +17,7 @@
 # --------
 # KAFKA_VERSION="0.8.2.1"
 #
-KAFKA_VERSION="0.10.0.0-SNAPSHOT"
+KAFKA_VERSION="0.10.0.0-snapshot"
 
 # Apache Kafka branch that will be used to CP Kafka.  Think: `upstream/<BRANCH>`.
 #
@@ -184,15 +184,7 @@ LIBRDKAFKA_REPO="git@github.com:edenhill/librdkafka.git"
 ### Repos to build
 ###
 REPOS="$KAFKA_REPO \
-    $KAFKA_PACKAGING_REPO \
-    $COMMON_REPO \
-    $REST_UTILS_REPO \
-    $SCHEMA_REGISTRY_REPO \
-    $KAFKA_REST_REPO \
-    $KAFKA_CONNECT_HDFS_REPO \
-    $KAFKA_CONNECT_JDBC_REPO \
-    $CAMUS_REPO \
-    $LIBRDKAFKA_REPO"
+    $KAFKA_PACKAGING_REPO"
 
 
 ###
