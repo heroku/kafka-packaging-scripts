@@ -1,0 +1,19 @@
+- clone all 3 repos
+- https://github.com/heroku/kafka
+    - choose branch on confluentinc/kafka to base off
+    - generate patch for remove_sh_from_bin
+    - generate patch for add_version_specific_paths
+    - fix up the gradle.properties to have the correct version (should be the point release of kafka you are building)
+    - push to heroku remote
+- https://github.com/heroku/ubuntu-kafka
+    - checkout new branch from last branch (TODO: use a stable branch)
+    - copy patches and commit
+    - push to heroku remote
+- https://github.com/heroku/kafka-packaging-scripts
+    - checkout new branch from last branch (TODO: use a stable branch)
+    - update settings.sh with new version
+    - boot vagrant
+    - run package.sh
+    - run dpkg -I and check the built package and package version make sense
+    - run dpkg -c and check the paths make sense
+    - upload to package cloud
