@@ -165,19 +165,19 @@ librdkafka_BRANCH="origin/0.9.0" # librdkafka uses its own versioning scheme, it
 ###         So when you actually rename a project/repository on GitHub you need
 ###         to update the repository's URL here but also in the corresponding
 ###         `build/*-{archive,deb,rpm}.sh` scripts of the project..
-KAFKA_REPO="git@github.com:heroku/kafka.git"
-CAMUS_REPO="git@github.com:confluentinc/camus.git"
-COMMON_REPO="git@github.com:confluentinc/common.git"
-KAFKA_PACKAGING_REPO="git@github.com:heroku/kafka-packaging.git"
-KAFKA_REST_REPO="git@github.com:confluentinc/kafka-rest.git"
-REST_UTILS_REPO="git@github.com:confluentinc/rest-utils.git"
-SCHEMA_REGISTRY_REPO="git@github.com:confluentinc/schema-registry.git"
-KAFKA_CONNECT_HDFS_REPO="git@github.com:confluentinc/kafka-connect-hdfs.git"
-KAFKA_CONNECT_JDBC_REPO="git@github.com:confluentinc/kafka-connect-jdbc.git"
-SUPPORT_METRICS_COMMON_REPO="git@github.com:confluentinc/support-metrics-common.git"
-SUPPORT_METRICS_FULLCOLLECTOR_REPO="git@github.com:confluentinc/support-metrics-fullcollector.git"
-SUPPORT_METRICS_CLIENT_REPO="git@github.com:confluentinc/support-metrics-client.git"
-LIBRDKAFKA_REPO="git@github.com:edenhill/librdkafka.git"
+KAFKA_REPO="https://github.com/heroku/kafka.git"
+CAMUS_REPO="https://github.com/confluentinc/camus.git"
+COMMON_REPO="https://github.com/confluentinc/common.git"
+KAFKA_PACKAGING_REPO="https://github.com/heroku/kafka-packaging.git"
+KAFKA_REST_REPO="https://github.com/confluentinc/kafka-rest.git"
+REST_UTILS_REPO="https://github.com/confluentinc/rest-utils.git"
+SCHEMA_REGISTRY_REPO="https://github.com/confluentinc/schema-registry.git"
+KAFKA_CONNECT_HDFS_REPO="https://github.com/confluentinc/kafka-connect-hdfs.git"
+KAFKA_CONNECT_JDBC_REPO="https://github.com/confluentinc/kafka-connect-jdbc.git"
+SUPPORT_METRICS_COMMON_REPO="https://github.com/confluentinc/support-metrics-common.git"
+SUPPORT_METRICS_FULLCOLLECTOR_REPO="https://github.com/confluentinc/support-metrics-fullcollector.git"
+SUPPORT_METRICS_CLIENT_REPO="https://github.com/confluentinc/support-metrics-client.git"
+LIBRDKAFKA_REPO="https://github.com/edenhill/librdkafka.git"
 
 
 ###
