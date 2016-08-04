@@ -1,22 +1,48 @@
 - clone all 3 repos
-- https://github.com/heroku/kafka
-    - choose branch on confluentinc/kafka to base off
-    - generate patch for remove_sh_from_bin
-      - move .sh files to files without .sh at the ending
-      - remove the .sh extension in places those files call a .sh file
-        `bash -c 'ls bin | grep -v windows | while read f; do mv bin/$f bin/$(echo $f | sed -e "s/\.sh$//"); done; find bin -type f -exec gsed -i "s/\.sh//g" "{}" "+"'`
-    - generate patch for add_version_specific_paths
-    - fix up the gradle.properties to have the correct version (should be the point release of kafka you are building)
-    - push to heroku remote
-- https://github.com/heroku/ubuntu-kafka
-    - checkout new branch from last branch (TODO: use a stable branch)
-    - copy patches and commit
-    - push to heroku remote
-- https://github.com/heroku/kafka-packaging-scripts
-    - checkout new branch from last branch (TODO: use a stable branch)
-    - update settings.sh with new version
-    - boot vagrant
+  - https://github.com/heroku/kafka
+  - https://github.com/heroku/kafka-packaging
+  - https://github.com/heroku/kafka-packaging-scripts
+- choose tag on apache/kafka to base off
+  - make sure to `git fetch --tags`
+- checkout new branch on all repos
+  - kafka: 0.10.0.1-rc2-heroku from the tag
+  - kafka-packaging: debian-heroku-0-10-0-1-rc2 from the previous branch
+  - kafka-packaging-scripts: heroku-kafka-0.10.0.1-rc2 from the previous branch
+- in heroku/kafka:
+  - generate patch for `remove_sh_from_bin`
+    - `bash -c 'ls bin | grep -v windows | while read f; do mv bin/$f bin/$(echo $f | sed -e "s/\.sh$//"); done; find bin -type f -exec gsed -i "s/\.sh//g" "{}" "+"; chmod +x bin/*'`
+    - commit changes in `heroku/kafka`
+    - `git diff HEAD~ > ../kafka-packaging/patches/debian/remove_sh_from_bin_filenames.patch`
+    - commit changes in `heroku/kafka-packaging`
+  - generate patch for `add_version_specific_paths` (this is on top of the first patch)
+    - `patch -p1 < ../kafka-packaging/patches/debian/version_specific_paths.patch.in`
+    - check for new scripts since last branch
+      - change any file paths to include version specific tag: `##KAFKA_VERSION##`
+    - commit changes in `heroku/kafka`
+    - `git diff HEAD~ > ../kafka-packaging/patches/debian/version_specific_paths.patch.in`
+    - commit changes in `heroku/kafka-packaging`
+  - reset `heroku/kafka` back to release tag
+  - fix up the gradle.properties to have the correct version
+    - should be the point release of kafka you are building
+    - if you are building a non-release version, make sure `-SNAPSHOT` is present
+    - commit changes in `heroku/kafka`
+  - push `heroku/kafka` to github
+  - push `heroku/kafka-packaging` to github
+  - in `heroku/kafka-packaging-scripts`:
+    - update `settings.sh` with new version and branch
+    - update `build/kafka-deb.sh` with new branch and version suffix (i.e. `-heroku3`)
+      - the version suffix needs to be bumped if you are building the same release a second time
+    - commit changes
+    - boot vagrant VM
+    - `rm output/*.deb`
     - run package.sh
-    - run dpkg -I and check the built package and package version make sense
-    - run dpkg -c and check the paths make sense
+      - don't worry about the warnings when running `cp`
+    - check package contents from inside `vagrant ssh deb`
+      - `cd /vagrant/output`
+      - run `dpkg -I` and check the package version is correct
+        - the package version must include the release version
+      - run `dpkg -c` and check the paths are suffix correctly
+        - `/usr/share/java/kafka-V`, `/etc/kafka-V`, `/usr/bin/kafka-V`
     - upload to package cloud
+    - push `heroku/kafka-package-scripts` to github
+    - stop vagrant VM
