@@ -1,3 +1,8 @@
+- make sure you have access to packagecloud
+  - create a packagecloud account
+  - file an issue with foundation
+    - see https://github.com/heroku/foundation/issues/890
+    - tag with interrupt
 - clone all 3 repos
   - https://github.com/heroku/kafka
   - https://github.com/heroku/kafka-packaging
@@ -44,5 +49,7 @@
       - run `dpkg -c` and check the paths are suffix correctly
         - `/usr/share/java/kafka-V`, `/etc/kafka-V`, `/usr/bin/kafka-V`
     - upload to package cloud
+      - `package_cloud push heroku/dod/ubuntu/precise output/V.deb`
+      - `package_cloud push heroku/dod/ubuntu/trusty output/V.deb`
     - push `heroku/kafka-package-scripts` to github
     - stop vagrant VM
