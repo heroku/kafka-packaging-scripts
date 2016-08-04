@@ -43,12 +43,12 @@ pushd kafka-packaging
 git remote add upstream /vagrant/repos/kafka.git
 git fetch --tags upstream
 
-git checkout -b debian-$VERSION origin/debian-heroku-0-10-RC
+git checkout -b debian-$VERSION origin/debian-heroku-0-10-0-1-rc2
 make -f debian/Makefile debian-control
 # Update the release info
 export DEBEMAIL="Heroku Kafka Packaging <dod-kcz@heroku.com>"
 rm -f debian/changelog
-VISUAL='sh -c echo' dch --newversion "${VERSION/-/\~}-${REVISION}-heroku11" "Release version $VERSION" --urgency low --create --package "confluent-kafka-$VERSION" && dch --release --distribution unstable ""
+VISUAL='sh -c echo' dch --newversion "${VERSION/-/\~}-${REVISION}-heroku1" "Release version $VERSION" --urgency low --create --package "confluent-kafka-$VERSION" && dch --release --distribution unstable ""
 git commit -a -m "Tag Debian release."
 
 git merge --no-edit -m "deb-$VERSION" upstream/$BRANCH
