@@ -2,6 +2,9 @@
 - https://github.com/heroku/kafka
     - choose branch on confluentinc/kafka to base off
     - generate patch for remove_sh_from_bin
+      - move .sh files to files without .sh at the ending
+      - remove the .sh extension in places those files call a .sh file
+        `bash -c 'ls bin | grep -v windows | while read f; do mv bin/$f bin/$(echo $f | sed -e "s/\.sh$//"); done; find bin -type f -exec gsed -i "s/\.sh//g" "{}" "+"'`
     - generate patch for add_version_specific_paths
     - fix up the gradle.properties to have the correct version (should be the point release of kafka you are building)
     - push to heroku remote

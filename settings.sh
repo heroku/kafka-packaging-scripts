@@ -17,7 +17,7 @@
 # --------
 # KAFKA_VERSION="0.8.2.1"
 #
-KAFKA_VERSION="0.10.0.0-snapshot"
+KAFKA_VERSION="0.10.0.0"
 
 # Apache Kafka branch that will be used to CP Kafka.  Think: `upstream/<BRANCH>`.
 #
